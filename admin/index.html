@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | Treats By Rich</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-card" aria-labelledby="loginHeading">
+      <div class="auth-brand">
+        <img src="assets/logo.png" alt="Treats By Rich logo" />
+        <h1 id="loginHeading">Treats By Rich</h1>
+        <span>Admin Dashboard</span>
+      </div>
+
+      <div class="alert alert-error" id="loginError" role="alert"></div>
+      <div class="alert alert-success" id="loginSuccess" role="status"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="input-shell">
+            <input type="email" id="email" name="email" placeholder="admin@treatsbyrich.com" autocomplete="username" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-shell">
+            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required />
+            <button type="button" class="toggle-visibility" id="togglePassword" aria-label="Show password" aria-pressed="false">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label class="checkbox-row" for="rememberMe">
+            <input type="checkbox" id="rememberMe" name="rememberMe" checked />
+            Remember me
+          </label>
+          <button type="button" class="link-muted" id="forgotPasswordBtn" style="background: none; border: none; cursor: pointer; font: inherit;">
+            Forgot password?
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="loginButton">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="btn-label">Log In</span>
+        </button>
+      </form>
+
+      <p class="auth-footer-link">Authorized Treats By Rich staff only.</p>
+    </main>
+
+    <script type="module">
+      import { loginWithEmail, sendResetEmail, redirectIfAuthenticated, friendlyAuthError } from "./js/auth.js";
+
+      redirectIfAuthenticated();
+
+      const form = document.getElementById("loginForm");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const rememberMeInput = document.getElementById("rememberMe");
+      const loginButton = document.getElementById("loginButton");
+      const togglePasswordBtn = document.getElementById("togglePassword");
+      const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+      const errorBox = document.getElementById("loginError");
+      const successBox = document.getElementById("loginSuccess");
+
+      function showError(message) {
+        successBox.classList.remove("is-visible");
+        errorBox.textContent = message;
+        errorBox.classList.add("is-visible");
+      }
+
+      function showSuccess(message) {
+        errorBox.classList.remove("is-visible");
+        successBox.textContent = message;
+        successBox.classList.add("is-visible");
+      }
+
+      function clearMessages() {
+        errorBox.classList.remove("is-visible");
+        successBox.classList.remove("is-visible");
+      }
+
+      function setLoading(isLoading) {
+        loginButton.disabled = isLoading;
+        loginButton.classList.toggle("is-loading", isLoading);
+        loginButton.querySelector(".btn-label").textContent = isLoading ? "Signing In..." : "Log In";
+      }
+
+      togglePasswordBtn.addEventListener("click", () => {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        togglePasswordBtn.setAttribute("aria-pressed", String(isHidden));
+        togglePasswordBtn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+      });
+
+      forgotPasswordBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        clearMessages();
+        if (!email) {
+          showError("Enter your email address above first, then tap \u201cForgot password?\u201d.");
+          emailInput.focus();
+          return;
+        }
+        try {
+          await sendResetEmail(email);
+          showSuccess("Password reset email sent. Check your inbox.");
+        } catch (error) {
+          showError(friendlyAuthError(error));
+        }
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clearMessages();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+          showError("Please enter your email and password.");
+          return;
+        }
+
+        setLoading(true);
+        try {
+          await loginWithEmail(email, password, rememberMeInput.checked);
+          showSuccess("Signed in. Redirecting to dashboard...");
+          window.location.href = "dashboard.html";
+        } catch (error) {
+          setLoading(false);
+          showError(friendlyAuthError(error));
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,727 @@
+/* Treats By Rich Admin — dashboard shell: sidebar, topbar, KPIs, tables. */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  background: linear-gradient(180deg, var(--brown), #351a0d);
+  color: #fbe8d0;
+  padding: 1.6rem 1.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 40;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.4rem;
+}
+
+.sidebar-brand img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.sidebar-brand strong {
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.sidebar-brand small {
+  color: rgba(251, 232, 208, 0.65);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: rgba(251, 232, 208, 0.78);
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-link .icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sidebar-link.active {
+  background: linear-gradient(135deg, var(--orange), var(--deep-orange));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(232, 93, 4, 0.32);
+}
+
+.sidebar-logout {
+  border-top: 1px solid rgba(251, 232, 208, 0.14);
+  padding-top: 1rem;
+}
+
+.sidebar-logout button {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(251, 232, 208, 0.22);
+  color: rgba(251, 232, 208, 0.85);
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.sidebar-logout button:hover {
+  border-color: var(--orange);
+  color: #fff;
+}
+
+.sidebar-close,
+.sidebar-toggle {
+  display: none;
+}
+
+/* Hidden on desktop; only becomes a real element (via responsive.css) as an
+   off-canvas backdrop on mobile. Without this, it was an unstyled block
+   participating in the grid and displacing the sidebar/content columns. */
+.sidebar-scrim {
+  display: none;
+}
+
+/* Content area */
+.app-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.8rem;
+  background: rgba(255, 248, 232, 0.92);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(10px);
+}
+
+.topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.topbar-title h1 {
+  font-size: 1.25rem;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  position: relative;
+}
+
+.notification-btn {
+  position: relative;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--deep-orange);
+  display: none;
+}
+
+.notification-dot.is-visible {
+  display: block;
+}
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 0.4rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+}
+
+.notification-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.notification-panel-header {
+  padding: 0.7rem 0.8rem 0.5rem;
+  font-weight: 700;
+  color: var(--brown);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.notification-panel .empty-state {
+  padding: 1.6rem 1rem;
+}
+
+.notification-panel .empty-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.7rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  background: var(--white);
+  border: 1px solid var(--border);
+}
+
+.admin-avatar {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), var(--deep-orange));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.admin-profile-meta {
+  line-height: 1.2;
+}
+
+.admin-profile-meta strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--brown);
+}
+
+.admin-profile-meta span {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.page-content {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 2rem 2.2rem 2.6rem;
+  display: grid;
+  gap: 1.6rem;
+}
+
+.page-heading {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.page-heading h2 {
+  font-size: 1.5rem;
+}
+
+.page-heading p {
+  max-width: 640px;
+}
+
+/* KPI grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.3rem 1.4rem;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 0.6rem;
+}
+
+.kpi-card-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.85rem;
+  display: grid;
+  place-items: center;
+  background: rgba(245, 158, 11, 0.14);
+  color: var(--deep-orange);
+}
+
+.kpi-card-icon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.kpi-card strong {
+  font-size: 1.7rem;
+  color: var(--brown);
+  font-family: "Playfair Display", serif;
+}
+
+.kpi-card span {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Recent orders table */
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table th {
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.data-table .btn-ghost {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+}
+
+/* Placeholder / coming-soon panels */
+.coming-soon {
+  padding: 3.2rem 1.5rem;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+}
+
+.coming-soon .icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.14);
+  color: var(--deep-orange);
+  display: grid;
+  place-items: center;
+}
+
+.coming-soon .icon svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.coming-soon h2 {
+  font-size: 1.2rem;
+}
+
+/* Toolbar: search + filters, used on Orders/Products/Customers */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.search-shell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  min-width: 220px;
+  flex: 1;
+}
+
+.search-shell .icon svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted);
+}
+
+.search-shell input {
+  border: 0;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font: inherit;
+  color: var(--text);
+}
+
+.filter-select {
+  border: 1px solid var(--border);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+/* Status tabs, used on Orders/Reviews */
+.tab-strip {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.2rem;
+}
+
+.tab-btn {
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--muted);
+  padding: 0.55rem 1.05rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.tab-btn:hover {
+  border-color: var(--orange);
+  color: var(--deep-orange);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--orange), var(--deep-orange));
+  border-color: transparent;
+  color: #fff;
+}
+
+.tab-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.3rem;
+  margin-left: 0.35rem;
+  border-radius: 999px;
+  background: rgba(74, 36, 18, 0.08);
+  color: inherit;
+  font-size: 0.72rem;
+}
+
+.tab-btn.active .tab-count {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* Detail sections, used on Order Details / Settings */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+}
+
+.detail-block h3 {
+  font-size: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.9rem;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row span:first-child {
+  color: var(--muted);
+}
+
+.detail-row span:last-child {
+  color: var(--brown);
+  font-weight: 600;
+  text-align: right;
+}
+
+.status-update-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* Review cards */
+.review-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.review-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.3rem;
+  display: grid;
+  gap: 0.6rem;
+  background: var(--white);
+}
+
+.review-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.review-stars {
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+
+.review-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.btn-approve {
+  background: rgba(31, 157, 85, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(31, 157, 85, 0.3);
+}
+
+.btn-reject {
+  background: rgba(214, 69, 69, 0.1);
+  color: var(--danger);
+  border: 1px solid rgba(214, 69, 69, 0.28);
+}
+
+/* Product form */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.form-grid .field-full {
+  grid-column: 1 / -1;
+}
+
+.repeatable-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.repeatable-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.repeatable-row input {
+  flex: 1;
+}
+
+.remove-row-btn {
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--danger);
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.chip-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.chip-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-size: 0.88rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.chip-checkbox input {
+  accent-color: var(--orange);
+}
+
+.chip-checkbox:has(input:checked),
+.chip-checkbox.is-checked {
+  border-color: var(--orange);
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--deep-orange);
+  font-weight: 600;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-track {
+  position: absolute;
+  inset: 0;
+  background: rgba(74, 36, 18, 0.18);
+  border-radius: 999px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.switch-track::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.switch input:checked + .switch-track {
+  background: var(--orange);
+}
+
+.switch input:checked + .switch-track::before {
+  transform: translateX(20px);
+}
+
+.image-upload-shell {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.4rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.88rem;
+  background: var(--cream);
+}
+
+/* Analytics grid */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.analytics-card .card-body {
+  min-height: 190px;
+  display: grid;
+  place-items: center;
+}
+
+/* Settings sections */
+.settings-section {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.settings-section + .settings-section {
+  margin-top: 0.4rem;
+}
+

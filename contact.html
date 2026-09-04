@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Contact | Treats By Rich</title>
+	<meta name="description" content="Get in touch with Treats By Rich for custom orders, inquiries and support." />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/responsive.css" />
+		<link rel="stylesheet" href="css/animations.css" />
+	</head>
+	<body>
+		<header class="site-header" id="top">
+			<div class="container nav-shell">
+				<a class="brand" href="index.html" aria-label="Treats By Rich home">
+					<img src="images/logo.png" alt="Treats By Rich logo" />
+					<span>
+						<strong>Treats By Rich</strong>
+						<small>Love at First Scoop</small>
+					</span>
+				</a>
+				<button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+					<span></span><span></span><span></span>
+				</button>
+				<nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+					<a href="index.html">Home</a>
+					<a href="menu.html">Menu</a>
+		  <a href="about.html">About</a>
+		  <a href="gallery.html">Gallery</a>
+		  <a href="events.html">Events</a>
+		  <a href="contact.html">Contact</a>
+					<a class="nav-cart" href="cart.html" aria-label="View cart">
+						<span class="icon icon-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></span>
+						<em class="cart-count">0</em>
+					</a>
+					<a class="button button-ghost nav-cta" href="checkout.html">Order Now</a>
+				</nav>
+			</div>
+		</header>
+
+		<main>
+			<section class="page-hero">
+				<div class="container">
+		  <p class="eyebrow">Contact Treats By Rich</p>
+		  <h1>Let’s create your next elegant dessert moment</h1>
+		  <p>Whether you want a customized parfait, a special event order or simply want to ask about availability, our team is ready to help.</p>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="container detail-grid">
+					<article class="detail-card reveal">
+			<h3>Reach us</h3>
+					<p>Call or WhatsApp us for same-day orders and premium delivery inquiries.</p>
+					<p><strong>Call:</strong> +233 53 851 7831</p>
+						<p><strong>WhatsApp:</strong> <a href="https://wa.me/233538517831?text=Hello%20Treats%20By%20Rich%2C%20I%27d%20like%20to%20make%20an%20order." target="_blank" rel="noopener noreferrer">+233 53 851 7831</a></p>
+						<a class="button button-primary" href="https://wa.me/233538517831?text=Hello%20Treats%20By%20Rich%2C%20I%27d%20like%20to%20make%20an%20order." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+						<a class="button button-ghost-dark" href="index.html#share-review">Leave a Review</a>
+					</article>
+					<article class="detail-card reveal">
+						<form class="field-grid" novalidate>
+							<div class="form-field">
+								<label for="contactName">Name</label>
+								<input id="contactName" name="contactName" type="text" placeholder="Your name" required />
+							</div>
+							<div class="form-field">
+								<label for="contactEmail">Email</label>
+								<input id="contactEmail" name="contactEmail" type="email" placeholder="name@example.com" required />
+							</div>
+							<div class="form-field">
+								<label for="contactPhone">Phone</label>
+								<input id="contactPhone" name="contactPhone" type="tel" placeholder="024 000 0000" required />
+							</div>
+							<div class="form-field">
+								<label for="contactMessage">Message</label>
+								<textarea id="contactMessage" name="contactMessage" rows="4" placeholder="Tell us what you need" required></textarea>
+							</div>
+							<button class="button button-primary" type="submit">Send Message</button>
+						</form>
+					</article>
+				</div>
+			</section>
+		</main>
+
+		<script src="js/cart.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>

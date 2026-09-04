@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biscuit Bliss | Treats By Rich</title>
+    <meta name="description" content="Customize your Biscuit Bliss parfait with creamy yogurt and crunchy biscuit layers." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+    <link rel="stylesheet" href="../css/animations.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container nav-shell">
+        <a class="brand" href="../index.html" aria-label="Treats By Rich home">
+          <img src="../images/logo.png" alt="Treats By Rich logo" />
+          <span>
+            <strong>Treats By Rich</strong>
+            <small>Love at First Scoop</small>
+          </span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="../index.html">Home</a>
+          <a href="../menu.html">Menu</a>
+          <a href="../about.html">About</a>
+          <a href="../gallery.html">Gallery</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../order-tracking.html">Track Order</a>
+          <a class="nav-cart" href="../cart.html" aria-label="View cart">
+            <span class="icon icon-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></span>
+            <em class="cart-count">0</em>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="product-detail-page">
+      <section class="section">
+        <div class="container product-hero-grid">
+          <div class="product-media reveal"><img src="../images/menu/biscuit-bliss.png" alt="Biscuit Bliss parfait with creamy yogurt and crunchy biscuit layers" loading="eager" /></div>
+          <div class="product-summary reveal">
+            <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../menu.html">Menu</a><span>/</span><span>Biscuit Bliss</span></nav>
+            <span class="category-badge">Crunchy classic</span>
+            <p class="eyebrow">Crunchy classic</p>
+            <h1>Biscuit Bliss</h1>
+            <p class="product-description">Creamy yogurt layered with crunchy biscuit crumbs creating the perfect balance between comfort and sweetness.</p>
+            <div class="product-top-actions"><button class="icon-button share-product" type="button" aria-label="Share product">↗ Share</button><button class="icon-button wishlist-product" type="button" aria-label="Save product">♡ Save</button></div>
+            <div class="rating-row"><span>★★★★★</span><small>4.7 • 84 reviews</small></div>
+            <div class="availability-pill">Availability: In stock today</div>
+            <div class="price-box"><div><span class="price-label">Total</span><h2 id="total-price">₵80</h2></div><p id="price-caption">For 255ml</p></div>
+
+            <div class="option-block">
+              <h3>Choose size</h3>
+              <div class="option-grid" data-group="size">
+                <label class="option-card is-selected"><input type="radio" name="size" value="255ml" data-price="80" checked /><span class="option-title">255ml</span><small>₵80</small></label>
+                <label class="option-card"><input type="radio" name="size" value="355ml" data-price="110" /><span class="option-title">355ml</span><small>₵110</small></label>
+                <label class="option-card"><input type="radio" name="size" value="500ml" data-price="155" /><span class="option-title">500ml</span><small>₵155</small></label>
+                <label class="option-card"><input type="radio" name="size" value="700ml" data-price="299" /><span class="option-title">700ml</span><small>₵299</small></label>
+                <label class="option-card"><input type="radio" name="size" value="750ml" data-price="310" /><span class="option-title">750ml</span><small>₵310</small></label>
+              </div>
+            </div>
+
+            <div class="option-block">
+              <h3>Extras</h3>
+              <div class="checkbox-list">
+                <label class="checkbox-card"><input type="checkbox" data-extra="Cashew" data-price="25" /> <span>Cashew</span><small>+₵25</small></label>
+                <label class="checkbox-card"><input type="checkbox" data-extra="Almond" data-price="25" /> <span>Almond</span><small>+₵25</small></label>
+                <label class="checkbox-card"><input type="checkbox" data-extra="Coco Flakes" data-price="25" /> <span>Coco Flakes</span><small>+₵25</small></label>
+                <label class="checkbox-card"><input type="checkbox" data-extra="Crispy Bis" data-price="25" /> <span>Crispy Bis</span><small>+₵25</small></label>
+                <label class="checkbox-card"><input type="checkbox" data-extra="Extra Yogurt" data-price="25" /> <span>Extra Yogurt</span><small>+₵25</small></label>
+              </div>
+            </div>
+
+            <div class="option-block">
+              <h3>Quantity</h3>
+              <div class="quantity-selector"><button class="quantity-btn" type="button" data-action="decrease">−</button><input id="quantity" type="number" min="1" value="1" /><button class="quantity-btn" type="button" data-action="increase">+</button></div>
+            </div>
+
+            <div class="product-actions"><button class="button button-primary add-to-cart" data-product="Biscuit Bliss" data-price="80" type="button">Add To Cart</button><a class="button button-ghost-dark" href="https://wa.me/233538517831" target="_blank" rel="noopener noreferrer">Order via WhatsApp</a></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section product-details-section">
+        <div class="container">
+          <div class="detail-grid">
+            <div class="detail-card reveal"><h3>Ingredients</h3><div class="ingredient-grid"><span>Greek Yogurt</span><span>Crunchy Biscuit Crumbs</span><span>Creamy Swirl</span><span>Soft Crunch</span></div></div>
+            <div class="detail-card reveal"><h3>Nutrition highlights</h3><div class="benefit-grid"><div class="benefit-card"><strong>Comforting Texture</strong><p>Crunchy biscuit bits layered into a smooth creamy base for a satisfying finish.</p></div><div class="benefit-card"><strong>Balanced Sweetness</strong><p>Subtle sweetness and soft crunch create a refined dessert profile.</p></div><div class="benefit-card"><strong>Made Fresh Daily</strong><p>Every cup is assembled by hand for a polished and premium look.</p></div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container"><div class="section-heading reveal"><p class="eyebrow">Reviews</p><h2>What our customers say</h2></div><div class="review-grid"><article class="review-card reveal"><strong>Grace, Osu</strong><div class="rating-row"><span>★★★★★</span><small>5.0</small></div><p>The biscuit layers make it feel luxurious and comforting at the same time.</p></article><article class="review-card reveal"><strong>Selorm, Cantonments</strong><div class="rating-row"><span>★★★★★</span><small>4.9</small></div><p>It tastes like a premium dessert from a boutique café. Absolutely loved it.</p></article><article class="review-card reveal"><strong>Adjoa, Ring Road</strong><div class="rating-row"><span>★★★★★</span><small>4.8</small></div><p>Perfect for a treat after work. The crunch is so satisfying.</p></article></div></div>
+      </section>
+
+      <section class="section">
+        <div class="container"><div class="section-heading reveal"><p class="eyebrow">Related parfaits</p><h2>Find your next favorite</h2></div><div class="menu-grid related-grid"><article class="menu-card reveal"><div class="menu-card-media"><img src="../images/menu/fruity-fresh.png" alt="Heavenly Combo parfait" loading="lazy" /></div><div class="menu-card-body"><h3>Heavenly Combo</h3><p>Balance of fruit, granola and nuts for a premium everyday scoop.</p><div class="menu-card-meta"><strong>From ₵80</strong><a class="button button-primary button-small" href="heavenly-combo.html">View Details</a></div></div></article><article class="menu-card reveal"><div class="menu-card-media"><img src="../images/menu/choco-craze.png" alt="Choco Craze parfait" loading="lazy" /></div><div class="menu-card-body"><h3>Choco Craze</h3><p>Bold chocolate notes finished with smooth texture and elegance.</p><div class="menu-card-meta"><strong>From ₵80</strong><a class="button button-primary button-small" href="choco-craze.html">View Details</a></div></div></article><article class="menu-card reveal"><div class="menu-card-media"><img src="../images/menu/heavenly-combo.png" alt="Fruity Fresh parfait" loading="lazy" /></div><div class="menu-card-body"><h3>Fruity Fresh</h3><p>Bright fruit layering for a vibrant and refreshing finish.</p><div class="menu-card-meta"><strong>From ₵80</strong><a class="button button-primary button-small" href="fruity-fresh.html">View Details</a></div></div></article></div></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand reveal">
+          <a class="brand brand-footer" href="../index.html">
+            <img src="../images/logo.png" alt="Treats By Rich logo" />
+            <span>
+              <strong>Treats By Rich</strong>
+              <small>Love at First Scoop</small>
+            </span>
+          </a>
+          <p>Luxury parfaits crafted with fresh ingredients and modern elegance.</p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>© 2026 Treats By Rich. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
+    <script src="../js/cart.js"></script>
+    <script src="../js/app.js"></script>
+    <script type="module" src="../js/menu.js"></script>
+  </body>
+</html>

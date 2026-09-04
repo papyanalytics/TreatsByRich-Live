@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics | Treats By Rich Admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="sidebar-scrim"></div>
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img src="assets/logo.png" alt="Treats By Rich logo" />
+          <div>
+            <strong>Treats By Rich</strong>
+            <small>Admin</small>
+          </div>
+          <button type="button" class="sidebar-close" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Admin navigation">
+          <a class="sidebar-link" href="dashboard.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
+            Dashboard
+          </a>
+          <a class="sidebar-link" href="orders.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2Z"></path><path d="M9 8h6M9 12h6"></path></svg></span>
+            Orders
+          </a>
+          <a class="sidebar-link" href="products.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"></path><path d="M3 7v10l9 4 9-4V7"></path><path d="M12 11v10"></path></svg></span>
+            Products
+          </a>
+          <a class="sidebar-link" href="customers.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M15.5 14c2.9.4 5.5 2.5 5.5 6"></path></svg></span>
+            Customers
+          </a>
+          <a class="sidebar-link" href="reviews.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8l-6.2 3.2L7 14.2l-5-4.9 6.9-1L12 2Z"></path></svg></span>
+            Reviews
+          </a>
+          <a class="sidebar-link active" href="analytics.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></span>
+            Analytics
+          </a>
+          <a class="sidebar-link" href="settings.html">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"></path></svg></span>
+            Settings
+          </a>
+        </nav>
+
+        <div class="sidebar-logout">
+          <button type="button" data-action="logout">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg></span>
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <div class="app-main">
+        <header class="topbar">
+          <div class="topbar-title">
+            <button type="button" class="sidebar-toggle" aria-label="Open menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+            </button>
+            <h1>Analytics</h1>
+          </div>
+          <div class="topbar-actions">
+            <button type="button" class="btn-icon notification-btn" aria-label="Notifications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="notification-panel">
+              <div class="notification-panel-header">Notifications</div>
+              <div id="notificationBody"></div>
+            </div>
+            <div class="admin-profile">
+              <span class="admin-avatar">A</span>
+              <div class="admin-profile-meta">
+                <strong>Admin</strong>
+                <span>Treats By Rich</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="page-content">
+          <div class="page-heading">
+            <h2>Analytics</h2>
+            <p>Sales trends and performance insights will appear here once connected.</p>
+          </div>
+
+          <section class="kpi-grid" aria-label="Analytics summary" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+            <article class="kpi-card">
+              <span class="kpi-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span>
+              <strong>GH₵0.00</strong>
+              <span>Average Order Value</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M15.5 14c2.9.4 5.5 2.5 5.5 6"></path></svg></span>
+              <strong>0</strong>
+              <span>Customer Growth (30 days)</span>
+            </article>
+          </section>
+
+          <section class="analytics-grid">
+            <div class="card analytics-card">
+              <div class="card-header"><h2>Sales Over Time</h2></div>
+              <div class="card-body">
+                <div class="empty-state">
+                  <span class="icon empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></span>
+                  <span>No sales data yet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card analytics-card">
+              <div class="card-header"><h2>Orders Over Time</h2></div>
+              <div class="card-body">
+                <div class="empty-state">
+                  <span class="icon empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2Z"></path><path d="M9 8h6M9 12h6"></path></svg></span>
+                  <span>No order data yet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card analytics-card">
+              <div class="card-header"><h2>Best-Selling Products</h2></div>
+              <div class="card-body">
+                <div class="empty-state">
+                  <span class="icon empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8l-6.2 3.2L7 14.2l-5-4.9 6.9-1L12 2Z"></path></svg></span>
+                  <span>No product sales yet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card analytics-card">
+              <div class="card-header"><h2>Revenue By Product</h2></div>
+              <div class="card-body">
+                <div class="empty-state">
+                  <span class="icon empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"></path><path d="M3 7v10l9 4 9-4V7"></path></svg></span>
+                  <span>No revenue data yet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card analytics-card">
+              <div class="card-header"><h2>Revenue By Size</h2></div>
+              <div class="card-body">
+                <div class="empty-state">
+                  <span class="icon empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg></span>
+                  <span>No revenue data yet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card analytics-card">
+              <div class="card-header"><h2>Payment Methods</h2></div>
+              <div class="card-body">
+                <div class="empty-state">
+                  <span class="icon empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"></rect><path d="M2 10h20"></path></svg></span>
+                  <span>No payment data yet</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="js/analytics.js"></script>
+  </body>
+</html>

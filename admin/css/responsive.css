@@ -1,0 +1,126 @@
+/* Treats By Rich Admin — responsive breakpoints. */
+
+@media (max-width: 1080px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --sidebar-width: 240px;
+  }
+
+  .page-content {
+    padding: 1.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: min(280px, 82vw);
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+
+  .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 20px 0 45px rgba(0, 0, 0, 0.25);
+  }
+
+  .sidebar-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid rgba(251, 232, 208, 0.24);
+    background: transparent;
+    color: #fbe8d0;
+    cursor: pointer;
+  }
+
+  .sidebar-brand {
+    justify-content: space-between;
+  }
+
+  .sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--brown);
+    cursor: pointer;
+  }
+
+  .sidebar-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 16, 8, 0.4);
+    z-index: 35;
+  }
+
+  .sidebar-scrim.is-visible {
+    display: block;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .topbar-title h1 {
+    font-size: 1.05rem;
+  }
+
+  .admin-profile-meta {
+    display: none;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-card {
+    padding: 2rem 1.4rem;
+  }
+
+  .card-header {
+    padding: 1.1rem 1.2rem;
+  }
+
+  .card-body {
+    padding: 1.2rem;
+  }
+
+  .notification-panel {
+    width: min(280px, 88vw);
+  }
+
+  .detail-grid,
+  .form-grid,
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}

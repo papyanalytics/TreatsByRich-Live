@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu | Treats By Rich</title>
+    <meta
+      name="description"
+      content="Browse Treats By Rich's premium parfait menu, featuring luxurious parfaits crafted with fresh ingredients and elegant flavors."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container nav-shell">
+        <a class="brand" href="index.html" aria-label="Treats By Rich home">
+          <img src="images/logo.png" alt="Treats By Rich logo" />
+          <span>
+            <strong>Treats By Rich</strong>
+            <small>Love at First Scoop</small>
+          </span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+            <a href="events.html">Events</a>
+          <a href="contact.html">Contact</a>
+          <a class="nav-cart" href="cart.html" aria-label="View cart">
+            <span class="icon icon-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></span>
+            <em class="cart-count">0</em>
+          </a>
+          <a class="button button-ghost nav-cta" href="checkout.html">Order Now</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <p class="eyebrow">Premium menu</p>
+          <h1>Curated parfaits for every moment</h1>
+          <p>
+            Browse our luxurious selection of handcrafted parfaits designed for freshness, indulgence and effortless ordering.
+          </p>
+
+          <form class="menu-toolbar" role="search">
+            <label class="search-shell" for="menu-search">
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span>
+              <input id="menu-search" type="search" placeholder="Search parfaits or flavors" />
+            </label>
+
+            <div class="chip-list" role="tablist" aria-label="Filter products">
+              <button class="chip is-active" type="button" data-filter="all">All</button>
+              <button class="chip" type="button" data-filter="best-seller">Best Sellers</button>
+              <button class="chip" type="button" data-filter="healthy">Healthy</button>
+              <button class="chip" type="button" data-filter="fruit">Fruit</button>
+              <button class="chip" type="button" data-filter="chocolate">Chocolate</button>
+              <button class="chip" type="button" data-filter="crunchy">Crunchy</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="section menu-section">
+        <div class="container">
+          <div class="menu-grid">
+            <article class="menu-card reveal" data-category="best-seller fruit" data-search="heavenly combo berries fruits granola nuts premium mixed">
+              <div class="menu-card-media">
+                <img src="images/menu/fruity-fresh.png" alt="Heavenly Combo parfait" loading="lazy" />
+                <span class="floating-badge">Best Seller</span>
+              </div>
+              <div class="menu-card-body">
+                <h3>Heavenly Combo</h3>
+                <p>Fresh fruits, crunchy granola, creamy yogurt and premium mixed nuts.</p>
+                <div class="rating-row">
+                  <span>★★★★★</span>
+                  <small>4.9</small>
+                </div>
+                <div class="menu-card-meta">
+                  <strong>Starting at ₵80</strong>
+                  <div class="menu-actions">
+                    <a class="button button-primary button-small" href="products/heavenly-combo.html">View Details</a>
+                    <button class="button button-ghost-dark button-small add-to-cart" type="button" data-product="Heavenly Combo" data-price="80">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="menu-card reveal" data-category="fruit fresh" data-search="fruity fresh refreshing fruits yogurt cream">
+              <div class="menu-card-media">
+                <img src="images/menu/heavenly-combo.png" alt="Fruity Fresh parfait" loading="lazy" />
+                <span class="floating-badge">Fresh</span>
+              </div>
+              <div class="menu-card-body">
+                <h3>Fruity Fresh</h3>
+                <p>A refreshing parfait loaded with fresh fruits and creamy yogurt.</p>
+                <div class="rating-row">
+                  <span>★★★★★</span>
+                  <small>4.8</small>
+                </div>
+                <div class="menu-card-meta">
+                  <strong>Starting at ₵80</strong>
+                  <div class="menu-actions">
+                    <a class="button button-primary button-small" href="products/fruity-fresh.html">View Details</a>
+                    <button class="button button-ghost-dark button-small add-to-cart" type="button" data-product="Fruity Fresh" data-price="80">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="menu-card reveal" data-category="best-seller crunchy" data-search="biscuit bliss crunchy biscuit crumbs creamy yogurt">
+              <div class="menu-card-media">
+                <img src="images/menu/biscuit-bliss.png" alt="Biscuit Bliss parfait" loading="lazy" />
+                <span class="floating-badge">Crunchy</span>
+              </div>
+              <div class="menu-card-body">
+                <h3>Biscuit Bliss</h3>
+                <p>Creamy yogurt layered with crunchy biscuit crumbs and a silky finish.</p>
+                <div class="rating-row">
+                  <span>★★★★★</span>
+                  <small>4.7</small>
+                </div>
+                <div class="menu-card-meta">
+                  <strong>Starting at ₵80</strong>
+                  <div class="menu-actions">
+                    <a class="button button-primary button-small" href="products/biscuit-bliss.html">View Details</a>
+                    <button class="button button-ghost-dark button-small add-to-cart" type="button" data-product="Biscuit Bliss" data-price="80">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="menu-card reveal" data-category="chocolate" data-search="choco craze chocolate chunks dark chocolate drizzle fruit">
+              <div class="menu-card-media">
+                <img src="images/menu/choco-craze.png" alt="Choco Craze parfait" loading="lazy" />
+                <span class="floating-badge">Chocolate</span>
+              </div>
+              <div class="menu-card-body">
+                <h3>Choco Craze</h3>
+                <p>Fresh fruits finished with dark chocolate chunks and a rich chocolate drizzle.</p>
+                <div class="rating-row">
+                  <span>★★★★★</span>
+                  <small>4.9</small>
+                </div>
+                <div class="menu-card-meta">
+                  <strong>Starting at ₵80</strong>
+                  <div class="menu-actions">
+                    <a class="button button-primary button-small" href="products/choco-craze.html">View Details</a>
+                    <button class="button button-ghost-dark button-small add-to-cart" type="button" data-product="Choco Craze" data-price="80">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="menu-card reveal" data-category="best-seller healthy" data-search="oatmeal parfait healthy oatmeal yogurt fruits granola">
+              <div class="menu-card-media">
+                <img src="images/menu/oatmeal-parfait.png" alt="Oatmeal Parfait" loading="lazy" />
+                <span class="floating-badge">Healthy</span>
+              </div>
+              <div class="menu-card-body">
+                <h3>Oatmeal Parfait</h3>
+                <p>Healthy oatmeal blended with creamy yogurt and fresh fruits.</p>
+                <div class="rating-row">
+                  <span>★★★★★</span>
+                  <small>4.6</small>
+                </div>
+                <div class="menu-card-meta">
+                  <strong>Starting at ₵80</strong>
+                  <div class="menu-actions">
+                    <a class="button button-primary button-small" href="products/oatmeal-parfait.html">View Details</a>
+                    <button class="button button-ghost-dark button-small add-to-cart" type="button" data-product="Oatmeal Parfait" data-price="80">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <div id="firestoreMenuCards" style="display: contents;"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand reveal">
+          <a class="brand brand-footer" href="index.html">
+            <img src="images/logo.png" alt="Treats By Rich logo" />
+            <span>
+              <strong>Treats By Rich</strong>
+              <small>Love at First Scoop</small>
+            </span>
+          </a>
+          <p>Luxury Ghanaian parfaits crafted with freshness, warmth and polished presentation.</p>
+        </div>
+        <div class="reveal">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3>Contact</h3>
+          <ul>
+            <li><a href="tel:+233538517831">+233 53 851 7831</a></li>
+            <li><a href="https://wa.me/233538517831">WhatsApp</a></li>
+            <li><a href="https://www.instagram.com/">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3>Business Hours</h3>
+          <ul>
+            <li>Mon – Sat: 8:00 AM – 8:00 PM</li>
+            <li>Sunday: 10:00 AM – 5:00 PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>© 2026 Treats By Rich. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+    <script type="module" src="js/menu.js"></script>
+  </body>
+</html>

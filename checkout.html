@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | Treats By Rich</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <style>
+      :root {
+        --surface: #fff;
+        --surface-strong: #f7f5f3;
+        --text-primary: #1f1f1f;
+        --text-muted: #6f6f75;
+        --border: rgba(31, 31, 31, 0.08);
+        --accent: #ff8b34;
+        --accent-soft: rgba(255, 139, 52, 0.15);
+      }
+      body.checkout-page {
+        background: #f6f4f1;
+      }
+      .checkout-shell {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+      .checkout-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      .checkout-header-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .checkout-header-actions .button {
+        text-decoration: none;
+      }
+      .checkout-title {
+        font-size: clamp(2rem, 2.4vw, 3rem);
+        margin: 0;
+      }
+      .checkout-subtitle {
+        color: var(--text-muted);
+        margin-top: 8px;
+        max-width: 540px;
+      }
+      .progress-steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 10px;
+      }
+      .progress-step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 24px;
+        transition: background 180ms ease;
+      }
+      .progress-step.completed {
+        background: rgba(255, 139, 52, 0.12);
+      }
+      .progress-step.current {
+        background: #fff;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+      }
+      .progress-step span {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+      }
+      .progress-step strong {
+        color: var(--text-primary);
+      }
+      .checkout-grid {
+        display: grid;
+        grid-template-columns: 1.65fr 1fr;
+        gap: 24px;
+      }
+      .panel {
+        background: var(--surface);
+        border-radius: 30px;
+        padding: 28px;
+        border: 1px solid var(--border);
+        box-shadow: 0 16px 50px rgba(0, 0, 0, 0.04);
+      }
+      .panel h2 {
+        margin: 0 0 18px;
+        font-size: 1.25rem;
+      }
+      .section-group {
+        margin-bottom: 28px;
+      }
+      .section-group:last-child {
+        margin-bottom: 0;
+      }
+      .field-grid {
+        display: grid;
+        gap: 18px;
+      }
+      .form-field {
+        display: grid;
+        gap: 8px;
+      }
+      .form-field label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .form-field input,
+      .form-field textarea,
+      .form-field select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 14px 16px;
+        background: #fff;
+        color: var(--text-primary);
+        font: inherit;
+      }
+      .form-field input:focus,
+      .form-field textarea:focus,
+      .form-field select:focus {
+        outline: 2px solid rgba(255, 139, 52, 0.4);
+        outline-offset: 2px;
+      }
+      .radio-grid {
+        display: grid;
+        gap: 14px;
+      }
+      .radio-card {
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 15px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        cursor: pointer;
+        transition: border-color 180ms ease, box-shadow 180ms ease;
+      }
+      .radio-card input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .radio-card.checked {
+        border-color: var(--accent);
+        box-shadow: 0 16px 35px rgba(255, 139, 52, 0.16);
+      }
+      .radio-card strong {
+        display: block;
+        font-size: 1rem;
+        color: var(--text-primary);
+      }
+      .radio-card small {
+        color: var(--text-muted);
+      }
+      .summary-overview {
+        display: grid;
+        gap: 18px;
+      }
+      .summary-item {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 14px;
+        align-items: center;
+        padding: 16px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        background: var(--surface-strong);
+      }
+      .summary-item img {
+        width: 88px;
+        height: 88px;
+        object-fit: cover;
+        border-radius: 20px;
+      }
+      .summary-item strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text-primary);
+      }
+      .summary-meta {
+        display: grid;
+        gap: 6px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      .summary-footer {
+        border-top: 1px solid var(--border);
+        padding-top: 18px;
+        display: grid;
+        gap: 12px;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .summary-row strong {
+        color: var(--text-primary);
+      }
+      .summary-total strong {
+        font-size: 1.15rem;
+      }
+      .promo-group {
+        display: grid;
+        gap: 12px;
+      }
+      .promo-group .promo-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 18px;
+        padding: 16px 24px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+      .btn-primary:hover,
+      .btn-primary:focus-visible {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 35px rgba(255, 139, 52, 0.24);
+      }
+      .error-text {
+        color: #c44;
+        font-size: 0.92rem;
+      }
+      .notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 139, 52, 0.18);
+        background: rgba(255, 139, 52, 0.08);
+        color: var(--text-primary);
+        font-size: 0.95rem;
+      }
+      .payment-details-card {
+        margin-top: 16px;
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid var(--border);
+        background: var(--surface-strong);
+        display: grid;
+        gap: 14px;
+      }
+      .payment-details-title {
+        margin: 0;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+      }
+      .payment-detail-row {
+        display: grid;
+        gap: 6px;
+      }
+      .payment-detail-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .payment-copy-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .payment-detail-value {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: 0.02em;
+        word-break: break-all;
+      }
+      .payment-copy-btn {
+        flex-shrink: 0;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text-primary);
+        border-radius: 14px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background 160ms ease, border-color 160ms ease;
+      }
+      .payment-copy-btn:hover,
+      .payment-copy-btn:focus-visible {
+        border-color: var(--accent);
+      }
+      .payment-copy-btn.is-copied {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      @media (max-width: 960px) {
+        .checkout-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="checkout-page">
+    <main class="checkout-shell">
+      <section class="checkout-header">
+        <div>
+          <h1 class="checkout-title">Secure Checkout</h1>
+          <p class="checkout-subtitle">
+            Complete your order with confidence. Review your cart, choose delivery, and place your order in one elegant step.
+          </p>
+          <div class="checkout-header-actions">
+            <a class="button button-ghost-dark" href="menu.html">Back To Menu</a>
+              <a class="button button-ghost-dark" href="events.html">Events</a>
+          </div>
+        </div>
+        <div class="progress-steps" aria-label="Checkout progress">
+          <div class="progress-step completed" aria-current="false">
+            <strong>Shopping Cart</strong>
+            <span>Complete</span>
+          </div>
+          <div class="progress-step current" aria-current="step">
+            <strong>Checkout</strong>
+          </div>
+          <div class="progress-step" aria-current="false">
+            <strong>Confirmation</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="checkout-grid">
+        <form id="checkoutForm" class="panel" novalidate>
+          <div class="section-group">
+            <h2>Customer Details</h2>
+            <div class="field-grid">
+              <div class="form-field">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Jane Doe" required />
+                <span class="error-text" id="nameError" aria-live="polite"></span>
+              </div>
+              <div class="form-field">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="024 000 0000" required />
+                <span class="error-text" id="phoneError" aria-live="polite"></span>
+              </div>
+              <div class="form-field">
+                <label for="emailAddress">Email Address <span>(optional)</span></label>
+                <input type="email" id="emailAddress" name="emailAddress" placeholder="jane@example.com" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section-group">
+            <h2>Delivery Details</h2>
+            <div class="radio-grid" role="radiogroup" aria-label="Delivery options">
+              <label class="radio-card checked" for="pickupOption">
+                <div>
+                  <strong>Pickup</strong>
+                  <small>Fast and free collection from the store.</small>
+                </div>
+                <input type="radio" id="pickupOption" name="deliveryMethod" value="Pickup" checked />
+              </label>
+              <label class="radio-card" for="deliveryOption">
+                <div>
+                  <strong>Delivery</strong>
+                  <small>Premium door-to-door service.</small>
+                </div>
+                <input type="radio" id="deliveryOption" name="deliveryMethod" value="Delivery" />
+              </label>
+            </div>
+            <div id="deliveryFields" style="display:none; margin-top: 18px;">
+              <div class="field-grid">
+                <div class="form-field">
+                  <label for="streetAddress">Street Address</label>
+                  <input type="text" id="streetAddress" name="streetAddress" placeholder="12 Orange Street" />
+                  <span class="error-text" id="addressError" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="city">City</label>
+                  <input type="text" id="city" name="city" placeholder="Accra" />
+                </div>
+                <div class="form-field">
+                  <label for="region">Region</label>
+                  <input type="text" id="region" name="region" placeholder="Greater Accra" />
+                </div>
+                <div class="form-field">
+                  <label for="landmark">Landmark</label>
+                  <input type="text" id="landmark" name="landmark" placeholder="Near East Legon Mall" />
+                </div>
+                <div class="form-field">
+                  <label for="deliveryInstructions">Delivery Instructions <span>(optional)</span></label>
+                  <textarea id="deliveryInstructions" name="deliveryInstructions" rows="4" placeholder="Leave at the gate or with security."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-group">
+            <h2>Payment Method</h2>
+            <div class="radio-grid" role="radiogroup" aria-label="Payment methods">
+              <label class="radio-card" for="mobileMoneyOption">
+                <div>
+                  <strong>Mobile Money</strong>
+                  <small>Pay via MoMo, then confirm your payment.</small>
+                </div>
+                <input type="radio" id="mobileMoneyOption" name="paymentMethod" value="Mobile Money" />
+              </label>
+              <label class="radio-card" for="bankTransferOption">
+                <div>
+                  <strong>Bank Transfer</strong>
+                  <small>Pay via bank transfer, then confirm your payment.</small>
+                </div>
+                <input type="radio" id="bankTransferOption" name="paymentMethod" value="Bank Transfer" />
+              </label>
+            </div>
+            <span class="error-text" id="paymentMethodError" aria-live="polite"></span>
+
+            <div id="mobileMoneyFields" class="payment-details-card" style="display:none;">
+              <h3 class="payment-details-title">Mobile Money</h3>
+              <div class="payment-detail-row">
+                <span class="payment-detail-label">MoMo Number</span>
+                <div class="payment-copy-row">
+                  <span class="payment-detail-value" id="momoNumberValue">0538517831</span>
+                  <button type="button" class="payment-copy-btn" data-copy-value="0538517831">Copy</button>
+                </div>
+              </div>
+              <div class="payment-detail-row">
+                <span class="payment-detail-label">Account Name</span>
+                <span class="payment-detail-value">Treats by Rich</span>
+              </div>
+            </div>
+
+            <div id="bankTransferFields" class="payment-details-card" style="display:none;">
+              <h3 class="payment-details-title">Bank Transfer</h3>
+              <div class="payment-detail-row">
+                <span class="payment-detail-label">Bank</span>
+                <span class="payment-detail-value">GCB</span>
+              </div>
+              <div class="payment-detail-row">
+                <span class="payment-detail-label">Account Number</span>
+                <div class="payment-copy-row">
+                  <span class="payment-detail-value" id="bankAccountNumberValue">1011440001239</span>
+                  <button type="button" class="payment-copy-btn" data-copy-value="1011440001239">Copy</button>
+                </div>
+              </div>
+              <div class="payment-detail-row">
+                <span class="payment-detail-label">Account Name</span>
+                <span class="payment-detail-value">Treats by Rich</span>
+              </div>
+            </div>
+
+            <div id="paymentConfirmationSection" style="display:none; margin-top: 18px;">
+              <div class="notice">
+                <span>Make your payment using the details above, then confirm below. Your payment will be manually verified by Treats By Rich.</span>
+              </div>
+              <label class="form-field" style="margin-top: 14px; flex-direction: row; align-items: flex-start; gap: 10px;">
+                <input type="checkbox" id="paymentConfirmation" name="paymentConfirmation" style="width: auto; margin-top: 4px;" />
+                <span>I confirm that I have completed this payment.</span>
+              </label>
+              <span class="error-text" id="paymentConfirmationError" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="section-group">
+            <h2>Order Notes</h2>
+            <div class="form-field">
+              <label for="orderNotes">Tell us anything we should know about your order...</label>
+              <textarea id="orderNotes" name="orderNotes" rows="5" placeholder="Tell us anything we should know about your order..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="placeOrderButton">Place Order</button>
+        </form>
+
+        <aside class="panel">
+          <div class="section-group">
+            <h2>Order Summary</h2>
+            <div id="orderSummary" class="summary-overview"></div>
+          </div>
+          <div class="summary-footer">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong id="subtotalAmount">GH₵0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Delivery Fee</span>
+              <strong id="deliveryFee">GH₵0</strong>
+            </div>
+            <div class="summary-row summary-total">
+              <span>Total</span>
+              <strong id="grandTotal">GH₵0</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script type="module" src="js/checkout.js"></script>
+  </body>
+</html>
