@@ -1,15 +1,15 @@
-// Treats By Rich Admin — Firebase initialization.
-// This is the Firebase Web app config (public client identifiers, not a secret).
-// Actual protection comes from Firebase Authentication + Firestore/Storage security rules.
+// Treats By Rich Admin — Firebase configuration
 
 import {
-  initializeApp,
   getApps,
-  getApp
+  getApp,
+  initializeApp
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 
 import {
-  getAuth
+  getAuth,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 import {
@@ -17,12 +17,6 @@ import {
   connectFirestoreEmulator
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-import {
-  getStorage
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js";
-
-// Same Treats By Rich Firebase project used by the customer website,
-// so the admin dashboard can read/write the same orders/products/customers data.
 const firebaseConfig = {
   apiKey: "AIzaSyCDlceVDv-sjW8kUJw8xaDmlyjNZ6mhm8Y",
   authDomain: "treats-by-rich.firebaseapp.com",
@@ -53,21 +47,31 @@ const app = configOk
   : null;
 
 const auth = app ? getAuth(app) : null;
-
 const db = app ? getFirestore(app) : null;
 
-const storage = app ? getStorage(app) : null;
-
-// When running the website locally, use the Firebase Firestore Emulator.
-// Production/online website continues using the real Firestore database.
-if (db && window.location.hostname === "127.0.0.1") {
+// Use the local Firestore emulator when running the admin locally.
+if (
+  db &&
+  window.location.hostname === "127.0.0.1"
+) {
   connectFirestoreEmulator(db, "127.0.0.1", 8080);
+}
+
+// Keep admin authentication persistent.
+async function setRememberMePersistence() {
+  if (!auth) return;
+
+  await setPersistence(
+    auth,
+    browserLocalPersistence
+  );
 }
 
 export {
   app,
   auth,
   db,
-  storage,
-  configOk
+  firebaseConfig,
+  configOk,
+  setRememberMePersistence
 };
