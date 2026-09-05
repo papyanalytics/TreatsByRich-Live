@@ -1,52 +1,169 @@
-import { createOrderService } from "./orderService.js";
+import {
+  doc,
+  getDoc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+import { db, configOk } from "../config/firebaseConfig.js";
 
 export function createTrackingService() {
-  const orderService = createOrderService();
+  function ensureConfigured() {
+    if (!configOk || !db) {
+      throw new Error(
+        "Firebase is not configured correctly."
+      );
+    }
+  }
 
-  function subscribeTracking(orderNumber, onData, onError) {
-    const cleanOrderNumber = String(orderNumber || "").trim();
+  // ==========================================================
+  // SUBSCRIBE TO A PRIVATE TRACKING RECORD
+  //
+  // The tracking token is the document ID inside:
+  // orderTracking/{trackingToken}
+  //
+  // This does NOT query the orders collection.
+  // ==========================================================
 
-    console.log("[Treats By Rich] Tracking requested:", cleanOrderNumber);
+  function subscribeTracking(
+    trackingToken,
+    onData,
+    onError
+  ) {
+    const cleanToken =
+      String(trackingToken || "").trim();
 
-    if (!cleanOrderNumber) {
+    console.log(
+      "[Treats By Rich] Tracking token requested:",
+      cleanToken
+    );
+
+    if (!cleanToken) {
       onData?.(null);
       return () => {};
     }
 
-    return orderService.subscribeOrderByNumber(
-      cleanOrderNumber,
-      (order) => {
-        console.log("[Treats By Rich] Tracking result:", order);
+    try {
+      ensureConfigured();
 
-        if (!order) {
-          console.warn(
-            "[Treats By Rich] No order found for:",
-            cleanOrderNumber
+      const trackingRef = doc(
+        db,
+        "orderTracking",
+        cleanToken
+      );
+
+      return onSnapshot(
+        trackingRef,
+        (snapshot) => {
+          if (!snapshot.exists()) {
+            console.warn(
+              "[Treats By Rich] No tracking record found for token."
+            );
+
+            onData?.(null);
+            return;
+          }
+
+          const data =
+            snapshot.data() || {};
+
+          const order = {
+            ...data,
+
+            id: snapshot.id,
+
+            firestoreId:
+              snapshot.id,
+
+            number:
+              data.orderNumber ||
+              "",
+
+            orderNumber:
+              data.orderNumber ||
+              ""
+          };
+
+          console.log(
+            "[Treats By Rich] Tracking result:",
+            order
           );
+
+          onData?.(order);
+        },
+        (error) => {
+          console.error(
+            "[Treats By Rich] Tracking Firestore error:",
+            error
+          );
+
+          onError?.(error);
         }
+      );
+    } catch (error) {
+      console.error(
+        "[Treats By Rich] Tracking subscription failed:",
+        error
+      );
 
-        onData?.(order);
-      },
-      (error) => {
-        console.error(
-          "[Treats By Rich] Tracking Firestore error:",
-          error
-        );
+      onError?.(error);
 
-        onError?.(error);
-      }
-    );
+      return () => {};
+    }
   }
 
-  async function getTrackingOrder(orderNumber) {
-    const cleanOrderNumber = String(orderNumber || "").trim();
+  // ==========================================================
+  // GET A TRACKING RECORD ONCE
+  // ==========================================================
+
+  async function getTrackingOrder(
+    trackingToken
+  ) {
+    const cleanToken =
+      String(trackingToken || "").trim();
 
     console.log(
-      "[Treats By Rich] Looking up order:",
-      cleanOrderNumber
+      "[Treats By Rich] Looking up tracking token:",
+      cleanToken
     );
 
-    return orderService.findOrder(cleanOrderNumber);
+    if (!cleanToken) {
+      return null;
+    }
+
+    ensureConfigured();
+
+    const trackingRef = doc(
+      db,
+      "orderTracking",
+      cleanToken
+    );
+
+    const snapshot =
+      await getDoc(trackingRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    const data =
+      snapshot.data() || {};
+
+    return {
+      ...data,
+
+      id: snapshot.id,
+
+      firestoreId:
+        snapshot.id,
+
+      number:
+        data.orderNumber ||
+        "",
+
+      orderNumber:
+        data.orderNumber ||
+        ""
+    };
   }
 
   return {

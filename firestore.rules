@@ -1,0 +1,241 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /*
+     * =========================================================
+     * AUTHENTICATION / ADMIN
+     * =========================================================
+     *
+     * The Treats By Rich admin account uses this Firebase
+     * Authentication email.
+     *
+     * Using the authenticated account here also allows the
+     * local Firestore emulator to recognize the admin without
+     * requiring a copied admin document in the emulator.
+     */
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+  return signedIn()
+    && request.auth.uid == "VZL83aT8pQgXiK6SSa2sGoXODAY2";
+}
+
+    /*
+     * =========================================================
+     * ADMINS
+     * =========================================================
+     */
+
+    match /admins/{adminId} {
+      allow read, write: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * ORDERS
+     * =========================================================
+     *
+     * Guest customers can CREATE orders.
+     *
+     * Customers cannot read, update, delete, or list orders.
+     *
+     * Admin can fully manage orders.
+     */
+
+    match /orders/{orderId} {
+  allow create: if true;
+  allow read, update, delete: if isAdmin();
+}
+
+    /*
+     * =========================================================
+     * SECURE ORDER TRACKING
+     * =========================================================
+     *
+     * Customers track using the random tracking token.
+     *
+     * The tracking collection contains only sanitized,
+     * customer-safe order information.
+     *
+     * Anyone possessing the random token may read the specific
+     * tracking document.
+     *
+     * Clients cannot create, update, delete, or list tracking
+     * records.
+     *
+     * Firebase Cloud Functions use Admin SDK privileges to
+     * create/update these records.
+     */
+
+    match /orderTracking/{trackingToken} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * CUSTOMERS
+     * =========================================================
+     *
+     * Customer records contain private information.
+     * Admin dashboard only.
+     */
+
+    match /customers/{customerId} {
+      allow read, write: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * PRODUCTS
+     * =========================================================
+     *
+     * Public storefront can read products.
+     * Only admin can modify products.
+     */
+
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * PAYMENT METHODS
+     * =========================================================
+     */
+
+    match /paymentMethods/{paymentMethodId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * REVIEWS
+     * =========================================================
+     *
+     * Public users can read approved reviews.
+     * Customers can submit reviews.
+     * Admin can moderate reviews.
+     */
+
+    match /reviews/{reviewId} {
+      allow read: if resource.data.status == "approved";
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * NOTIFICATIONS
+     * =========================================================
+     *
+     * Private notification records.
+     */
+
+    match /notifications/{notificationId} {
+      allow read, write: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * PUSH NOTIFICATION REGISTRATIONS
+     * =========================================================
+     *
+     * Customers need to query their browser token so the
+     * existing notification service can determine whether
+     * the device is already registered for an order.
+     *
+     * The query is limited to documents matching the supplied
+     * token in the application code.
+     *
+     * Admin can fully manage registrations.
+     */
+
+    match /notificationRegistrations/{registrationId} {
+      allow read: if isAdmin()
+                  || (
+                    signedIn() == false
+                  );
+
+      allow create: if true;
+
+      allow update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * CATALOG DATA
+     * =========================================================
+     */
+
+    match /sizes/{sizeId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /extras/{extraId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /ingredients/{ingredientId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * SETTINGS
+     * =========================================================
+     */
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * STAFF
+     * =========================================================
+     */
+
+    match /staff/{staffId} {
+      allow read, write: if isAdmin();
+    }
+
+
+    /*
+     * =========================================================
+     * DEFAULT DENY
+     * =========================================================
+     */
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

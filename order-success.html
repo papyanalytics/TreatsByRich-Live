@@ -4,18 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Confirmed | Treats By Rich</title>
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/animations.css" />
+
     <style>
       body.order-success {
         background: #f6f4f1;
       }
+
       .success-shell {
         max-width: 860px;
         margin: 0 auto;
         padding: 48px 24px 64px;
       }
+
       .success-card {
         background: #fff;
         border-radius: 32px;
@@ -24,6 +28,7 @@
         box-shadow: 0 22px 55px rgba(0, 0, 0, 0.08);
         text-align: center;
       }
+
       .success-badge {
         width: 112px;
         height: 112px;
@@ -34,6 +39,7 @@
         background: rgba(255, 139, 52, 0.14);
         animation: badge-pop 760ms ease-out both;
       }
+
       .success-badge svg {
         width: 52px;
         height: 52px;
@@ -42,31 +48,37 @@
         stroke-dashoffset: 100;
         animation: check-draw 820ms 180ms ease forwards;
       }
+
       @keyframes badge-pop {
         0% {
           transform: scale(0.68);
           opacity: 0;
         }
+
         100% {
           transform: scale(1);
           opacity: 1;
         }
       }
+
       @keyframes check-draw {
         to {
           stroke-dashoffset: 0;
         }
       }
+
       .success-title {
         margin: 0;
         font-size: clamp(2rem, 2.6vw, 2.75rem);
       }
+
       .success-message {
         color: #5b5b62;
         margin: 16px auto 0;
         max-width: 660px;
         line-height: 1.8;
       }
+
       .success-code {
         margin: 30px auto 0;
         display: inline-flex;
@@ -76,11 +88,13 @@
         color: #1f1f1f;
         font-weight: 700;
       }
+
       .button-group {
         margin-top: 34px;
         display: grid;
         gap: 16px;
       }
+
       .button-group a,
       .button-group button {
         width: 100%;
@@ -94,14 +108,50 @@
         font: inherit;
         cursor: pointer;
       }
+
       .btn-secondary {
         background: #f7f5f3;
         color: #1f1f1f;
       }
+
       .btn-primary {
         background: #ff8b34;
         color: #fff;
       }
+
+      .notification-box {
+        margin: 28px auto 0;
+        max-width: 660px;
+        padding: 20px;
+        border-radius: 20px;
+        background: #fff8ee;
+        border: 1px solid rgba(255, 139, 52, 0.2);
+      }
+
+      .notification-box p {
+        margin: 0 0 14px;
+        color: #5b5b62;
+        line-height: 1.7;
+      }
+
+      .notification-button {
+        background: #ff8b34;
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(255, 139, 52, 0.2);
+      }
+
+      .notification-button:disabled {
+        opacity: 0.75;
+        cursor: default;
+      }
+
+      .notification-status {
+        margin-top: 12px;
+        min-height: 22px;
+        font-size: 0.92rem;
+        color: #5b5b62;
+      }
+
       @media (max-width: 700px) {
         .success-card {
           padding: 30px 22px;
@@ -109,38 +159,208 @@
       }
     </style>
   </head>
+
   <body class="order-success">
     <main class="success-shell">
       <section class="success-card" aria-labelledby="successHeading">
+
         <div class="success-badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <path d="M20 6L9 17l-5-5" />
           </svg>
         </div>
-        <h1 id="successHeading" class="success-title">Order Received</h1>
+
+        <h1 id="successHeading" class="success-title">
+          Order Received
+        </h1>
+
         <p class="success-message">
-          Thank you for choosing Treats By Rich. We've received your order. If you paid via Mobile Money, our team will manually verify your payment before preparation begins.
+          Thank you for choosing Treats By Rich. We've received your order.
+          If you paid via Mobile Money, our team will manually verify your
+          payment before preparation begins.
         </p>
-        <div class="success-code" id="successOrderNumber">Order #TBR-00000000-0000</div>
-        <p class="success-message" style="margin-top: 20px;">
-          Track your order to follow its status, including payment verification, preparation, and delivery.
-        </p>
-        <div class="button-group">
-          <a href="order-tracking.html" class="btn-primary" id="trackOrderButton">Track Order</a>
-          <a href="index.html" class="btn-secondary">Continue Shopping</a>
+
+        <div class="success-code" id="successOrderNumber">
+          Order #TBR-00000000-0000
         </div>
+
+        <!-- Customer push notification section -->
+        <div class="notification-box">
+          <p>
+            🔔 <strong>Stay updated on your order</strong><br />
+            Get notifications when your payment is verified, your order is
+            confirmed, prepared, ready, out for delivery, or completed.
+          </p>
+
+          <button
+            type="button"
+            id="enableOrderNotifications"
+            class="notification-button"
+          >
+            🔔 Enable Order Notifications
+          </button>
+
+          <div
+            id="notificationStatus"
+            class="notification-status"
+            aria-live="polite"
+          ></div>
+        </div>
+
+        <p class="success-message" style="margin-top: 20px;">
+          Track your order to follow its status, including payment
+          verification, preparation, and delivery.
+        </p>
+
+        <div class="button-group">
+          <a
+            href="order-tracking.html"
+            class="btn-primary"
+            id="trackOrderButton"
+          >
+            Track Order
+          </a>
+
+          <a href="index.html" class="btn-secondary">
+            Continue Shopping
+          </a>
+        </div>
+
       </section>
     </main>
-    <script>
-      const orderNumberNode = document.getElementById('successOrderNumber');
-      const trackOrderButton = document.getElementById('trackOrderButton');
-      const orderFromUrl = new URLSearchParams(window.location.search).get('order');
 
+    <script type="module">
+      import {
+        createRealtimeNotificationService
+      } from "./services/notificationService.js";
+
+      const orderNumberNode =
+        document.getElementById("successOrderNumber");
+
+      const trackOrderButton =
+        document.getElementById("trackOrderButton");
+
+      const notificationButton =
+        document.getElementById("enableOrderNotifications");
+
+      const notificationStatus =
+        document.getElementById("notificationStatus");
+
+      const params =
+        new URLSearchParams(window.location.search);
+
+      const orderFromUrl =
+        params.get("order");
+
+      const trackingFromUrl =
+        params.get("tracking");
+
+      const notificationService =
+        createRealtimeNotificationService();
+
+      /*
+       * Display the order number and build the secure
+       * tracking link using the random tracking token.
+       *
+       * IMPORTANT:
+       * Customer tracking must use the tracking token,
+       * not the guessable order number.
+       */
       if (orderFromUrl) {
-        orderNumberNode.textContent = `Order #${orderFromUrl}`;
-        trackOrderButton.href = `order-tracking.html?order=${encodeURIComponent(orderFromUrl)}`;
+        orderNumberNode.textContent =
+          `Order #${orderFromUrl}`;
+      }
+
+      if (trackingFromUrl) {
+        trackOrderButton.href =
+          `order-tracking.html?tracking=${encodeURIComponent(
+            trackingFromUrl
+          )}`;
+      } else {
+        /*
+         * If the tracking token is missing, don't create
+         * an insecure order-number tracking link.
+         */
+        trackOrderButton.href =
+          "order-tracking.html";
+
+        trackOrderButton.textContent =
+          "Track Order";
+      }
+
+      async function registerCustomerNotifications() {
+        if (!orderFromUrl) {
+          notificationStatus.textContent =
+            "Your order number could not be found.";
+          return;
+        }
+
+        if (!notificationButton) return;
+
+        notificationButton.disabled = true;
+        notificationButton.textContent =
+          "🔔 Enabling Notifications...";
+
+        notificationStatus.textContent = "";
+
+        try {
+          const result =
+            await notificationService.registerPushDevice({
+              role: "customer",
+              orderNumber: orderFromUrl
+            });
+
+          console.log(
+            "[Treats By Rich] Customer push registration successful:",
+            result
+          );
+
+          notificationButton.textContent =
+            "🔔 Notifications Enabled";
+
+          notificationStatus.textContent =
+            "You'll receive updates about this order on this device.";
+        } catch (error) {
+          console.error(
+            "[Treats By Rich] Customer push registration failed:",
+            error
+          );
+
+          notificationButton.disabled = false;
+
+          notificationButton.textContent =
+            "🔔 Enable Order Notifications";
+
+          notificationStatus.textContent =
+            error?.message ||
+            "Notifications could not be enabled. You can try again.";
+        }
+      }
+
+      notificationButton?.addEventListener(
+        "click",
+        registerCustomerNotifications
+      );
+
+      /*
+       * If this browser has already granted notification permission,
+       * automatically connect the device to this newly created order.
+       */
+      if (
+        "Notification" in window &&
+        Notification.permission === "granted"
+      ) {
+        registerCustomerNotifications();
       }
     </script>
+
     <script src="js/app.js"></script>
   </body>
 </html>

@@ -11,14 +11,23 @@ import {
   where
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js";
+import {
+  getMessaging,
+  getToken,
+  onMessage
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js";
 
-import { configOk, db, app } from "../config/firebaseConfig.js";
+import {
+  configOk,
+  db,
+  app
+} from "../config/firebaseConfig.js";
 
 const VAPID_KEY =
   "BKpmI8zjxyGEyg4-uQWm-o982AC89FHTSGZhFGaOU9S481JPKuDA1u-od1prGiRJb5ls-tB6M3voWUwrElhvFMY";
 
 export function createRealtimeNotificationService() {
+
   // =========================================================
   // EXISTING IN-APP NOTIFICATION SYSTEM
   // =========================================================
@@ -64,14 +73,17 @@ export function createRealtimeNotificationService() {
   async function markAsRead(notificationId) {
     if (!configOk || !db) return;
 
-    await updateDoc(doc(db, "notifications", notificationId), {
-      isRead: true,
-      readAt: serverTimestamp()
-    });
+    await updateDoc(
+      doc(db, "notifications", notificationId),
+      {
+        isRead: true,
+        readAt: serverTimestamp()
+      }
+    );
   }
 
   // =========================================================
-  // NEW: BROWSER / PHONE PUSH NOTIFICATIONS
+  // BROWSER / PHONE PUSH NOTIFICATIONS
   // =========================================================
 
   async function requestPushPermission() {
@@ -81,7 +93,12 @@ export function createRealtimeNotificationService() {
       );
     }
 
-    const permission = await Notification.requestPermission();
+    if (Notification.permission === "granted") {
+      return "granted";
+    }
+
+    const permission =
+      await Notification.requestPermission();
 
     if (permission !== "granted") {
       throw new Error(
@@ -92,13 +109,20 @@ export function createRealtimeNotificationService() {
     return permission;
   }
 
+  // =========================================================
+  // REGISTER PUSH DEVICE
+  // =========================================================
+
   async function registerPushDevice({
     userId = null,
     role = "customer",
     orderNumber = null
   } = {}) {
+
     if (!configOk || !db || !app) {
-      throw new Error("Firebase is not configured.");
+      throw new Error(
+        "Firebase is not configured."
+      );
     }
 
     if (!("Notification" in window)) {
@@ -113,12 +137,32 @@ export function createRealtimeNotificationService() {
       );
     }
 
-    // Ask the user for permission if needed.
+    // -------------------------------------------------------
+    // Normalize values
+    // -------------------------------------------------------
+
+    const normalizedRole =
+      String(role || "customer")
+        .trim()
+        .toLowerCase();
+
+    const normalizedOrderNumber =
+      orderNumber
+        ? String(orderNumber).trim()
+        : null;
+
+    // -------------------------------------------------------
+    // Ask for notification permission
+    // -------------------------------------------------------
+
     if (Notification.permission !== "granted") {
       await requestPushPermission();
     }
 
-    // Register the Treats By Rich FCM service worker.
+    // -------------------------------------------------------
+    // Register Firebase messaging service worker
+    // -------------------------------------------------------
+
     const serviceWorkerRegistration =
       await navigator.serviceWorker.register(
         "/firebase-messaging-sw.js"
@@ -128,14 +172,21 @@ export function createRealtimeNotificationService() {
       "[Treats By Rich] Firebase messaging service worker registered."
     );
 
-    // Create the Firebase Messaging instance.
-    const messaging = getMessaging(app);
+    // -------------------------------------------------------
+    // Get FCM token
+    // -------------------------------------------------------
 
-    // Get the unique push registration token for this browser/device.
-    const token = await getToken(messaging, {
-      vapidKey: VAPID_KEY,
-      serviceWorkerRegistration
-    });
+    const messaging =
+      getMessaging(app);
+
+    const token =
+      await getToken(
+        messaging,
+        {
+          vapidKey: VAPID_KEY,
+          serviceWorkerRegistration
+        }
+      );
 
     if (!token) {
       throw new Error(
@@ -147,90 +198,231 @@ export function createRealtimeNotificationService() {
       "[Treats By Rich] Push notification token received."
     );
 
-    // Store this device separately.
-    const registrationQuery = query(
-      collection(db, "notificationRegistrations"),
-      where("token", "==", token)
-    );
+    // =======================================================
+    // IMPORTANT FIX
+    //
+    // We no longer search by TOKEN ONLY.
+    //
+    // Admin and customer registrations can use the same
+    // browser/token without overwriting each other.
+    // =======================================================
+
+    const registrationQuery =
+      query(
+        collection(
+          db,
+          "notificationRegistrations"
+        ),
+        where(
+          "token",
+          "==",
+          token
+        )
+      );
 
     const existingRegistrations =
-      await getDocs(registrationQuery);
+      await getDocs(
+        registrationQuery
+      );
+
+    let matchingRegistration = null;
+
+    for (
+      const registrationDoc
+      of existingRegistrations.docs
+    ) {
+
+      const data =
+        registrationDoc.data();
+
+      const existingRole =
+        String(
+          data.role || "customer"
+        )
+          .trim()
+          .toLowerCase();
+
+      const existingOrderNumber =
+        data.orderNumber
+          ? String(
+              data.orderNumber
+            ).trim()
+          : null;
+
+      // -----------------------------------------------------
+      // ADMIN MATCH
+      //
+      // Admin has:
+      // token + role: admin
+      // -----------------------------------------------------
+
+      if (
+        normalizedRole === "admin" &&
+        existingRole === "admin"
+      ) {
+        matchingRegistration =
+          registrationDoc;
+
+        break;
+      }
+
+      // -----------------------------------------------------
+      // CUSTOMER MATCH
+      //
+      // Customer has:
+      // token + role: customer + order number
+      // -----------------------------------------------------
+
+      if (
+        normalizedRole === "customer" &&
+        existingRole === "customer" &&
+        existingOrderNumber ===
+          normalizedOrderNumber
+      ) {
+        matchingRegistration =
+          registrationDoc;
+
+        break;
+      }
+    }
+
+    // =======================================================
+    // DEVICE DATA
+    // =======================================================
 
     const deviceData = {
       token,
-      userId,
-      role,
-      orderNumber,
+
+      userId:
+        userId || null,
+
+      role:
+        normalizedRole,
+
+      orderNumber:
+        normalizedRole === "customer"
+          ? normalizedOrderNumber
+          : null,
+
       platform: "web",
-      browser: navigator.userAgent,
-      permission: Notification.permission,
-      updatedAt: serverTimestamp()
+
+      browser:
+        navigator.userAgent,
+
+      permission:
+        Notification.permission,
+
+      updatedAt:
+        serverTimestamp()
     };
 
-    if (existingRegistrations.empty) {
-      await addDoc(
-        collection(db, "notificationRegistrations"),
-        {
-          ...deviceData,
-          createdAt: serverTimestamp()
-        }
-      );
+    // =======================================================
+    // UPDATE EXISTING REGISTRATION
+    // =======================================================
 
-      console.log(
-        "[Treats By Rich] New notification device saved."
-      );
-    } else {
-      const existingDoc =
-        existingRegistrations.docs[0];
+    if (matchingRegistration) {
 
       await updateDoc(
         doc(
           db,
           "notificationRegistrations",
-          existingDoc.id
+          matchingRegistration.id
         ),
         deviceData
       );
 
       console.log(
-        "[Treats By Rich] Existing notification device updated."
+        "[Treats By Rich] Existing notification device updated.",
+        {
+          role: normalizedRole,
+          orderNumber:
+            normalizedOrderNumber
+        }
+      );
+
+    } else {
+
+      // =====================================================
+      // CREATE NEW REGISTRATION
+      // =====================================================
+
+      await addDoc(
+        collection(
+          db,
+          "notificationRegistrations"
+        ),
+        {
+          ...deviceData,
+          createdAt:
+            serverTimestamp()
+        }
+      );
+
+      console.log(
+        "[Treats By Rich] New notification device saved.",
+        {
+          role: normalizedRole,
+          orderNumber:
+            normalizedOrderNumber
+        }
       );
     }
 
     return {
       token,
-      permission: Notification.permission,
-      role,
+
+      permission:
+        Notification.permission,
+
+      role:
+        normalizedRole,
+
       userId,
-      orderNumber
+
+      orderNumber:
+        normalizedOrderNumber
     };
   }
 
-  // Receive notifications while the website is currently open.
-  function listenForForegroundMessages(onNotification) {
+  // =========================================================
+  // FOREGROUND PUSH NOTIFICATIONS
+  // =========================================================
+
+  function listenForForegroundMessages(
+    onNotification
+  ) {
     if (!configOk || !app) {
       return () => {};
     }
 
-    const messaging = getMessaging(app);
+    const messaging =
+      getMessaging(app);
 
-    return onMessage(messaging, (payload) => {
-      console.log(
-        "[Treats By Rich] Foreground push notification:",
-        payload
-      );
+    return onMessage(
+      messaging,
+      (payload) => {
 
-      onNotification?.(payload);
-    });
+        console.log(
+          "[Treats By Rich] Foreground push notification:",
+          payload
+        );
+
+        onNotification?.(
+          payload
+        );
+      }
+    );
   }
 
+  // =========================================================
+  // RETURN SERVICE
+  // =========================================================
+
   return {
-    // Existing notification functions
     subscribeNotifications,
     createNotification,
     markAsRead,
 
-    // New push notification functions
     requestPushPermission,
     registerPushDevice,
     listenForForegroundMessages

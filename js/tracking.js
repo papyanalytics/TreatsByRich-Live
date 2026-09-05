@@ -1,69 +1,114 @@
 import { createTrackingService } from "../services/trackingService.js";
 import { createRealtimeNotificationService } from "../services/notificationService.js";
 
-const TRACKING_FORM = document.getElementById("trackingForm");
-const TRACKING_INPUT = document.getElementById("trackingNumber");
-const TRACKING_CONTENT = document.getElementById("trackingContent");
+const TRACKING_FORM =
+  document.getElementById("trackingForm");
 
-const trackingService = createTrackingService();
-const notificationService = createRealtimeNotificationService();
+const TRACKING_INPUT =
+  document.getElementById("trackingNumber");
+
+const TRACKING_CONTENT =
+  document.getElementById("trackingContent");
+
+const trackingService =
+  createTrackingService();
+
+const notificationService =
+  createRealtimeNotificationService();
 
 const TRACKING_STEPS = [
   {
     key: "pending",
     label: "Order Received",
-    detail: "Your order has been received and is awaiting payment verification."
+    detail:
+      "Your order has been received and is awaiting payment verification."
   },
   {
     key: "payment-verification",
     label: "Payment Verification",
-    detail: "Our team is manually verifying your payment."
+    detail:
+      "Our team is manually verifying your payment."
   },
   {
     key: "confirmed",
     label: "Confirmed",
-    detail: "Your order is confirmed and queued for preparation."
+    detail:
+      "Your order is confirmed and queued for preparation."
   },
   {
     key: "preparing",
     label: "Preparing",
-    detail: "Our team is crafting your parfait with care."
+    detail:
+      "Our team is crafting your parfait with care."
   },
   {
     key: "ready",
     label: "Ready",
-    detail: "Your order is ready for pickup or rider handoff."
+    detail:
+      "Your order is ready for pickup or rider handoff."
   },
   {
     key: "out-for-delivery",
     label: "Out For Delivery",
-    detail: "Your order is on the move."
+    detail:
+      "Your order is on the move."
   },
   {
     key: "completed",
     label: "Completed",
-    detail: "Your parfait has arrived. Enjoy!"
+    detail:
+      "Your parfait has arrived. Enjoy!"
   }
 ];
 
 let activeSubscription = null;
+let activeTrackingToken = null;
 let activeOrderNumber = null;
 
-// Matches the exact status strings written by checkout.js and admin/order-details.html.
+
+// ============================================================
+// STATUS MAPPING
+// ============================================================
+
 const STATUS_KEY_MAP = {
   pending: "pending",
-  "payment verification": "payment-verification",
+
+  "payment verification":
+    "payment-verification",
+
   confirmed: "confirmed",
+
   preparing: "preparing",
+
   ready: "ready",
-  "out for delivery": "out-for-delivery",
-  completed: "completed"
+
+  "out for delivery":
+    "out-for-delivery",
+
+  completed: "completed",
+
+  cancelled: "cancelled"
 };
 
+
 function mapStatus(status) {
-  const value = String(status || "Pending").trim().toLowerCase();
-  return STATUS_KEY_MAP[value] || "pending";
+  const value =
+    String(
+      status || "Pending"
+    )
+      .trim()
+      .toLowerCase();
+
+  return (
+    STATUS_KEY_MAP[value] ||
+    "pending"
+  );
 }
+
+
+// ============================================================
+// DISPLAY HELPERS
+// ============================================================
 
 function formatPrice(value) {
   return window.formatCurrency
@@ -71,19 +116,92 @@ function formatPrice(value) {
     : `GH₵${Number(value || 0).toFixed(2)}`;
 }
 
+
 function formatDate(value) {
-  if (!value) return "-";
+  if (!value) {
+    return "-";
+  }
 
-  const date = new Date(value);
+  let date;
 
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  }).format(date);
+  if (
+    typeof value === "object" &&
+    typeof value.toDate === "function"
+  ) {
+    date = value.toDate();
+  } else {
+    date = new Date(value);
+  }
+
+  if (
+    Number.isNaN(date.getTime())
+  ) {
+    return "-";
+  }
+
+  return new Intl.DateTimeFormat(
+    "en",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }
+  ).format(date);
 }
 
-function createEmptyState() {
+
+function formatDateTime(value) {
+  if (!value) {
+    return "-";
+  }
+
+  let date;
+
+  if (
+    typeof value === "object" &&
+    typeof value.toDate === "function"
+  ) {
+    date = value.toDate();
+  } else {
+    date = new Date(value);
+  }
+
+  if (
+    Number.isNaN(date.getTime())
+  ) {
+    return "-";
+  }
+
+  return new Intl.DateTimeFormat(
+    "en",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  ).format(date);
+}
+
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+
+// ============================================================
+// EMPTY STATE
+// ============================================================
+
+function createEmptyState(
+  message = "We couldn't find that order."
+) {
   TRACKING_CONTENT.innerHTML = `
     <div class="empty-card">
       <div class="empty-illustration">
@@ -103,28 +221,48 @@ function createEmptyState() {
         </svg>
       </div>
 
-      <h3>We couldn't find that order.</h3>
+      <h3>${escapeHtml(message)}</h3>
 
       <p>
-        Please check your tracking number and try again.
+        Please check your private tracking code and try again.
       </p>
 
-      <a class="button button-primary" href="menu.html">
+      <a
+        class="button button-primary"
+        href="menu.html"
+      >
         Back to Menu
       </a>
     </div>
   `;
 }
 
-function buildTimeline(statusKey, isCancelled) {
-  const currentIndex = TRACKING_STEPS.findIndex(
-    (step) => step.key === statusKey
-  );
 
-  const normalizedIndex = currentIndex >= 0 ? currentIndex : 0;
+// ============================================================
+// TIMELINE
+// ============================================================
 
-  const timelineIcon = (stateClass) => {
-    if (stateClass === "completed") {
+function buildTimeline(
+  statusKey,
+  isCancelled
+) {
+  const currentIndex =
+    TRACKING_STEPS.findIndex(
+      (step) =>
+        step.key === statusKey
+    );
+
+  const normalizedIndex =
+    currentIndex >= 0
+      ? currentIndex
+      : 0;
+
+  const timelineIcon = (
+    stateClass
+  ) => {
+    if (
+      stateClass === "completed"
+    ) {
       return `
         <svg
           viewBox="0 0 24 24"
@@ -140,7 +278,9 @@ function buildTimeline(statusKey, isCancelled) {
       `;
     }
 
-    if (stateClass === "current") {
+    if (
+      stateClass === "current"
+    ) {
       return `
         <svg
           viewBox="0 0 24 24"
@@ -151,8 +291,17 @@ function buildTimeline(statusKey, isCancelled) {
           stroke-linejoin="round"
           aria-hidden="true"
         >
-          <circle cx="12" cy="12" r="7"></circle>
-          <circle cx="12" cy="12" r="2"></circle>
+          <circle
+            cx="12"
+            cy="12"
+            r="7"
+          ></circle>
+
+          <circle
+            cx="12"
+            cy="12"
+            r="2"
+          ></circle>
         </svg>
       `;
     }
@@ -167,38 +316,259 @@ function buildTimeline(statusKey, isCancelled) {
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        <circle cx="12" cy="12" r="7"></circle>
+        <circle
+          cx="12"
+          cy="12"
+          r="7"
+        ></circle>
       </svg>
     `;
   };
 
   return TRACKING_STEPS
-    .map((step, index) => {
-      let stateClass = "pending";
+    .map(
+      (
+        step,
+        index
+      ) => {
+        let stateClass =
+          "pending";
 
-      if (!isCancelled && index < normalizedIndex) {
-        stateClass = "completed";
-      }
+        if (
+          !isCancelled &&
+          index < normalizedIndex
+        ) {
+          stateClass =
+            "completed";
+        }
 
-      if (!isCancelled && index === normalizedIndex) {
-        stateClass = "current";
-      }
+        if (
+          !isCancelled &&
+          index === normalizedIndex
+        ) {
+          stateClass =
+            "current";
+        }
 
-      return `
-        <div class="timeline-item ${stateClass}">
-          <div class="timeline-icon">
-            ${timelineIcon(stateClass)}
+        return `
+          <div
+            class="timeline-item ${stateClass}"
+          >
+            <div class="timeline-icon">
+              ${timelineIcon(
+                stateClass
+              )}
+            </div>
+
+            <div class="timeline-content">
+              <strong>
+                ${escapeHtml(
+                  step.label
+                )}
+              </strong>
+
+              <span>
+                ${escapeHtml(
+                  step.detail
+                )}
+              </span>
+            </div>
           </div>
-
-          <div class="timeline-content">
-            <strong>${step.label}</strong>
-            <span>${step.detail}</span>
-          </div>
-        </div>
-      `;
-    })
+        `;
+      }
+    )
     .join("");
 }
+
+
+// ============================================================
+// ORDER ITEMS
+// ============================================================
+
+function renderItems(items) {
+  if (!Array.isArray(items)) {
+    return "";
+  }
+
+  return items
+    .map(
+      (item) => {
+        const productName =
+          item.productName ||
+          item.name ||
+          "Parfait";
+
+        const size =
+          item.size ||
+          "Standard";
+
+        const quantity =
+          Number(
+            item.quantity || 1
+          );
+
+        const extras =
+          Array.isArray(
+            item.extras
+          )
+            ? item.extras.filter(Boolean)
+            : [];
+
+        const unitPrice =
+          Number(
+            item.unitPrice ??
+              item.price ??
+              0
+          );
+
+        const totalPrice =
+          Number(
+            item.totalPrice ??
+              unitPrice *
+                quantity
+          );
+
+        return `
+          <article class="item-card">
+            <div
+              class="item-card-image"
+              aria-hidden="true"
+            >
+              🍨
+            </div>
+
+            <div>
+              <h4>
+                ${escapeHtml(
+                  productName
+                )}
+              </h4>
+
+              <p>
+                ${escapeHtml(
+                  size
+                )}
+              </p>
+
+              <p>
+                ${
+                  extras.length
+                    ? `Extras: ${escapeHtml(
+                        extras.join(
+                          ", "
+                        )
+                      )}`
+                    : "No extras added"
+                }
+              </p>
+
+              <p>
+                Qty ${quantity}
+              </p>
+            </div>
+
+            <strong>
+              ${formatPrice(
+                totalPrice
+              )}
+            </strong>
+          </article>
+        `;
+      }
+    )
+    .join("");
+}
+
+
+// ============================================================
+// STATUS HISTORY
+// ============================================================
+
+function renderStatusHistory(
+  history
+) {
+  if (
+    !Array.isArray(history) ||
+    !history.length
+  ) {
+    return `
+      <p class="muted">
+        Your order status updates will appear here.
+      </p>
+    `;
+  }
+
+  return history
+    .slice()
+    .reverse()
+    .map(
+      (entry) => {
+        const status =
+          entry.status ||
+          "Updated";
+
+        const note =
+          entry.note ||
+          "";
+
+        const timestamp =
+          entry.at ||
+          entry.createdAt ||
+          null;
+
+        return `
+          <div
+            class="summary-row"
+            style="
+              align-items: flex-start;
+              gap: 1rem;
+            "
+          >
+            <div>
+              <strong>
+                ${escapeHtml(
+                  status
+                )}
+              </strong>
+
+              ${
+                note
+                  ? `
+                    <div
+                      style="
+                        margin-top: 0.2rem;
+                        opacity: 0.75;
+                      "
+                    >
+                      ${escapeHtml(
+                        note
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
+            </div>
+
+            <small>
+              ${formatDateTime(
+                timestamp
+              )}
+            </small>
+          </div>
+        `;
+      }
+    )
+    .join("");
+}
+
+
+// ============================================================
+// RENDER TRACKING ORDER
+//
+// IMPORTANT:
+// This data comes from orderTracking, not orders.
+// Only safe tracking information is displayed.
+// ============================================================
 
 function renderOrder(order) {
   if (!order) {
@@ -206,111 +576,174 @@ function renderOrder(order) {
     return;
   }
 
-  const status = mapStatus(order.status);
+  const status =
+    mapStatus(order.status);
+
+  const rawStatus =
+    String(
+      order.status || ""
+    )
+      .trim()
+      .toLowerCase();
 
   const isCancelled =
-    String(order.status || "").trim().toLowerCase() === "cancelled";
+    rawStatus === "cancelled";
+
+  const currentStep =
+    isCancelled
+      ? {
+          label: "Cancelled",
+          detail:
+            "This order has been cancelled."
+        }
+      : TRACKING_STEPS.find(
+          (step) =>
+            step.key === status
+        ) ||
+        TRACKING_STEPS[0];
+
+  const subtotal =
+    Number(
+      order.totals?.subtotal ??
+        0
+    );
+
+  const deliveryFee =
+    Number(
+      order.totals?.deliveryFee ??
+        0
+    );
+
+  const discount =
+    Number(
+      order.totals?.discount ??
+        0
+    );
+
+  const grandTotal =
+    Number(
+      order.totals?.grandTotal ??
+        subtotal +
+          deliveryFee -
+          discount
+    );
+
+  const items =
+    Array.isArray(order.items)
+      ? order.items
+      : [];
 
   const deliveryMethod =
     order.deliveryMethod ||
-    order.deliveryType ||
     "Pickup";
 
-  const currentStep = isCancelled
-    ? {
-        label: "Cancelled",
-        detail: "This order has been cancelled."
-      }
-    : TRACKING_STEPS.find(
-        (step) => step.key === status
-      ) || TRACKING_STEPS[0];
+  const estimatedDelivery =
+    order.estimatedDeliveryTime;
 
-  const subTotal = Number(
-    order.totals?.subtotal ||
-      order.subtotal ||
-      0
-  );
+  const orderNumber =
+    order.orderNumber ||
+    order.number ||
+    "Order";
 
-  const deliveryFee = Number(
-    order.totals?.deliveryFee ||
-      order.deliveryFee ||
-      0
-  );
-
-  const discount = Number(
-    order.totals?.discount || 0
-  );
-
-  const grandTotal = Number(
-    order.totals?.grandTotal ||
-      order.grandTotal ||
-      subTotal + deliveryFee - discount
-  );
-
-  const items = Array.isArray(order.items)
-    ? order.items
-    : [];
+  activeOrderNumber =
+    orderNumber;
 
   TRACKING_CONTENT.innerHTML = `
-    <section class="tracking-card reveal">
-      <div class="tracking-card-header">
+    <section
+      class="tracking-card reveal"
+    >
+      <div
+        class="tracking-card-header"
+      >
         <div>
-          <h3>${order.number || order.id}</h3>
+          <h3>
+            Order #${escapeHtml(
+              orderNumber
+            )}
+          </h3>
+
           <p>
-            ${order.fullName || order.customerName || "Guest Customer"}
+            Live order tracking
           </p>
         </div>
 
         <span class="status-badge">
-          ${currentStep.label}
+          ${escapeHtml(
+            currentStep.label
+          )}
         </span>
       </div>
 
       <div class="order-meta-grid">
+
         <div class="meta-block">
-          <small>Date Ordered</small>
+          <small>
+            Date Ordered
+          </small>
+
           <strong>
-            ${formatDate(order.createdAt || order.date)}
+            ${formatDate(
+              order.createdAt
+            )}
           </strong>
         </div>
 
         <div class="meta-block">
-          <small>Estimated Delivery</small>
-          <strong>25-35 mins</strong>
+          <small>
+            Estimated Delivery
+          </small>
+
+          <strong>
+            ${
+              estimatedDelivery
+                ? formatDateTime(
+                    estimatedDelivery
+                  )
+                : "25–35 mins"
+            }
+          </strong>
         </div>
 
         <div class="meta-block">
-          <small>Payment</small>
+          <small>
+            Order Type
+          </small>
+
           <strong>
-            ${order.paymentMethod || order.payment || "Cash on Delivery"}
+            ${escapeHtml(
+              deliveryMethod
+            )}
           </strong>
         </div>
-      </div>
 
-      <div class="meta-block">
-        <small>Delivery Address</small>
-
-        <strong>
-          ${
-            deliveryMethod === "Delivery"
-              ? `${order.streetAddress || "-"}, ${order.city || ""}, ${order.region || ""}`.trim()
-              : "Pickup at store"
-          }
-        </strong>
       </div>
     </section>
 
+
     <section class="tracking-layout">
-      <div class="timeline-card reveal">
-        <h3>Live Progress</h3>
+
+      <div
+        class="timeline-card reveal"
+      >
+        <h3>
+          Live Progress
+        </h3>
 
         <div class="timeline-list">
-          ${buildTimeline(status, isCancelled)}
+          ${buildTimeline(
+            status,
+            isCancelled
+          )}
         </div>
       </div>
 
-      <div class="map-card reveal">
-        <h3>Live Delivery Tracking</h3>
+
+      <div
+        class="map-card reveal"
+      >
+        <h3>
+          Live Delivery Tracking
+        </h3>
 
         <div class="map-placeholder">
           <div>
@@ -324,8 +757,15 @@ function renderOrder(order) {
                 stroke-linejoin="round"
                 aria-hidden="true"
               >
-                <path d="M12 21s6-5.1 6-10a6 6 0 1 0-12 0c0 4.9 6 10 6 10Z"></path>
-                <circle cx="12" cy="11" r="2.3"></circle>
+                <path
+                  d="M12 21s6-5.1 6-10a6 6 0 1 0-12 0c0 4.9 6 10 6 10Z"
+                ></path>
+
+                <circle
+                  cx="12"
+                  cy="11"
+                  r="2.3"
+                ></circle>
               </svg>
             </div>
 
@@ -335,155 +775,253 @@ function renderOrder(order) {
           </div>
         </div>
       </div>
+
     </section>
 
-    <section class="tracking-card">
-      <div class="tracking-card-header">
-        <h3>Order Items</h3>
+
+    <section
+      class="tracking-card"
+    >
+      <div
+        class="tracking-card-header"
+      >
+        <h3>
+          Order Items
+        </h3>
 
         <span class="status-badge">
-          ${deliveryMethod}
+          ${escapeHtml(
+            deliveryMethod
+          )}
         </span>
       </div>
 
       <div
         class="grid"
-        style="display:grid; gap: 0.75rem;"
+        style="
+          display:grid;
+          gap:0.75rem;
+        "
       >
-        ${items
-          .map(
-            (item) => `
-              <article class="item-card">
-                <img
-                  src="${item.image || "images/menu/heavenly-combo.png"}"
-                  alt="${item.name || "Parfait"}"
-                />
-
-                <div>
-                  <h4>${item.name || "Parfait"}</h4>
-
-                  <p>
-                    ${item.size || "Standard"}
-                  </p>
-
-                  <p>
-                    ${
-                      (item.extras || []).length
-                        ? `Extras: ${item.extras.join(", ")}`
-                        : "No extras added"
-                    }
-                  </p>
-
-                  <p>
-                    Qty ${item.quantity || 1}
-                  </p>
-                </div>
-
-                <strong>
-                  ${formatPrice(
-                    item.totalPrice ||
-                      Number(
-                        item.unitPrice ||
-                          item.price ||
-                          0
-                      ) *
-                        Number(
-                          item.quantity || 1
-                        )
-                  )}
-                </strong>
-              </article>
+        ${
+          items.length
+            ? renderItems(
+                items
+              )
+            : `
+              <p>
+                No items found for this order.
+              </p>
             `
-          )
-          .join("")}
+        }
       </div>
     </section>
 
-    <section class="tracking-layout">
-      <div class="tracking-card reveal">
-        <h3>Delivery Details</h3>
+
+    <section
+      class="tracking-layout"
+    >
+
+      <div
+        class="tracking-card reveal"
+      >
+        <h3>
+          Order Updates
+        </h3>
 
         <div
-          class="order-meta-grid"
-          style="margin-top: 0.75rem;"
+          style="
+            margin-top: 0.75rem;
+          "
         >
-          <div class="meta-block">
-            <small>Driver</small>
-            <strong>
-              ${order.driverName || "Dispatch Team"}
-            </strong>
-          </div>
-
-          <div class="meta-block">
-            <small>Driver Phone</small>
-            <strong>
-              ${order.driverPhone || "+233 53 851 7831"}
-            </strong>
-          </div>
-
-          <div class="meta-block">
-            <small>Arrival</small>
-            <strong>
-              ${order.estimatedArrival || "On the way"}
-            </strong>
-          </div>
+          ${renderStatusHistory(
+            order.statusHistory
+          )}
         </div>
       </div>
 
-      <div class="tracking-card reveal">
-        <h3>Order Summary</h3>
+
+      <div
+        class="tracking-card reveal"
+      >
+        <h3>
+          Order Summary
+        </h3>
 
         <div class="summary-row">
-          <span>Subtotal</span>
-          <strong>${formatPrice(subTotal)}</strong>
+          <span>
+            Subtotal
+          </span>
+
+          <strong>
+            ${formatPrice(
+              subtotal
+            )}
+          </strong>
         </div>
 
         <div class="summary-row">
-          <span>Delivery Fee</span>
-          <strong>${formatPrice(deliveryFee)}</strong>
+          <span>
+            Delivery Fee
+          </span>
+
+          <strong>
+            ${formatPrice(
+              deliveryFee
+            )}
+          </strong>
         </div>
 
         <div class="summary-row">
-          <span>Discount</span>
-          <strong>${formatPrice(discount)}</strong>
+          <span>
+            Discount
+          </span>
+
+          <strong>
+            ${formatPrice(
+              discount
+            )}
+          </strong>
         </div>
 
         <div
           class="summary-row"
-          style="font-size: 1.05rem; margin-top: 0.4rem;"
+          style="
+            font-size:1.05rem;
+            margin-top:0.4rem;
+          "
         >
-          <span>Grand Total</span>
-          <strong>${formatPrice(grandTotal)}</strong>
+          <span>
+            Grand Total
+          </span>
+
+          <strong>
+            ${formatPrice(
+              grandTotal
+            )}
+          </strong>
         </div>
       </div>
+
     </section>
   `;
+
+  /*
+   * Register notifications after we know
+   * the actual order number.
+   */
+  registerCustomerNotifications(
+    orderNumber
+  );
 }
 
-// =========================================================
-// CUSTOMER PUSH NOTIFICATION
-// =========================================================
+
+// ============================================================
+// CUSTOMER PUSH NOTIFICATIONS
+// ============================================================
+
+async function registerCustomerNotifications(
+  orderNumber
+) {
+  if (!orderNumber) {
+    return;
+  }
+
+  try {
+    const result =
+      await notificationService.registerPushDevice(
+        {
+          role: "customer",
+          orderNumber
+        }
+      );
+
+    console.log(
+      "[Treats By Rich] Customer notification registration:",
+      result
+    );
+
+    updateNotificationButton(
+      true
+    );
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Customer notification registration failed:",
+      error
+    );
+
+    updateNotificationButton(
+      false
+    );
+  }
+}
+
+
+function updateNotificationButton(
+  enabled
+) {
+  const button =
+    document.getElementById(
+      "enableCustomerNotifications"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  if (enabled) {
+    button.textContent =
+      "🔔 Notifications Enabled";
+
+    button.disabled = true;
+  } else {
+    button.textContent =
+      "🔔 Enable Notifications";
+
+    button.disabled = false;
+  }
+}
+
 
 function setupCustomerPushNotifications() {
-  if (!TRACKING_FORM) return;
+  if (!TRACKING_FORM) {
+    return;
+  }
 
   const existingButton =
     document.getElementById(
       "enableCustomerNotifications"
     );
 
-  if (existingButton) return;
+  if (existingButton) {
+    return;
+  }
 
-  const button = document.createElement("button");
+  const button =
+    document.createElement(
+      "button"
+    );
 
-  button.type = "button";
-  button.id = "enableCustomerNotifications";
-  button.className = "button button-primary";
-  button.textContent = "🔔 Enable Notifications";
+  button.type =
+    "button";
 
-  button.style.marginTop = "1rem";
-  button.style.width = "100%";
-  button.style.maxWidth = "320px";
+  button.id =
+    "enableCustomerNotifications";
+
+  button.className =
+    "button button-primary";
+
+  button.textContent =
+    "🔔 Enable Notifications";
+
+  button.style.marginTop =
+    "1rem";
+
+  button.style.width =
+    "100%";
+
+  button.style.maxWidth =
+    "320px";
 
   TRACKING_FORM.insertAdjacentElement(
     "afterend",
@@ -493,7 +1031,17 @@ function setupCustomerPushNotifications() {
   button.addEventListener(
     "click",
     async () => {
-      button.disabled = true;
+      if (!activeOrderNumber) {
+        alert(
+          "Please load your order first."
+        );
+
+        return;
+      }
+
+      button.disabled =
+        true;
+
       button.textContent =
         "Enabling notifications...";
 
@@ -502,7 +1050,8 @@ function setupCustomerPushNotifications() {
           await notificationService.registerPushDevice(
             {
               role: "customer",
-              orderNumber: activeOrderNumber
+              orderNumber:
+                activeOrderNumber
             }
           );
 
@@ -514,14 +1063,16 @@ function setupCustomerPushNotifications() {
         button.textContent =
           "🔔 Notifications Enabled";
 
-        button.disabled = true;
+        button.disabled =
+          true;
       } catch (error) {
         console.error(
           "[Treats By Rich] Customer push registration failed:",
           error
         );
 
-        button.disabled = false;
+        button.disabled =
+          false;
 
         button.textContent =
           "🔔 Enable Notifications";
@@ -535,17 +1086,57 @@ function setupCustomerPushNotifications() {
   );
 }
 
-function subscribeToOrder(orderNumber) {
-  if (activeSubscription) {
+
+// ============================================================
+// SUBSCRIBE TO PRIVATE TRACKING RECORD
+// ============================================================
+
+function subscribeToTrackingToken(
+  trackingToken
+) {
+  if (
+    activeSubscription
+  ) {
     activeSubscription();
-    activeSubscription = null;
+
+    activeSubscription =
+      null;
   }
 
-  activeOrderNumber = orderNumber;
+  const cleanToken =
+    String(
+      trackingToken || ""
+    ).trim();
+
+  if (!cleanToken) {
+    createEmptyState(
+      "No tracking code was provided."
+    );
+
+    return;
+  }
+
+  activeTrackingToken =
+    cleanToken;
+
+  activeOrderNumber =
+    null;
+
+  TRACKING_CONTENT.innerHTML = `
+    <div class="empty-card">
+      <h3>
+        Loading your order...
+      </h3>
+
+      <p>
+        Please wait while we connect to your live tracking record.
+      </p>
+    </div>
+  `;
 
   activeSubscription =
     trackingService.subscribeTracking(
-      orderNumber,
+      cleanToken,
       (order) => {
         if (!order) {
           createEmptyState();
@@ -554,51 +1145,119 @@ function subscribeToOrder(orderNumber) {
 
         renderOrder(order);
       },
-      () => {
-        createEmptyState();
+      (error) => {
+        console.error(
+          "[Treats By Rich] Tracking error:",
+          error
+        );
+
+        createEmptyState(
+          "We couldn't load this tracking record."
+        );
       }
     );
 }
 
-function handleTrack(event) {
+
+// ============================================================
+// FORM SUBMISSION
+// ============================================================
+
+function handleTrack(
+  event
+) {
   event.preventDefault();
 
   const query =
     TRACKING_INPUT?.value.trim();
 
-  if (!query) return;
+  if (!query) {
+    createEmptyState(
+      "Please enter your tracking code."
+    );
 
-  subscribeToOrder(query);
+    return;
+  }
+
+  /*
+   * The form now expects the private tracking token.
+   *
+   * We deliberately do NOT search orders by order number.
+   */
+  subscribeToTrackingToken(
+    query
+  );
 }
+
 
 TRACKING_FORM?.addEventListener(
   "submit",
   handleTrack
 );
 
+
 if (TRACKING_INPUT) {
   TRACKING_INPUT.addEventListener(
     "keydown",
     (event) => {
-      if (event.key === "Enter") {
+      if (
+        event.key === "Enter"
+      ) {
         event.preventDefault();
+
         handleTrack(event);
       }
     }
   );
 }
 
-// Set up the notification button.
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+
 setupCustomerPushNotifications();
 
-const urlOrder =
+const urlParams =
   new URLSearchParams(
     window.location.search
-  ).get("order");
+  );
 
-if (urlOrder) {
-  TRACKING_INPUT.value = urlOrder;
-  subscribeToOrder(urlOrder);
+const urlTracking =
+  urlParams.get(
+    "tracking"
+  );
+
+const urlOrder =
+  urlParams.get(
+    "order"
+  );
+
+/*
+ * Secure tracking uses the private token.
+ *
+ * The order number is deliberately NOT used
+ * as a fallback because it is guessable.
+ */
+if (urlTracking) {
+  if (TRACKING_INPUT) {
+    TRACKING_INPUT.value =
+      urlTracking;
+  }
+
+  subscribeToTrackingToken(
+    urlTracking
+  );
+} else if (urlOrder) {
+  /*
+   * An old order-number-only link is no longer
+   * allowed to access an order.
+   */
+  createEmptyState(
+    "This tracking link is outdated."
+  );
 } else {
-  createEmptyState();
+  createEmptyState(
+    "Enter your private tracking code to track your order."
+  );
 }

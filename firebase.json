@@ -3,6 +3,7 @@
     "source": "functions"
   },
   "firestore": {
+    "rules": "firestore.rules",
     "port": 8080
   },
   "emulators": {
