@@ -564,10 +564,6 @@ function renderStatusHistory(
 
 // ============================================================
 // RENDER TRACKING ORDER
-//
-// IMPORTANT:
-// This data comes from orderTracking, not orders.
-// Only safe tracking information is displayed.
 // ============================================================
 
 function renderOrder(order) {
@@ -1180,13 +1176,19 @@ function handleTrack(
   }
 
   /*
-   * The form now expects the private tracking token.
-   *
-   * We deliberately do NOT search orders by order number.
+   * The form expects the private tracking token.
    */
   subscribeToTrackingToken(
     query
   );
+
+  /*
+   * Clear the customer-facing input
+   * after submitting.
+   */
+  if (TRACKING_INPUT) {
+    TRACKING_INPUT.value = "";
+  }
 }
 
 
@@ -1234,29 +1236,58 @@ const urlOrder =
   );
 
 /*
- * Secure tracking uses the private token.
+ * IMPORTANT:
  *
- * The order number is deliberately NOT used
- * as a fallback because it is guessable.
+ * The private tracking token is used internally
+ * to load the order.
+ *
+ * It is NEVER placed into the visible input.
  */
 if (urlTracking) {
+
+  /*
+   * Completely clear the visible field.
+   */
   if (TRACKING_INPUT) {
-    TRACKING_INPUT.value =
-      urlTracking;
+    TRACKING_INPUT.value = "";
+    TRACKING_INPUT.removeAttribute("value");
+    TRACKING_INPUT.placeholder =
+      "Enter your tracking number";
   }
 
+  /*
+   * Use the token silently in the background.
+   */
   subscribeToTrackingToken(
     urlTracking
   );
+
 } else if (urlOrder) {
+
   /*
    * An old order-number-only link is no longer
    * allowed to access an order.
    */
+  if (TRACKING_INPUT) {
+    TRACKING_INPUT.value = "";
+    TRACKING_INPUT.removeAttribute("value");
+    TRACKING_INPUT.placeholder =
+      "Enter your tracking number";
+  }
+
   createEmptyState(
     "This tracking link is outdated."
   );
+
 } else {
+
+  if (TRACKING_INPUT) {
+    TRACKING_INPUT.value = "";
+    TRACKING_INPUT.removeAttribute("value");
+    TRACKING_INPUT.placeholder =
+      "Enter your tracking number";
+  }
+
   createEmptyState(
     "Enter your private tracking code to track your order."
   );
