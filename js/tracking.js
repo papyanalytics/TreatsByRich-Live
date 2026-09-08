@@ -16,6 +16,9 @@ const trackingService =
 const notificationService =
   createRealtimeNotificationService();
 
+const SAVED_TRACKING_KEY =
+  "tbr_last_tracking_token";
+
 const TRACKING_STEPS = [
   {
     key: "pending",
@@ -64,6 +67,22 @@ const TRACKING_STEPS = [
 let activeSubscription = null;
 let activeTrackingToken = null;
 let activeOrderNumber = null;
+
+
+// ============================================================
+// INPUT PROTECTION
+// ============================================================
+
+function clearTrackingInput() {
+  if (!TRACKING_INPUT) {
+    return;
+  }
+
+  TRACKING_INPUT.value = "";
+
+  TRACKING_INPUT.placeholder =
+    "Enter your tracking number";
+}
 
 
 // ============================================================
@@ -204,6 +223,7 @@ function createEmptyState(
 ) {
   TRACKING_CONTENT.innerHTML = `
     <div class="empty-card">
+
       <div class="empty-illustration">
         <svg
           viewBox="0 0 24 24"
@@ -221,7 +241,9 @@ function createEmptyState(
         </svg>
       </div>
 
-      <h3>${escapeHtml(message)}</h3>
+      <h3>
+        ${escapeHtml(message)}
+      </h3>
 
       <p>
         Please check your private tracking code and try again.
@@ -233,6 +255,7 @@ function createEmptyState(
       >
         Back to Menu
       </a>
+
     </div>
   `;
 }
@@ -260,6 +283,7 @@ function buildTimeline(
   const timelineIcon = (
     stateClass
   ) => {
+
     if (
       stateClass === "completed"
     ) {
@@ -331,6 +355,7 @@ function buildTimeline(
         step,
         index
       ) => {
+
         let stateClass =
           "pending";
 
@@ -354,6 +379,7 @@ function buildTimeline(
           <div
             class="timeline-item ${stateClass}"
           >
+
             <div class="timeline-icon">
               ${timelineIcon(
                 stateClass
@@ -361,6 +387,7 @@ function buildTimeline(
             </div>
 
             <div class="timeline-content">
+
               <strong>
                 ${escapeHtml(
                   step.label
@@ -372,7 +399,9 @@ function buildTimeline(
                   step.detail
                 )}
               </span>
+
             </div>
+
           </div>
         `;
       }
@@ -393,6 +422,7 @@ function renderItems(items) {
   return items
     .map(
       (item) => {
+
         const productName =
           item.productName ||
           item.name ||
@@ -430,6 +460,7 @@ function renderItems(items) {
 
         return `
           <article class="item-card">
+
             <div
               class="item-card-image"
               aria-hidden="true"
@@ -438,6 +469,7 @@ function renderItems(items) {
             </div>
 
             <div>
+
               <h4>
                 ${escapeHtml(
                   productName
@@ -454,9 +486,7 @@ function renderItems(items) {
                 ${
                   extras.length
                     ? `Extras: ${escapeHtml(
-                        extras.join(
-                          ", "
-                        )
+                        extras.join(", ")
                       )}`
                     : "No extras added"
                 }
@@ -465,6 +495,7 @@ function renderItems(items) {
               <p>
                 Qty ${quantity}
               </p>
+
             </div>
 
             <strong>
@@ -472,6 +503,7 @@ function renderItems(items) {
                 totalPrice
               )}
             </strong>
+
           </article>
         `;
       }
@@ -503,6 +535,7 @@ function renderStatusHistory(
     .reverse()
     .map(
       (entry) => {
+
         const status =
           entry.status ||
           "Updated";
@@ -524,7 +557,9 @@ function renderStatusHistory(
               gap: 1rem;
             "
           >
+
             <div>
+
               <strong>
                 ${escapeHtml(
                   status
@@ -547,6 +582,7 @@ function renderStatusHistory(
                   `
                   : ""
               }
+
             </div>
 
             <small>
@@ -554,6 +590,7 @@ function renderStatusHistory(
                 timestamp
               )}
             </small>
+
           </div>
         `;
       }
@@ -567,6 +604,7 @@ function renderStatusHistory(
 // ============================================================
 
 function renderOrder(order) {
+
   if (!order) {
     createEmptyState();
     return;
@@ -648,10 +686,13 @@ function renderOrder(order) {
     <section
       class="tracking-card reveal"
     >
+
       <div
         class="tracking-card-header"
       >
+
         <div>
+
           <h3>
             Order #${escapeHtml(
               orderNumber
@@ -661,6 +702,7 @@ function renderOrder(order) {
           <p>
             Live order tracking
           </p>
+
         </div>
 
         <span class="status-badge">
@@ -668,11 +710,13 @@ function renderOrder(order) {
             currentStep.label
           )}
         </span>
+
       </div>
 
       <div class="order-meta-grid">
 
         <div class="meta-block">
+
           <small>
             Date Ordered
           </small>
@@ -682,9 +726,11 @@ function renderOrder(order) {
               order.createdAt
             )}
           </strong>
+
         </div>
 
         <div class="meta-block">
+
           <small>
             Estimated Delivery
           </small>
@@ -698,9 +744,11 @@ function renderOrder(order) {
                 : "25–35 mins"
             }
           </strong>
+
         </div>
 
         <div class="meta-block">
+
           <small>
             Order Type
           </small>
@@ -710,9 +758,11 @@ function renderOrder(order) {
               deliveryMethod
             )}
           </strong>
+
         </div>
 
       </div>
+
     </section>
 
 
@@ -721,6 +771,7 @@ function renderOrder(order) {
       <div
         class="timeline-card reveal"
       >
+
         <h3>
           Live Progress
         </h3>
@@ -731,19 +782,24 @@ function renderOrder(order) {
             isCancelled
           )}
         </div>
+
       </div>
 
 
       <div
         class="map-card reveal"
       >
+
         <h3>
           Live Delivery Tracking
         </h3>
 
         <div class="map-placeholder">
+
           <div>
+
             <div class="pin">
+
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -762,25 +818,30 @@ function renderOrder(order) {
                   cy="11"
                   r="2.3"
                 ></circle>
+
               </svg>
+
             </div>
 
             <strong>
               Real-time delivery map will appear here when GPS integration is added.
             </strong>
+
           </div>
+
         </div>
+
       </div>
 
     </section>
 
 
-    <section
-      class="tracking-card"
-    >
+    <section class="tracking-card">
+
       <div
         class="tracking-card-header"
       >
+
         <h3>
           Order Items
         </h3>
@@ -790,6 +851,7 @@ function renderOrder(order) {
             deliveryMethod
           )}
         </span>
+
       </div>
 
       <div
@@ -799,28 +861,28 @@ function renderOrder(order) {
           gap:0.75rem;
         "
       >
+
         ${
           items.length
-            ? renderItems(
-                items
-              )
+            ? renderItems(items)
             : `
               <p>
                 No items found for this order.
               </p>
             `
         }
+
       </div>
+
     </section>
 
 
-    <section
-      class="tracking-layout"
-    >
+    <section class="tracking-layout">
 
       <div
         class="tracking-card reveal"
       >
+
         <h3>
           Order Updates
         </h3>
@@ -834,17 +896,20 @@ function renderOrder(order) {
             order.statusHistory
           )}
         </div>
+
       </div>
 
 
       <div
         class="tracking-card reveal"
       >
+
         <h3>
           Order Summary
         </h3>
 
         <div class="summary-row">
+
           <span>
             Subtotal
           </span>
@@ -854,9 +919,11 @@ function renderOrder(order) {
               subtotal
             )}
           </strong>
+
         </div>
 
         <div class="summary-row">
+
           <span>
             Delivery Fee
           </span>
@@ -866,9 +933,11 @@ function renderOrder(order) {
               deliveryFee
             )}
           </strong>
+
         </div>
 
         <div class="summary-row">
+
           <span>
             Discount
           </span>
@@ -878,6 +947,7 @@ function renderOrder(order) {
               discount
             )}
           </strong>
+
         </div>
 
         <div
@@ -887,6 +957,7 @@ function renderOrder(order) {
             margin-top:0.4rem;
           "
         >
+
           <span>
             Grand Total
           </span>
@@ -896,15 +967,29 @@ function renderOrder(order) {
               grandTotal
             )}
           </strong>
+
         </div>
+
       </div>
 
     </section>
   `;
 
   /*
-   * Register notifications after we know
-   * the actual order number.
+   * Save the active tracking token.
+   *
+   * This ensures that if the customer leaves the page
+   * and returns later, their latest order can load again.
+   */
+  if (activeTrackingToken) {
+    localStorage.setItem(
+      SAVED_TRACKING_KEY,
+      activeTrackingToken
+    );
+  }
+
+  /*
+   * Register customer notifications.
    */
   registerCustomerNotifications(
     orderNumber
@@ -924,6 +1009,7 @@ async function registerCustomerNotifications(
   }
 
   try {
+
     const result =
       await notificationService.registerPushDevice(
         {
@@ -940,7 +1026,9 @@ async function registerCustomerNotifications(
     updateNotificationButton(
       true
     );
+
   } catch (error) {
+
     console.warn(
       "[Treats By Rich] Customer notification registration failed:",
       error
@@ -966,20 +1054,26 @@ function updateNotificationButton(
   }
 
   if (enabled) {
+
     button.textContent =
       "🔔 Notifications Enabled";
 
-    button.disabled = true;
+    button.disabled =
+      true;
+
   } else {
+
     button.textContent =
       "🔔 Enable Notifications";
 
-    button.disabled = false;
+    button.disabled =
+      false;
   }
 }
 
 
 function setupCustomerPushNotifications() {
+
   if (!TRACKING_FORM) {
     return;
   }
@@ -1027,7 +1121,9 @@ function setupCustomerPushNotifications() {
   button.addEventListener(
     "click",
     async () => {
+
       if (!activeOrderNumber) {
+
         alert(
           "Please load your order first."
         );
@@ -1042,6 +1138,7 @@ function setupCustomerPushNotifications() {
         "Enabling notifications...";
 
       try {
+
         const result =
           await notificationService.registerPushDevice(
             {
@@ -1061,7 +1158,9 @@ function setupCustomerPushNotifications() {
 
         button.disabled =
           true;
+
       } catch (error) {
+
         console.error(
           "[Treats By Rich] Customer push registration failed:",
           error
@@ -1090,9 +1189,11 @@ function setupCustomerPushNotifications() {
 function subscribeToTrackingToken(
   trackingToken
 ) {
+
   if (
     activeSubscription
   ) {
+
     activeSubscription();
 
     activeSubscription =
@@ -1104,7 +1205,18 @@ function subscribeToTrackingToken(
       trackingToken || ""
     ).trim();
 
+  // Order numbers are NOT valid tracking tokens.
+  if (/^TBR-\d{8}-\d+$/i.test(cleanToken)) {
+    console.warn(
+      "[Treats By Rich] Ignoring order number as tracking token:",
+      cleanToken
+    );
+
+    return;
+  }
+
   if (!cleanToken) {
+
     createEmptyState(
       "No tracking code was provided."
     );
@@ -1118,8 +1230,22 @@ function subscribeToTrackingToken(
   activeOrderNumber =
     null;
 
+  /*
+   * Save immediately.
+   */
+  localStorage.setItem(
+    SAVED_TRACKING_KEY,
+    cleanToken
+  );
+
+  /*
+   * Always clear the visible field.
+   */
+  clearTrackingInput();
+
   TRACKING_CONTENT.innerHTML = `
     <div class="empty-card">
+
       <h3>
         Loading your order...
       </h3>
@@ -1127,21 +1253,28 @@ function subscribeToTrackingToken(
       <p>
         Please wait while we connect to your live tracking record.
       </p>
+
     </div>
   `;
 
   activeSubscription =
     trackingService.subscribeTracking(
       cleanToken,
+
       (order) => {
+
         if (!order) {
+
           createEmptyState();
+
           return;
         }
 
         renderOrder(order);
       },
+
       (error) => {
+
         console.error(
           "[Treats By Rich] Tracking error:",
           error
@@ -1168,6 +1301,7 @@ function handleTrack(
     TRACKING_INPUT?.value.trim();
 
   if (!query) {
+
     createEmptyState(
       "Please enter your tracking code."
     );
@@ -1176,19 +1310,16 @@ function handleTrack(
   }
 
   /*
-   * The form expects the private tracking token.
+   * Subscribe to the manually entered token.
    */
   subscribeToTrackingToken(
     query
   );
 
   /*
-   * Clear the customer-facing input
-   * after submitting.
+   * Immediately hide the token.
    */
-  if (TRACKING_INPUT) {
-    TRACKING_INPUT.value = "";
-  }
+  clearTrackingInput();
 }
 
 
@@ -1199,12 +1330,15 @@ TRACKING_FORM?.addEventListener(
 
 
 if (TRACKING_INPUT) {
+
   TRACKING_INPUT.addEventListener(
     "keydown",
     (event) => {
+
       if (
         event.key === "Enter"
       ) {
+
         event.preventDefault();
 
         handleTrack(event);
@@ -1236,59 +1370,97 @@ const urlOrder =
   );
 
 /*
- * IMPORTANT:
- *
- * The private tracking token is used internally
- * to load the order.
- *
- * It is NEVER placed into the visible input.
+ * Always clear the visible field.
  */
+clearTrackingInput();
+
+/*
+ * Also clear it whenever the browser restores
+ * the page from its history/cache.
+ */
+window.addEventListener(
+  "pageshow",
+  () => {
+    clearTrackingInput();
+  }
+);
+
+
+/*
+ * ============================================================
+ * PRIORITY 1:
+ * NEW ORDER TRACKING LINK
+ * ============================================================
+ *
+ * Example:
+ *
+ * order-tracking.html?tracking=PRIVATE_TOKEN
+ *
+ * The token stays in the URL and is never shown
+ * in the input.
+ */
+
 if (urlTracking) {
 
-  /*
-   * Completely clear the visible field.
-   */
-  if (TRACKING_INPUT) {
-    TRACKING_INPUT.value = "";
-    TRACKING_INPUT.removeAttribute("value");
-    TRACKING_INPUT.placeholder =
-      "Enter your tracking number";
-  }
+  localStorage.setItem(
+    SAVED_TRACKING_KEY,
+    urlTracking
+  );
 
-  /*
-   * Use the token silently in the background.
-   */
+  clearTrackingInput();
+
   subscribeToTrackingToken(
     urlTracking
   );
 
+
+/*
+ * ============================================================
+ * PRIORITY 2:
+ * OLD ORDER-ONLY LINK
+ * ============================================================
+ */
+
 } else if (urlOrder) {
 
-  /*
-   * An old order-number-only link is no longer
-   * allowed to access an order.
-   */
-  if (TRACKING_INPUT) {
-    TRACKING_INPUT.value = "";
-    TRACKING_INPUT.removeAttribute("value");
-    TRACKING_INPUT.placeholder =
-      "Enter your tracking number";
-  }
+  clearTrackingInput();
 
   createEmptyState(
     "This tracking link is outdated."
   );
 
+
+/*
+ * ============================================================
+ * PRIORITY 3:
+ * RETURNING CUSTOMER
+ * ============================================================
+ *
+ * If the customer previously tracked an order,
+ * automatically restore it.
+ */
+
 } else {
 
-  if (TRACKING_INPUT) {
-    TRACKING_INPUT.value = "";
-    TRACKING_INPUT.removeAttribute("value");
-    TRACKING_INPUT.placeholder =
-      "Enter your tracking number";
-  }
+  const savedTrackingToken =
+    localStorage.getItem(
+      SAVED_TRACKING_KEY
+    );
 
-  createEmptyState(
-    "Enter your private tracking code to track your order."
-  );
+  if (savedTrackingToken) {
+
+    clearTrackingInput();
+
+    subscribeToTrackingToken(
+      savedTrackingToken
+    );
+
+  } else {
+
+    clearTrackingInput();
+
+    createEmptyState(
+      "Enter your private tracking code to track your order."
+    );
+  }
 }
