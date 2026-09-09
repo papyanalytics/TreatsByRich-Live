@@ -19,6 +19,12 @@ const notificationService =
 const SAVED_TRACKING_KEY =
   "tbr_last_tracking_token";
 
+const TRACKING_HISTORY_KEY =
+  "tbr_tracking_history_v1";
+
+const MAX_TRACKING_HISTORY =
+  10;
+
 const TRACKING_STEPS = [
   {
     key: "pending",
@@ -67,6 +73,7 @@ const TRACKING_STEPS = [
 let activeSubscription = null;
 let activeTrackingToken = null;
 let activeOrderNumber = null;
+let historyRequestId = 0;
 
 
 // ============================================================
@@ -215,6 +222,209 @@ function escapeHtml(value) {
 
 
 // ============================================================
+// TRACKING HISTORY
+// ============================================================
+
+function getTrackingHistory() {
+  let history = [];
+
+  try {
+    const stored =
+      localStorage.getItem(
+        TRACKING_HISTORY_KEY
+      );
+
+    history =
+      stored
+        ? JSON.parse(stored)
+        : [];
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Could not read tracking history:",
+      error
+    );
+
+    history = [];
+  }
+
+  if (!Array.isArray(history)) {
+    history = [];
+  }
+
+  history = history.filter(
+    (entry) =>
+      entry &&
+      typeof entry === "object" &&
+      String(
+        entry.trackingToken || ""
+      ).trim()
+  );
+
+  /*
+   * Migrate the previous single saved
+   * tracking token into the new history.
+   */
+  const legacyToken =
+    String(
+      localStorage.getItem(
+        SAVED_TRACKING_KEY
+      ) || ""
+    ).trim();
+
+  if (
+    legacyToken &&
+    !history.some(
+      (entry) =>
+        entry.trackingToken ===
+        legacyToken
+    )
+  ) {
+    history.unshift({
+      trackingToken:
+        legacyToken,
+
+      orderNumber:
+        "",
+
+      savedAt:
+        new Date().toISOString()
+    });
+  }
+
+  history =
+    history.slice(
+      0,
+      MAX_TRACKING_HISTORY
+    );
+
+  try {
+    localStorage.setItem(
+      TRACKING_HISTORY_KEY,
+      JSON.stringify(history)
+    );
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Could not save tracking history:",
+      error
+    );
+  }
+
+  return history;
+}
+
+
+function saveTrackingHistoryEntry(
+  trackingToken,
+  orderNumber = ""
+) {
+  const cleanToken =
+    String(
+      trackingToken || ""
+    ).trim();
+
+  if (!cleanToken) {
+    return;
+  }
+
+  /*
+   * Never store an order number as
+   * a tracking token.
+   */
+  if (
+    /^TBR-\d{8}-\d+$/i.test(
+      cleanToken
+    )
+  ) {
+    return;
+  }
+
+  const history =
+    getTrackingHistory();
+
+  const updatedHistory = [
+    {
+      trackingToken:
+        cleanToken,
+
+      orderNumber:
+        String(
+          orderNumber || ""
+        ).trim(),
+
+      savedAt:
+        new Date().toISOString()
+    },
+
+    ...history.filter(
+      (entry) =>
+        entry.trackingToken !==
+        cleanToken
+    )
+  ].slice(
+    0,
+    MAX_TRACKING_HISTORY
+  );
+
+  try {
+    localStorage.setItem(
+      TRACKING_HISTORY_KEY,
+      JSON.stringify(
+        updatedHistory
+      )
+    );
+
+    console.log(
+      "[Treats By Rich] Tracking history updated:",
+      orderNumber || cleanToken
+    );
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Could not save tracking history:",
+      error
+    );
+  }
+}
+
+
+function removeTrackingHistoryEntry(
+  trackingToken
+) {
+  const cleanToken =
+    String(
+      trackingToken || ""
+    ).trim();
+
+  if (!cleanToken) {
+    return;
+  }
+
+  const history =
+    getTrackingHistory();
+
+  const updatedHistory =
+    history.filter(
+      (entry) =>
+        entry.trackingToken !==
+        cleanToken
+    );
+
+  try {
+    localStorage.setItem(
+      TRACKING_HISTORY_KEY,
+      JSON.stringify(
+        updatedHistory
+      )
+    );
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Could not update tracking history:",
+      error
+    );
+  }
+}
+
+
+// ============================================================
 // EMPTY STATE
 // ============================================================
 
@@ -258,6 +468,359 @@ function createEmptyState(
 
     </div>
   `;
+}
+
+
+// ============================================================
+// TRACKING HISTORY EMPTY STATE
+// ============================================================
+
+function createHistoryEmptyState() {
+  TRACKING_CONTENT.innerHTML = `
+    <div class="empty-card">
+
+      <div class="empty-illustration">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z"></path>
+          <path d="M3 7.5V16.5L12 21"></path>
+          <path d="M21 7.5V16.5L12 21"></path>
+          <path d="M12 12v9"></path>
+        </svg>
+      </div>
+
+      <h3>
+        No orders yet
+      </h3>
+
+      <p>
+        Orders you place on this device will appear here automatically.
+      </p>
+
+      <a
+        class="button button-primary"
+        href="menu.html"
+      >
+        Browse Menu
+      </a>
+
+    </div>
+  `;
+}
+
+
+// ============================================================
+// TRACKING HISTORY CARD
+// ============================================================
+
+function renderHistoryCard(
+  order,
+  historyEntry
+) {
+  const orderNumber =
+    order?.orderNumber ||
+    historyEntry.orderNumber ||
+    "Order";
+
+  const status =
+    String(
+      order?.status ||
+        "Pending"
+    );
+
+  const total =
+    Number(
+      order?.totals?.grandTotal ??
+        0
+    );
+
+  const date =
+    order?.createdAt ||
+    historyEntry.savedAt;
+
+  const statusClass =
+    mapStatus(status);
+
+  return `
+    <article
+      class="tracking-card reveal history-order-card"
+      data-tracking-token="${escapeHtml(
+        historyEntry.trackingToken
+      )}"
+    >
+
+      <div
+        class="tracking-card-header"
+      >
+
+        <div>
+
+          <h3>
+            Order #${escapeHtml(
+              orderNumber
+            )}
+          </h3>
+
+          <p>
+            ${formatDate(date)}
+          </p>
+
+        </div>
+
+        <span
+          class="status-badge ${escapeHtml(
+            statusClass
+          )}"
+        >
+          ${escapeHtml(status)}
+        </span>
+
+      </div>
+
+      <div
+        class="summary-row"
+        style="
+          margin-top: 0.75rem;
+        "
+      >
+
+        <span>
+          Order Total
+        </span>
+
+        <strong>
+          ${formatPrice(total)}
+        </strong>
+
+      </div>
+
+      <button
+        type="button"
+        class="button button-primary history-track-button"
+        data-tracking-token="${escapeHtml(
+          historyEntry.trackingToken
+        )}"
+        style="
+          width:100%;
+          margin-top:1rem;
+        "
+      >
+        Track Order
+      </button>
+
+    </article>
+  `;
+}
+
+
+// ============================================================
+// RENDER MY ORDERS
+// ============================================================
+
+async function renderTrackingHistory() {
+  if (!TRACKING_CONTENT) {
+    return;
+  }
+
+  if (
+    activeSubscription
+  ) {
+    activeSubscription();
+    activeSubscription =
+      null;
+  }
+
+  activeTrackingToken =
+    null;
+
+  activeOrderNumber =
+    null;
+
+  clearTrackingInput();
+
+  const currentRequestId =
+    ++historyRequestId;
+
+  const history =
+    getTrackingHistory();
+
+  if (!history.length) {
+    createHistoryEmptyState();
+    return;
+  }
+
+  TRACKING_CONTENT.innerHTML = `
+    <section class="tracking-card reveal">
+
+      <div
+        class="tracking-card-header"
+      >
+
+        <div>
+
+          <h3>
+            Your Orders
+          </h3>
+
+          <p>
+            Your recent orders on this device
+          </p>
+
+        </div>
+
+        <span class="status-badge">
+          ${history.length}
+          ${
+            history.length === 1
+              ? "Order"
+              : "Orders"
+          }
+        </span>
+
+      </div>
+
+    </section>
+
+    <div
+      id="trackingHistoryList"
+      style="
+        display:grid;
+        gap:1rem;
+        margin-top:1rem;
+      "
+    >
+      <div class="empty-card">
+
+        <h3>
+          Loading your orders...
+        </h3>
+
+        <p>
+          Please wait while we retrieve your recent orders.
+        </p>
+
+      </div>
+    </div>
+
+    <section
+      class="tracking-card reveal"
+      style="
+        margin-top:1rem;
+      "
+    >
+
+      <h3>
+        Track Another Order
+      </h3>
+
+      <p class="muted">
+        Have a tracking code from another device? Enter it above to track that order.
+      </p>
+
+    </section>
+  `;
+
+  const historyList =
+    document.getElementById(
+      "trackingHistoryList"
+    );
+
+  if (!historyList) {
+    return;
+  }
+
+  const cards = [];
+
+  for (
+    const entry of history
+  ) {
+    try {
+
+      const order =
+        await trackingService.getTrackingOrder(
+          entry.trackingToken
+        );
+
+      if (
+        currentRequestId !==
+        historyRequestId
+      ) {
+        return;
+      }
+
+      if (!order) {
+
+        removeTrackingHistoryEntry(
+          entry.trackingToken
+        );
+
+        continue;
+      }
+
+      cards.push(
+        renderHistoryCard(
+          order,
+          entry
+        )
+      );
+
+    } catch (error) {
+
+      console.warn(
+        "[Treats By Rich] Could not load history order:",
+        error
+      );
+
+      removeTrackingHistoryEntry(
+        entry.trackingToken
+      );
+    }
+  }
+
+  if (
+    currentRequestId !==
+    historyRequestId
+  ) {
+    return;
+  }
+
+  if (!cards.length) {
+    createHistoryEmptyState();
+    return;
+  }
+
+  historyList.innerHTML =
+    cards.join("");
+
+  historyList
+    .querySelectorAll(
+      ".history-track-button"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const token =
+              button.dataset
+                .trackingToken;
+
+            subscribeToTrackingToken(
+              token
+            );
+          }
+        );
+      }
+    );
 }
 
 
@@ -682,7 +1245,28 @@ function renderOrder(order) {
   activeOrderNumber =
     orderNumber;
 
+  /*
+   * Save this order into history.
+   */
+  saveTrackingHistoryEntry(
+    activeTrackingToken,
+    orderNumber
+  );
+
   TRACKING_CONTENT.innerHTML = `
+    <button
+      type="button"
+      id="backToOrderHistory"
+      class="button button-secondary"
+      style="
+        margin-bottom:1rem;
+        width:100%;
+        max-width:220px;
+      "
+    >
+      ← My Orders
+    </button>
+
     <section
       class="tracking-card reveal"
     >
@@ -976,10 +1560,8 @@ function renderOrder(order) {
   `;
 
   /*
-   * Save the active tracking token.
-   *
-   * This ensures that if the customer leaves the page
-   * and returns later, their latest order can load again.
+   * Save the active tracking token
+   * for backwards compatibility.
    */
   if (activeTrackingToken) {
     localStorage.setItem(
@@ -987,6 +1569,21 @@ function renderOrder(order) {
       activeTrackingToken
     );
   }
+
+  /*
+   * Back to My Orders.
+   */
+  const backButton =
+    document.getElementById(
+      "backToOrderHistory"
+    );
+
+  backButton?.addEventListener(
+    "click",
+    () => {
+      renderTrackingHistory();
+    }
+  );
 
   /*
    * Register customer notifications.
@@ -1205,12 +1802,21 @@ function subscribeToTrackingToken(
       trackingToken || ""
     ).trim();
 
-  // Order numbers are NOT valid tracking tokens.
-  if (/^TBR-\d{8}-\d+$/i.test(cleanToken)) {
+  /*
+   * Order numbers are NOT valid
+   * tracking tokens.
+   */
+  if (
+    /^TBR-\d{8}-\d+$/i.test(
+      cleanToken
+    )
+  ) {
     console.warn(
       "[Treats By Rich] Ignoring order number as tracking token:",
       cleanToken
     );
+
+    renderTrackingHistory();
 
     return;
   }
@@ -1309,16 +1915,10 @@ function handleTrack(
     return;
   }
 
-  /*
-   * Subscribe to the manually entered token.
-   */
   subscribeToTrackingToken(
     query
   );
 
-  /*
-   * Immediately hide the token.
-   */
   clearTrackingInput();
 }
 
@@ -1396,16 +1996,11 @@ window.addEventListener(
  *
  * order-tracking.html?tracking=PRIVATE_TOKEN
  *
- * The token stays in the URL and is never shown
- * in the input.
+ * The token stays private and is never
+ * displayed in the input.
  */
 
 if (urlTracking) {
-
-  localStorage.setItem(
-    SAVED_TRACKING_KEY,
-    urlTracking
-  );
 
   clearTrackingInput();
 
@@ -1433,34 +2028,16 @@ if (urlTracking) {
 /*
  * ============================================================
  * PRIORITY 3:
- * RETURNING CUSTOMER
+ * MY ORDERS
  * ============================================================
  *
- * If the customer previously tracked an order,
- * automatically restore it.
+ * Do NOT automatically reopen the previous
+ * order anymore.
+ *
+ * Instead, show the customer's saved orders.
  */
 
 } else {
 
-  const savedTrackingToken =
-    localStorage.getItem(
-      SAVED_TRACKING_KEY
-    );
-
-  if (savedTrackingToken) {
-
-    clearTrackingInput();
-
-    subscribeToTrackingToken(
-      savedTrackingToken
-    );
-
-  } else {
-
-    clearTrackingInput();
-
-    createEmptyState(
-      "Enter your private tracking code to track your order."
-    );
-  }
+  renderTrackingHistory();
 }

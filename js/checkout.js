@@ -1,33 +1,71 @@
-import { createOrderService } from "../services/orderService.js";
-import { createRealtimeNotificationService } from "../services/notificationService.js";
+import {
+  getDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-// Checkout page behavior for Treats By Rich.
+import {
+  db
+} from "../config/firebaseConfig.js";
+
+import {
+  createOrderService
+} from "../services/orderService.js";
+
+import {
+  createRealtimeNotificationService
+} from "../services/notificationService.js";
+
+// =========================================================
+// CHECKOUT CONFIG
+// =========================================================
+
 const CHECKOUT_CONFIG = {
   orderPrefix: "TBR",
   cartStorageKey:
-    window.APP_CONFIG?.cartStorageKey || "tbrCart"
+    window.APP_CONFIG?.cartStorageKey ||
+    "tbrCart"
 };
 
-// Customer declares payment was made; the backend/admin team verifies it manually later.
 const PAYMENT_STATUS_AWAITING_VERIFICATION =
   "Awaiting manual payment verification";
 
-const orderService = createOrderService();
+const TRACKING_HISTORY_KEY =
+  "tbr_tracking_history_v1";
+
+const orderService =
+  createOrderService();
 
 const notificationService =
   createRealtimeNotificationService();
 
+// =========================================================
+// DOM
+// =========================================================
+
 const form =
-  document.getElementById("checkoutForm");
+  document.getElementById(
+    "checkoutForm"
+  );
 
 const deliveryFields =
-  document.getElementById("deliveryFields");
+  document.getElementById(
+    "deliveryFields"
+  );
+
+const deliveryNotice =
+  document.getElementById(
+    "deliveryNotice"
+  );
 
 const mobileMoneyFields =
-  document.getElementById("mobileMoneyFields");
+  document.getElementById(
+    "mobileMoneyFields"
+  );
 
 const bankTransferFields =
-  document.getElementById("bankTransferFields");
+  document.getElementById(
+    "bankTransferFields"
+  );
 
 const paymentConfirmationSection =
   document.getElementById(
@@ -40,22 +78,28 @@ const paymentConfirmationInput =
   );
 
 const orderSummary =
-  document.getElementById("orderSummary");
+  document.getElementById(
+    "orderSummary"
+  );
 
 const subtotalAmount =
-  document.getElementById("subtotalAmount");
-
-const deliveryFeeElement =
-  document.getElementById("deliveryFee");
+  document.getElementById(
+    "subtotalAmount"
+  );
 
 const grandTotalElement =
-  document.getElementById("grandTotal");
+  document.getElementById(
+    "grandTotal"
+  );
 
 const placeOrderButton =
-  document.getElementById("placeOrderButton");
+  document.getElementById(
+    "placeOrderButton"
+  );
 
-const applyPromoButton =
-  document.getElementById("applyPromo");
+// =========================================================
+// ERRORS
+// =========================================================
 
 const errorMap = {
   nameError:
@@ -65,7 +109,7 @@ const errorMap = {
     "Please enter a valid phone number.",
 
   addressError:
-    "Please complete street address, city, and region for delivery.",
+    "Please complete your delivery address.",
 
   paymentMethodError:
     "Please select a payment method.",
@@ -74,11 +118,34 @@ const errorMap = {
     "Please confirm that you have completed this payment."
 };
 
-const DELIVERY_FEE = 30;
+// =========================================================
+// PAYMENT SETTINGS
+// =========================================================
 
-/* =========================================================
-   CART
-========================================================= */
+const DEFAULT_PAYMENT_SETTINGS = {
+  momoNumber:
+    "0538517831",
+
+  momoName:
+    "Treats by Rich",
+
+  bankName:
+    "GCB",
+
+  bankAccountNumber:
+    "1011440001239",
+
+  bankAccountName:
+    "Treats by Rich"
+};
+
+let paymentSettings = {
+  ...DEFAULT_PAYMENT_SETTINGS
+};
+
+// =========================================================
+// CART
+// =========================================================
 
 function getCart() {
   const raw =
@@ -90,14 +157,19 @@ function getCart() {
     return raw
       ? JSON.parse(raw)
       : [];
-  } catch (err) {
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Could not read cart:",
+      error
+    );
+
     return [];
   }
 }
 
-/* =========================================================
-   SECURITY / DISPLAY HELPERS
-========================================================= */
+// =========================================================
+// HELPERS
+// =========================================================
 
 function escapeHtml(value) {
   return String(value)
@@ -108,24 +180,32 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function formatPrice(value) {
+  return `GH₵${Number(
+    value || 0
+  ).toFixed(2)}`;
+}
+
 function getItemTotals(item) {
   const quantity =
     Math.max(
       1,
-      Number(item.quantity || 1)
+      Number(
+        item.quantity || 1
+      )
     );
 
   const unitPrice =
     Number(
       item.unitPrice ||
-      item.price ||
-      0
+        item.price ||
+        0
     );
 
   const totalPrice =
     Number(
       item.totalPrice ||
-      unitPrice * quantity
+        unitPrice * quantity
     );
 
   return {
@@ -135,11 +215,241 @@ function getItemTotals(item) {
   };
 }
 
-/* =========================================================
-   ORDER ITEMS
-========================================================= */
+// =========================================================
+// FIRESTORE PAYMENT SETTINGS
+// =========================================================
 
-function buildOrderItems(cartItems) {
+async function loadPaymentSettings() {
+  try {
+    if (!db) {
+      console.warn(
+        "[Treats By Rich] Firestore is unavailable. Using default payment details."
+      );
+
+      return;
+    }
+
+    const settingsRef =
+      doc(
+        db,
+        "settings",
+        "business"
+      );
+
+    const snapshot =
+      await getDoc(
+        settingsRef
+      );
+
+    if (!snapshot.exists()) {
+      console.warn(
+        "[Treats By Rich] No saved business settings found. Using defaults."
+      );
+
+      return;
+    }
+
+    const data =
+      snapshot.data() || {};
+
+    paymentSettings = {
+      momoNumber:
+        data.momoNumber ||
+        DEFAULT_PAYMENT_SETTINGS.momoNumber,
+
+      momoName:
+        data.momoName ||
+        DEFAULT_PAYMENT_SETTINGS.momoName,
+
+      bankName:
+        data.bankName ||
+        DEFAULT_PAYMENT_SETTINGS.bankName,
+
+      bankAccountNumber:
+        data.bankAccountNumber ||
+        DEFAULT_PAYMENT_SETTINGS.bankAccountNumber,
+
+      bankAccountName:
+        data.bankAccountName ||
+        DEFAULT_PAYMENT_SETTINGS.bankAccountName
+    };
+
+    console.log(
+      "[Treats By Rich] Payment settings loaded from Firestore:",
+      paymentSettings
+    );
+
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Could not load payment settings. Using defaults.",
+      error
+    );
+  }
+}
+
+// =========================================================
+// APPLY FIREBASE PAYMENT SETTINGS
+// =========================================================
+
+function applyPaymentSettings() {
+  const momoNumberValue =
+    document.getElementById(
+      "momoNumberValue"
+    );
+
+  const momoAccountNameValue =
+    document.getElementById(
+      "momoAccountNameValue"
+    );
+
+  const bankNameValue =
+    document.getElementById(
+      "bankNameValue"
+    );
+
+  const bankAccountNumberValue =
+    document.getElementById(
+      "bankAccountNumberValue"
+    );
+
+  const bankAccountNameValue =
+    document.getElementById(
+      "bankAccountNameValue"
+    );
+
+  const momoCopyButton =
+    document.querySelector(
+      '#mobileMoneyFields .payment-copy-btn'
+    );
+
+  const bankCopyButton =
+    document.querySelector(
+      '#bankTransferFields .payment-copy-btn'
+    );
+
+  if (momoNumberValue) {
+    momoNumberValue.textContent =
+      paymentSettings.momoNumber;
+  }
+
+  if (momoAccountNameValue) {
+    momoAccountNameValue.textContent =
+      paymentSettings.momoName;
+  }
+
+  if (bankNameValue) {
+    bankNameValue.textContent =
+      paymentSettings.bankName;
+  }
+
+  if (bankAccountNumberValue) {
+    bankAccountNumberValue.textContent =
+      paymentSettings.bankAccountNumber;
+  }
+
+  if (bankAccountNameValue) {
+    bankAccountNameValue.textContent =
+      paymentSettings.bankAccountName;
+  }
+
+  if (momoCopyButton) {
+    momoCopyButton.dataset.copyValue =
+      paymentSettings.momoNumber;
+  }
+
+  if (bankCopyButton) {
+    bankCopyButton.dataset.copyValue =
+      paymentSettings.bankAccountNumber;
+  }
+}
+
+// =========================================================
+// RECEIVING METHOD
+// =========================================================
+
+function getReceivingMethod() {
+  return (
+    form?.querySelector(
+      'input[name="deliveryMethod"]:checked'
+    )?.value ||
+    "Pickup"
+  );
+}
+
+function updateDeliveryFields() {
+  const receivingMethod =
+    getReceivingMethod();
+
+  const isDelivery =
+    receivingMethod ===
+    "Delivery";
+
+  if (deliveryFields) {
+    deliveryFields.style.display =
+      isDelivery
+        ? "block"
+        : "none";
+
+    deliveryFields.setAttribute(
+      "aria-hidden",
+      isDelivery
+        ? "false"
+        : "true"
+    );
+  }
+
+  /*
+   * Delivery has NO fee.
+   * The customer simply selects Delivery,
+   * provides their address and arranges their own rider.
+   */
+  if (deliveryNotice) {
+    deliveryNotice.style.display =
+      "flex";
+  }
+
+  const streetAddress =
+    document.getElementById(
+      "streetAddress"
+    );
+
+  if (streetAddress) {
+    if (isDelivery) {
+      streetAddress.setAttribute(
+        "required",
+        "required"
+      );
+    } else {
+      streetAddress.removeAttribute(
+        "required"
+      );
+    }
+  }
+}
+
+// =========================================================
+// CART TOTALS
+// =========================================================
+
+function getSubtotal(
+  cartItems
+) {
+  return cartItems.reduce(
+    (sum, item) =>
+      sum +
+      getItemTotals(item)
+        .totalPrice,
+    0
+  );
+}
+
+// =========================================================
+// ORDER ITEMS
+// =========================================================
+
+function buildOrderItems(
+  cartItems
+) {
   return cartItems.map(
     (item, index) => {
       const {
@@ -168,7 +478,9 @@ function buildOrderItems(cartItems) {
           Array.isArray(
             item.extras
           )
-            ? item.extras.filter(Boolean)
+            ? item.extras.filter(
+                Boolean
+              )
             : [],
 
         price:
@@ -182,210 +494,193 @@ function buildOrderItems(cartItems) {
   );
 }
 
-/* =========================================================
-   DELIVERY ESTIMATE
-========================================================= */
-
-function estimateDeliveryIso(
-  minutes = 45
-) {
-  return new Date(
-    Date.now() +
-      minutes * 60 * 1000
-  ).toISOString();
-}
-
-/* =========================================================
-   TOTALS
-========================================================= */
-
-function getSubtotal(cartItems) {
-  return cartItems.reduce(
-    (sum, item) =>
-      sum +
-      getItemTotals(item)
-        .totalPrice,
-    0
-  );
-}
-
-function formatPrice(value) {
-  return `GH₵${Number(value).toFixed(2)}`;
-}
-
-/* =========================================================
-   ORDER SUMMARY
-========================================================= */
+// =========================================================
+// ORDER SUMMARY
+// =========================================================
 
 function renderSummary() {
-  const cart = getCart();
+  const cart =
+    getCart();
 
-  orderSummary.innerHTML = "";
+  if (!orderSummary) {
+    return;
+  }
+
+  orderSummary.innerHTML =
+    "";
 
   if (!cart.length) {
-    orderSummary.innerHTML =
-      '<p style="color: var(--text-muted);">Your cart is empty. Add items before checking out.</p>';
+    orderSummary.innerHTML = `
+      <p style="color: var(--text-muted);">
+        Your cart is empty. Add items before checking out.
+      </p>
+    `;
 
-    subtotalAmount.textContent =
-      formatPrice(0);
+    if (subtotalAmount) {
+      subtotalAmount.textContent =
+        formatPrice(0);
+    }
 
-    deliveryFeeElement.textContent =
-      formatPrice(0);
+    if (grandTotalElement) {
+      grandTotalElement.textContent =
+        formatPrice(0);
+    }
 
-    grandTotalElement.textContent =
-      formatPrice(0);
-
-    placeOrderButton.disabled =
-      true;
+    if (placeOrderButton) {
+      placeOrderButton.disabled =
+        true;
+    }
 
     return;
   }
 
   let subtotal = 0;
 
-  cart.forEach((item) => {
-    const itemTotals =
-      getItemTotals(item);
+  cart.forEach(
+    (item) => {
+      const itemTotals =
+        getItemTotals(item);
 
-    subtotal +=
-      itemTotals.totalPrice;
+      subtotal +=
+        itemTotals.totalPrice;
 
-    const extras =
-      Array.isArray(item.extras)
-        ? item.extras.filter(Boolean)
-        : [];
-
-    const safeName =
-      escapeHtml(
-        item.name ||
-        "Treat Item"
-      );
-
-    const safeSize =
-      escapeHtml(
-        item.size ||
-        "Standard"
-      );
-
-    const safeExtras =
-      extras
-        .map((extra) =>
-          escapeHtml(extra)
+      const extras =
+        Array.isArray(
+          item.extras
         )
-        .join(", ");
+          ? item.extras.filter(
+              Boolean
+            )
+          : [];
 
-    const summary =
-      document.createElement(
-        "article"
-      );
+      const safeName =
+        escapeHtml(
+          item.name ||
+            "Treat Item"
+        );
 
-    summary.className =
-      "summary-item";
+      const safeSize =
+        escapeHtml(
+          item.size ||
+            "Standard"
+        );
 
-    summary.innerHTML = `
-      <img
-        src="${
-          item.image ||
-          "images/product-placeholder.png"
-        }"
-        alt="${safeName}"
-      />
+      const safeExtras =
+        extras
+          .map(
+            (extra) =>
+              escapeHtml(
+                extra
+              )
+          )
+          .join(", ");
 
-      <div>
-        <strong>${safeName}</strong>
+      const summary =
+        document.createElement(
+          "article"
+        );
 
-        <div class="summary-meta">
-          <span>${safeSize}</span>
+      summary.className =
+        "summary-item";
 
-          ${
-            safeExtras
-              ? `<span>+ ${safeExtras}</span>`
-              : ""
-          }
+      summary.innerHTML = `
+        <img
+          src="${
+            item.image ||
+            "images/product-placeholder.png"
+          }"
+          alt="${safeName}"
+        />
 
-          <span>
-            Qty ${itemTotals.quantity}
-          </span>
+        <div>
+          <strong>
+            ${safeName}
+          </strong>
 
-          <span>
-            ${formatPrice(
-              itemTotals.totalPrice
-            )}
-          </span>
+          <div class="summary-meta">
+
+            <span>
+              ${safeSize}
+            </span>
+
+            ${
+              safeExtras
+                ? `
+                  <span>
+                    + ${safeExtras}
+                  </span>
+                `
+                : ""
+            }
+
+            <span>
+              Qty ${itemTotals.quantity}
+            </span>
+
+            <span>
+              ${formatPrice(
+                itemTotals.totalPrice
+              )}
+            </span>
+
+          </div>
         </div>
-      </div>
-    `;
+      `;
 
-    orderSummary.appendChild(
-      summary
-    );
-  });
-
-  const selectedDelivery =
-    form.querySelector(
-      'input[name="deliveryMethod"]:checked'
-    )?.value;
-
-  const deliveryFee =
-    selectedDelivery ===
-    "Delivery"
-      ? DELIVERY_FEE
-      : 0;
-
-  subtotalAmount.textContent =
-    formatPrice(subtotal);
-
-  deliveryFeeElement.textContent =
-    formatPrice(deliveryFee);
-
-  grandTotalElement.textContent =
-    formatPrice(
-      subtotal +
-        deliveryFee
-    );
-
-  placeOrderButton.disabled =
-    false;
-}
-
-/* =========================================================
-   FORM ERRORS
-========================================================= */
-
-function clearErrors() {
-  Object.keys(errorMap).forEach(
-    (id) => {
-      const errorNode =
-        document.getElementById(id);
-
-      if (errorNode) {
-        errorNode.textContent =
-          "";
-      }
+      orderSummary.appendChild(
+        summary
+      );
     }
   );
 
-  [
-    "fullName",
-    "phoneNumber",
-    "streetAddress",
-    "city",
-    "region"
-  ].forEach(
-    (fieldName) => {
-      if (form[fieldName]) {
-        form[fieldName].setAttribute(
-          "aria-invalid",
-          "false"
+  /*
+   * IMPORTANT:
+   * There is deliberately NO delivery fee.
+   */
+  if (subtotalAmount) {
+    subtotalAmount.textContent =
+      formatPrice(
+        subtotal
+      );
+  }
+
+  if (grandTotalElement) {
+    grandTotalElement.textContent =
+      formatPrice(
+        subtotal
+      );
+  }
+
+  if (placeOrderButton) {
+    placeOrderButton.disabled =
+      false;
+  }
+}
+
+// =========================================================
+// FORM ERRORS
+// =========================================================
+
+function clearErrors() {
+  Object.keys(
+    errorMap
+  ).forEach(
+    (id) => {
+      const node =
+        document.getElementById(
+          id
         );
+
+      if (node) {
+        node.textContent =
+          "";
       }
     }
   );
 }
 
 function showError(
-  fieldId,
-  inputName
+  fieldId
 ) {
   const element =
     document.getElementById(
@@ -396,49 +691,41 @@ function showError(
     element.textContent =
       errorMap[fieldId];
   }
-
-  if (
-    inputName &&
-    form[inputName]
-  ) {
-    form[inputName].setAttribute(
-      "aria-invalid",
-      "true"
-    );
-  }
 }
 
-/* =========================================================
-   FORM VALIDATION
-========================================================= */
+// =========================================================
+// VALIDATION
+// =========================================================
 
 function validateForm() {
+  if (!form) {
+    return false;
+  }
+
+  clearErrors();
+
   const fullName =
     form.fullName.value.trim();
 
   const phoneNumber =
     form.phoneNumber.value.trim();
 
-  const deliveryMethod =
-    form.deliveryMethod.value;
-
-  const streetAddress =
-    form.streetAddress.value.trim();
+  const receivingMethod =
+    getReceivingMethod();
 
   const paymentMethod =
     form.paymentMethod.value;
 
-  clearErrors();
-
-  let isValid = true;
+  let isValid =
+    true;
 
   if (!fullName) {
     showError(
-      "nameError",
-      "fullName"
+      "nameError"
     );
 
-    isValid = false;
+    isValid =
+      false;
   }
 
   if (
@@ -447,48 +734,31 @@ function validateForm() {
     )
   ) {
     showError(
-      "phoneError",
-      "phoneNumber"
+      "phoneError"
     );
 
-    isValid = false;
+    isValid =
+      false;
   }
 
+  /*
+   * Delivery address is required only when
+   * the customer chooses Delivery.
+   */
   if (
-    deliveryMethod ===
+    receivingMethod ===
     "Delivery"
   ) {
-    const city =
-      form.city.value.trim();
-
-    const region =
-      form.region.value.trim();
+    const streetAddress =
+      form.streetAddress?.value.trim();
 
     if (!streetAddress) {
       showError(
-        "addressError",
-        "streetAddress"
+        "addressError"
       );
 
-      isValid = false;
-    }
-
-    if (!city) {
-      showError(
-        "addressError",
-        "city"
-      );
-
-      isValid = false;
-    }
-
-    if (!region) {
-      showError(
-        "addressError",
-        "region"
-      );
-
-      isValid = false;
+      isValid =
+        false;
     }
   }
 
@@ -497,45 +767,54 @@ function validateForm() {
       "paymentMethodError"
     );
 
-    isValid = false;
-  } else if (
+    isValid =
+      false;
+  }
+
+  if (
     !paymentConfirmationInput?.checked
   ) {
     showError(
       "paymentConfirmationError"
     );
 
-    isValid = false;
+    isValid =
+      false;
   }
 
   return isValid;
 }
 
-/* =========================================================
-   BUILD ORDER PAYLOAD
-========================================================= */
+// =========================================================
+// ORDER PAYLOAD
+// =========================================================
 
 function buildOrderPayload(
   cartItems
 ) {
-  const deliveryMethod =
-    form.deliveryMethod.value;
-
   const paymentMethod =
     form.paymentMethod.value;
 
-  const subtotal =
-    getSubtotal(cartItems);
+  const receivingMethod =
+    getReceivingMethod();
 
+  const isDelivery =
+    receivingMethod ===
+    "Delivery";
+
+  const subtotal =
+    getSubtotal(
+      cartItems
+    );
+
+  /*
+   * Delivery is NEVER charged.
+   */
   const deliveryFee =
-    deliveryMethod ===
-    "Delivery"
-      ? DELIVERY_FEE
-      : 0;
+    0;
 
   const grandTotal =
-    subtotal +
-    deliveryFee;
+    subtotal;
 
   const nowIso =
     new Date().toISOString();
@@ -546,9 +825,11 @@ function buildOrderPayload(
     );
 
   return {
-    createdAt: nowIso,
+    createdAt:
+      nowIso,
 
-    lastUpdated: nowIso,
+    lastUpdated:
+      nowIso,
 
     fullName:
       form.fullName.value.trim(),
@@ -565,32 +846,45 @@ function buildOrderPayload(
     emailAddress:
       form.emailAddress.value.trim(),
 
-    deliveryMethod,
+    /*
+     * THIS NOW SAVES THE CUSTOMER'S ACTUAL CHOICE.
+     */
+    deliveryMethod:
+      receivingMethod,
 
     streetAddress:
-      form.streetAddress.value.trim(),
+      isDelivery
+        ? form.streetAddress.value.trim()
+        : "",
 
     city:
-      form.city.value.trim(),
+      isDelivery
+        ? form.city.value.trim()
+        : "",
 
     region:
-      form.region.value.trim(),
+      isDelivery
+        ? form.region.value.trim()
+        : "",
 
     address:
-      [
-        form.streetAddress.value.trim(),
-        form.city.value.trim(),
-        form.region.value.trim()
-      ]
-        .filter(Boolean)
-        .join(", "),
+      isDelivery
+        ? form.streetAddress.value.trim()
+        : "",
 
     landmark:
-      form.landmark.value.trim(),
+      isDelivery
+        ? form.landmark.value.trim()
+        : "",
 
     deliveryInstructions:
-      form.deliveryInstructions.value.trim(),
+      isDelivery
+        ? form.deliveryInstructions.value.trim()
+        : "",
 
+    /*
+     * Payment
+     */
     paymentMethod,
 
     paymentStatus:
@@ -601,10 +895,6 @@ function buildOrderPayload(
         paymentConfirmationInput?.checked
       ),
 
-    promoCode:
-      form.promoCode?.value?.trim() ||
-      "",
-
     orderNotes:
       form.orderNotes.value.trim(),
 
@@ -613,8 +903,12 @@ function buildOrderPayload(
 
     statusHistory: [
       {
-        status: "Pending",
-        at: nowIso,
+        status:
+          "Pending",
+
+        at:
+          nowIso,
+
         note:
           "Order placed by customer"
       }
@@ -631,7 +925,7 @@ function buildOrderPayload(
     totals: {
       subtotal,
 
-      deliveryFee,
+      deliveryFee: 0,
 
       discount: 0,
 
@@ -640,31 +934,24 @@ function buildOrderPayload(
 
     subtotal,
 
-    deliveryFee,
+    deliveryFee: 0,
 
     discount: 0,
 
     grandTotal,
 
     estimatedDeliveryTime:
-      estimateDeliveryIso(45)
+      null
   };
 }
 
-/* =========================================================
-   SAVE ORDER + REGISTER CUSTOMER PUSH DEVICE
-========================================================= */
+// =========================================================
+// SAVE ORDER
+// =========================================================
 
 async function submitOrderToBackend(
   orderPayload
 ) {
-  /*
-   * Create the order in Firestore.
-   *
-   * The Cloud Function now handles customer
-   * creation/update automatically when this
-   * order is created.
-   */
   const createResult =
     await orderService.createOrder({
       ...orderPayload,
@@ -682,10 +969,63 @@ async function submitOrderToBackend(
   const trackingToken =
     createResult.trackingToken;
 
-  /*
-   * Register this customer's browser/device
-   * against THIS specific order.
-   */
+  // =======================================================
+  // SAVE TRACKING HISTORY
+  // =======================================================
+
+  try {
+    const existingHistory =
+      JSON.parse(
+        localStorage.getItem(
+          TRACKING_HISTORY_KEY
+        ) || "[]"
+      );
+
+    const updatedHistory = [
+      {
+        trackingToken,
+
+        orderNumber,
+
+        savedAt:
+          new Date().toISOString()
+      },
+
+      ...existingHistory.filter(
+        (entry) =>
+          entry?.trackingToken !==
+          trackingToken
+      )
+    ].slice(
+      0,
+      10
+    );
+
+    localStorage.setItem(
+      TRACKING_HISTORY_KEY,
+      JSON.stringify(
+        updatedHistory
+      )
+    );
+
+    console.log(
+      "[Treats By Rich] Order saved to tracking history:",
+      orderNumber
+    );
+
+  } catch (
+    historyError
+  ) {
+    console.warn(
+      "[Treats By Rich] Could not save tracking history:",
+      historyError
+    );
+  }
+
+  // =======================================================
+  // CUSTOMER PUSH REGISTRATION
+  // =======================================================
+
   try {
     const notificationResult =
       await notificationService.registerPushDevice({
@@ -695,26 +1035,16 @@ async function submitOrderToBackend(
         orderNumber
       });
 
-    if (
-      notificationResult?.token
-    ) {
-      console.log(
-        `Customer notification device registered for ${orderNumber}`
-      );
-    } else {
-      console.log(
-        `Customer notification registration did not return a token for ${orderNumber}`
-      );
-    }
+    console.log(
+      "[Treats By Rich] Customer notification registration:",
+      notificationResult
+    );
+
   } catch (
     notificationError
   ) {
-    /*
-     * Notification registration must NEVER
-     * prevent the customer's order from being placed.
-     */
     console.warn(
-      "Customer push notification registration failed:",
+      "[Treats By Rich] Customer push notification registration failed:",
       notificationError
     );
   }
@@ -729,9 +1059,9 @@ async function submitOrderToBackend(
   };
 }
 
-/* =========================================================
-   SUBMIT ORDER
-========================================================= */
+// =========================================================
+// SUBMIT ORDER
+// =========================================================
 
 async function handleOrderSubmit(
   event
@@ -752,10 +1082,6 @@ async function handleOrderSubmit(
 
     return;
   }
-
-  placeOrderButton.classList.add(
-    "is-loading"
-  );
 
   placeOrderButton.disabled =
     true;
@@ -787,10 +1113,6 @@ async function handleOrderSubmit(
       result.trackingToken;
 
   } catch (error) {
-    placeOrderButton.classList.remove(
-      "is-loading"
-    );
-
     placeOrderButton.disabled =
       false;
 
@@ -798,7 +1120,7 @@ async function handleOrderSubmit(
       "Place Order";
 
     console.error(
-      "Order placement failed:",
+      "[Treats By Rich] Order placement failed:",
       error
     );
 
@@ -810,25 +1132,25 @@ async function handleOrderSubmit(
     return;
   }
 
-  /*
-   * Clear the cart only after the order
-   * has successfully been created.
-   */
+  // =======================================================
+  // CLEAR CART ONLY AFTER SUCCESS
+  // =======================================================
+
   if (
     window.TBRCartAPI?.clearCart
   ) {
     window.TBRCartAPI.clearCart();
+
   } else {
     localStorage.removeItem(
       CHECKOUT_CONFIG.cartStorageKey
     );
   }
 
-  /*
-   * Redirect to the success page with
-   * both the customer-facing order number
-   * and the private tracking token.
-   */
+  // =======================================================
+  // REDIRECT
+  // =======================================================
+
   window.location.href =
     `order-success.html?order=${encodeURIComponent(
       createdOrderNumber
@@ -837,9 +1159,9 @@ async function handleOrderSubmit(
     )}`;
 }
 
-/* =========================================================
-   PAYMENT DETAILS
-========================================================= */
+// =========================================================
+// PAYMENT DETAILS
+// =========================================================
 
 function showPaymentDetails(
   paymentMethod
@@ -901,9 +1223,9 @@ function showPaymentDetails(
   }
 }
 
-/* =========================================================
-   COPY PAYMENT DETAILS
-========================================================= */
+// =========================================================
+// COPY PAYMENT DETAILS
+// =========================================================
 
 async function handleCopyClick(
   button
@@ -923,6 +1245,7 @@ async function handleCopyClick(
       await navigator.clipboard.writeText(
         value
       );
+
     } else {
       const tempInput =
         document.createElement(
@@ -943,6 +1266,7 @@ async function handleCopyClick(
       );
 
       tempInput.focus();
+
       tempInput.select();
 
       document.execCommand(
@@ -976,7 +1300,12 @@ async function handleCopyClick(
       1500
     );
 
-  } catch (err) {
+  } catch (error) {
+    console.warn(
+      "[Treats By Rich] Copy failed:",
+      error
+    );
+
     button.textContent =
       "Copy failed";
 
@@ -990,133 +1319,123 @@ async function handleCopyClick(
   }
 }
 
-/* =========================================================
-   OPTION BEHAVIOR
-========================================================= */
+// =========================================================
+// RADIO BEHAVIOR
+// =========================================================
+
+function updateRadioCardStates(
+  selector
+) {
+  form
+    ?.querySelectorAll(
+      selector
+    )
+    .forEach(
+      (radio) => {
+        radio
+          .closest(
+            ".radio-card"
+          )
+          ?.classList.toggle(
+            "checked",
+            radio.checked
+          );
+      }
+    );
+}
 
 function attachOptionBehavior() {
-  const deliveryRadios =
-    Array.from(
-      form.querySelectorAll(
-        'input[name="deliveryMethod"]'
-      )
-    );
+  if (!form) {
+    return;
+  }
 
-  deliveryRadios.forEach(
-    (radio) => {
-      radio.addEventListener(
-        "change",
-        () => {
-          if (
-            radio.value ===
-            "Delivery"
-          ) {
-            deliveryFields.style.display =
-              "block";
+  // =======================================================
+  // RECEIVING METHOD
+  // =======================================================
 
-            deliveryFields.setAttribute(
-              "aria-hidden",
-              "false"
-            );
-          } else {
-            deliveryFields.style.display =
-              "none";
-
-            deliveryFields.setAttribute(
-              "aria-hidden",
-              "true"
-            );
-          }
-
-          renderSummary();
-        }
-      );
-    }
-  );
-
-  form.addEventListener(
-    "submit",
-    handleOrderSubmit
-  );
-
-  Array.from(
-    form.querySelectorAll(
-      'input[name="paymentMethod"]'
+  form
+    .querySelectorAll(
+      'input[name="deliveryMethod"]'
     )
-  ).forEach(
-    (radio) => {
-      const parent =
-        radio.closest(
-          ".radio-card"
-        );
+    .forEach(
+      (radio) => {
+        radio.addEventListener(
+          "change",
+          () => {
+            updateRadioCardStates(
+              'input[name="deliveryMethod"]'
+            );
 
-      if (
-        radio.checked &&
-        parent
-      ) {
-        parent.classList.add(
-          "checked"
+            updateDeliveryFields();
+
+            const addressError =
+              document.getElementById(
+                "addressError"
+              );
+
+            if (
+              addressError
+            ) {
+              addressError.textContent =
+                "";
+            }
+          }
         );
       }
+    );
 
-      radio.addEventListener(
-        "change",
-        () => {
-          document
-            .querySelectorAll(
+  // =======================================================
+  // PAYMENT METHODS
+  // =======================================================
+
+  form
+    .querySelectorAll(
+      'input[name="paymentMethod"]'
+    )
+    .forEach(
+      (radio) => {
+        radio.addEventListener(
+          "change",
+          () => {
+            updateRadioCardStates(
               'input[name="paymentMethod"]'
-            )
-            .forEach(
-              (option) => {
-                option
-                  .closest(
-                    ".radio-card"
-                  )
-                  ?.classList.remove(
-                    "checked"
-                  );
-              }
             );
 
-          radio
-            .closest(
-              ".radio-card"
-            )
-            ?.classList.add(
-              "checked"
+            showPaymentDetails(
+              radio.value
             );
 
-          showPaymentDetails(
-            radio.value
-          );
+            const methodErrorNode =
+              document.getElementById(
+                "paymentMethodError"
+              );
 
-          const methodErrorNode =
-            document.getElementById(
-              "paymentMethodError"
-            );
+            if (
+              methodErrorNode
+            ) {
+              methodErrorNode.textContent =
+                "";
+            }
 
-          if (
-            methodErrorNode
-          ) {
-            methodErrorNode.textContent =
-              "";
+            const confirmErrorNode =
+              document.getElementById(
+                "paymentConfirmationError"
+              );
+
+            if (
+              confirmErrorNode
+            ) {
+              confirmErrorNode.textContent =
+                "";
+            }
           }
+        );
+      }
+    );
 
-          const confirmErrorNode =
-            document.getElementById(
-              "paymentConfirmationError"
-            );
-
-          if (
-            confirmErrorNode
-          ) {
-            confirmErrorNode.textContent =
-              "";
-          }
-        }
-      );
-    }
-  );
+  // =======================================================
+  // PAYMENT CONFIRMATION
+  // =======================================================
 
   paymentConfirmationInput?.addEventListener(
     "change",
@@ -1136,131 +1455,59 @@ function attachOptionBehavior() {
     }
   );
 
-  Array.from(
-    form.querySelectorAll(
+  // =======================================================
+  // COPY BUTTONS
+  // =======================================================
+
+  form
+    .querySelectorAll(
       ".payment-copy-btn"
     )
-  ).forEach(
-    (button) => {
-      button.addEventListener(
-        "click",
-        () =>
-          handleCopyClick(
-            button
-          )
-      );
-    }
-  );
-
-  Array.from(
-    form.querySelectorAll(
-      'input[name="deliveryMethod"]'
-    )
-  ).forEach(
-    (radio) => {
-      const parent =
-        radio.closest(
-          ".radio-card"
-        );
-
-      if (
-        radio.checked &&
-        parent
-      ) {
-        parent.classList.add(
-          "checked"
+    .forEach(
+      (button) => {
+        button.addEventListener(
+          "click",
+          () =>
+            handleCopyClick(
+              button
+            )
         );
       }
+    );
 
-      radio.addEventListener(
-        "change",
-        () => {
-          document
-            .querySelectorAll(
-              'input[name="deliveryMethod"]'
-            )
-            .forEach(
-              (option) => {
-                option
-                  .closest(
-                    ".radio-card"
-                  )
-                  ?.classList.remove(
-                    "checked"
-                  );
-              }
-            );
+  // =======================================================
+  // SUBMIT
+  // =======================================================
 
-          radio
-            .closest(
-              ".radio-card"
-            )
-            ?.classList.add(
-              "checked"
-            );
-        }
-      );
-    }
-  );
-
-  applyPromoButton?.addEventListener(
-    "click",
-    () => {
-      const promoInput =
-        document.getElementById(
-          "promoCode"
-        );
-
-      if (!promoInput) {
-        return;
-      }
-
-      promoInput.classList.add(
-        "is-valid"
-      );
-
-      applyPromoButton.textContent =
-        "Applied";
-
-      window.setTimeout(
-        () => {
-          applyPromoButton.textContent =
-            "Apply";
-        },
-        900
-      );
-    }
+  form.addEventListener(
+    "submit",
+    handleOrderSubmit
   );
 }
 
-/* =========================================================
-   INIT
-========================================================= */
+// =========================================================
+// INIT
+// =========================================================
 
-function init() {
+async function init() {
   if (!form) {
     return;
   }
 
-  const selectedDelivery =
-    form.querySelector(
-      'input[name="deliveryMethod"]:checked'
-    )?.value;
+  // Load Firebase settings first.
+  await loadPaymentSettings();
 
-  deliveryFields.style.display =
-    selectedDelivery ===
-    "Delivery"
-      ? "block"
-      : "none";
+  // Apply saved payment information.
+  applyPaymentSettings();
 
-  deliveryFields.setAttribute(
-    "aria-hidden",
-    selectedDelivery ===
-      "Delivery"
-      ? "false"
-      : "true"
+  // Set initial receiving method.
+  updateRadioCardStates(
+    'input[name="deliveryMethod"]'
   );
 
+  updateDeliveryFields();
+
+  // Set initial payment method.
   const selectedPayment =
     form.querySelector(
       'input[name="paymentMethod"]:checked'
@@ -1273,6 +1520,10 @@ function init() {
   attachOptionBehavior();
 
   renderSummary();
+
+  console.log(
+    "[Treats By Rich] Checkout initialized."
+  );
 }
 
 init();

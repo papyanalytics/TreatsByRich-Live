@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { getMessaging } from "firebase-admin/messaging";
+
 import {
   onDocumentCreated,
   onDocumentUpdated
@@ -83,7 +84,8 @@ function cleanupInvalidTokens(tokens, response) {
 
   response.responses.forEach((result, index) => {
     if (!result.success) {
-      const errorCode = result.error?.code || "";
+      const errorCode =
+        result.error?.code || "";
 
       if (
         errorCode.includes(
@@ -96,7 +98,9 @@ function cleanupInvalidTokens(tokens, response) {
           "invalid-argument"
         )
       ) {
-        invalidTokens.push(tokens[index]);
+        invalidTokens.push(
+          tokens[index]
+        );
       }
     }
   });
@@ -110,30 +114,55 @@ async function removeInvalidTokens(tokens) {
     return;
   }
 
-  const snapshot = await db
-    .collection("notificationRegistrations")
-    .where(
-      "token",
-      "in",
-      tokens.slice(0, 10)
-    )
-    .get();
+  const chunks = [];
 
-  if (snapshot.empty) {
-    return;
+  for (
+    let i = 0;
+    i < tokens.length;
+    i += 10
+  ) {
+    chunks.push(
+      tokens.slice(
+        i,
+        i + 10
+      )
+    );
   }
 
-  const batch = db.batch();
+  for (const chunk of chunks) {
+    const snapshot =
+      await db
+        .collection(
+          "notificationRegistrations"
+        )
+        .where(
+          "token",
+          "in",
+          chunk
+        )
+        .get();
 
-  snapshot.docs.forEach((doc) => {
-    batch.delete(doc.ref);
-  });
+    if (snapshot.empty) {
+      continue;
+    }
 
-  await batch.commit();
+    const batch =
+      db.batch();
 
-  console.log(
-    `Removed ${snapshot.size} invalid notification registration(s).`
-  );
+    snapshot.docs.forEach(
+      (doc) => {
+        batch.delete(
+          doc.ref
+        );
+      }
+    );
+
+    await batch.commit();
+
+    console.log(
+      `Removed ${snapshot.size} invalid notification registration(s).`
+    );
+  }
 }
 
 
@@ -154,43 +183,53 @@ function buildTrackingData(order) {
       order.status || "Pending",
 
     statusHistory:
-      Array.isArray(order.statusHistory)
+      Array.isArray(
+        order.statusHistory
+      )
         ? order.statusHistory
         : [],
 
     items:
       Array.isArray(order.items)
-        ? order.items.map((item) => ({
-            productId:
-              item.productId || "",
+        ? order.items.map(
+            (item) => ({
+              productId:
+                item.productId || "",
 
-            productName:
-              item.productName || "Treat Item",
+              productName:
+                item.productName ||
+                "Treat Item",
 
-            size:
-              item.size || "Standard",
+              size:
+                item.size ||
+                "Standard",
 
-            quantity:
-              Number(item.quantity || 1),
+              quantity:
+                Number(
+                  item.quantity || 1
+                ),
 
-            extras:
-              Array.isArray(item.extras)
-                ? item.extras
-                : [],
+              extras:
+                Array.isArray(
+                  item.extras
+                )
+                  ? item.extras
+                  : [],
 
-            unitPrice:
-              Number(
-                item.unitPrice ??
-                item.price ??
-                0
-              ),
+              unitPrice:
+                Number(
+                  item.unitPrice ??
+                  item.price ??
+                  0
+                ),
 
-            totalPrice:
-              Number(
-                item.totalPrice ??
-                0
-              )
-          }))
+              totalPrice:
+                Number(
+                  item.totalPrice ??
+                  0
+                )
+            })
+          )
         : [],
 
     totals: {
@@ -227,7 +266,8 @@ function buildTrackingData(order) {
       order.deliveryMethod || "",
 
     estimatedDeliveryTime:
-      order.estimatedDeliveryTime || "",
+      order.estimatedDeliveryTime ||
+      "",
 
     updatedAt:
       order.updatedAt ||
@@ -235,23 +275,140 @@ function buildTrackingData(order) {
       null,
 
     createdAt:
-      order.createdAt || null
+      order.createdAt ||
+      null
   };
 }
 
 
 // ============================================================
-// CREATE TRACKING RECORD
+// CUSTOMER TRACKING URL
+// ============================================================
 //
-// When a new order is created, create a separate public-safe
-// tracking document using the random tracking token as its ID.
+// IMPORTANT:
+// Never use the order number for the customer tracking link.
+// The private tracking token is required.
+// ============================================================
+
+function buildCustomerTrackingUrl(
+  order
+) {
+  const trackingToken =
+    order.trackingToken || "";
+
+  if (!trackingToken) {
+    return "/order-tracking.html";
+  }
+
+  return `/order-tracking.html?tracking=${encodeURIComponent(
+    trackingToken
+  )}`;
+}
+
+
+// ============================================================
+// SEND CUSTOMER NOTIFICATION
+// ============================================================
+
+async function sendCustomerNotification({
+  orderNumber,
+  trackingToken,
+  status,
+  tokens
+}) {
+  if (!tokens.length) {
+    return {
+      successCount: 0,
+      failureCount: 0
+    };
+  }
+
+  const normalizedStatus =
+    normalizeStatus(status) ||
+    "pending";
+
+  const messageConfig =
+    STATUS_MESSAGES[
+      normalizedStatus
+    ] ||
+    STATUS_MESSAGES.pending;
+
+  const trackingUrl =
+    trackingToken
+      ? `/order-tracking.html?tracking=${encodeURIComponent(
+          trackingToken
+        )}`
+      : "/order-tracking.html";
+
+  const response =
+    await messaging.sendEachForMulticast(
+      {
+        tokens,
+
+        notification: {
+          title:
+            messageConfig.title,
+
+          body:
+            messageConfig.body
+        },
+
+        data: {
+          orderNumber:
+            String(
+              orderNumber || ""
+            ),
+
+          status:
+            String(
+              normalizedStatus
+            ),
+
+          url:
+            trackingUrl
+        },
+
+        webpush: {
+          fcmOptions: {
+            link:
+              trackingUrl
+          }
+        }
+      }
+    );
+
+  console.log(
+    `Customer notification sent for ${orderNumber}: ${response.successCount} successful, ${response.failureCount} failed.`
+  );
+
+  const invalidTokens =
+    cleanupInvalidTokens(
+      tokens,
+      response
+    );
+
+  if (
+    invalidTokens.length
+  ) {
+    await removeInvalidTokens(
+      invalidTokens
+    );
+  }
+
+  return response;
+}
+
+
+// ============================================================
+// CREATE TRACKING RECORD
 // ============================================================
 
 export const createOrderTracking =
   onDocumentCreated(
     "orders/{orderId}",
     async (event) => {
-      const orderSnapshot = event.data;
+      const orderSnapshot =
+        event.data;
 
       if (!orderSnapshot) {
         console.warn(
@@ -262,10 +419,12 @@ export const createOrderTracking =
       }
 
       const order =
-        orderSnapshot.data() || {};
+        orderSnapshot.data() ||
+        {};
 
       const trackingToken =
-        order.trackingToken || "";
+        order.trackingToken ||
+        "";
 
       const orderNumber =
         order.orderNumber ||
@@ -281,11 +440,17 @@ export const createOrderTracking =
 
       try {
         const trackingData =
-          buildTrackingData(order);
+          buildTrackingData(
+            order
+          );
 
         await db
-          .collection("orderTracking")
-          .doc(trackingToken)
+          .collection(
+            "orderTracking"
+          )
+          .doc(
+            trackingToken
+          )
           .set({
             ...trackingData,
 
@@ -319,9 +484,6 @@ export const createOrderTracking =
 
 // ============================================================
 // UPDATE TRACKING RECORD
-//
-// Whenever the order changes, keep the safe tracking document
-// synchronized with the order.
 // ============================================================
 
 export const updateOrderTracking =
@@ -336,10 +498,12 @@ export const updateOrderTracking =
       }
 
       const order =
-        orderSnapshot.data() || {};
+        orderSnapshot.data() ||
+        {};
 
       const trackingToken =
-        order.trackingToken || "";
+        order.trackingToken ||
+        "";
 
       const orderNumber =
         order.orderNumber ||
@@ -355,11 +519,17 @@ export const updateOrderTracking =
 
       try {
         const trackingData =
-          buildTrackingData(order);
+          buildTrackingData(
+            order
+          );
 
         await db
-          .collection("orderTracking")
-          .doc(trackingToken)
+          .collection(
+            "orderTracking"
+          )
+          .doc(
+            trackingToken
+          )
           .set(
             {
               ...trackingData,
@@ -394,16 +564,14 @@ export const updateOrderTracking =
 
 // ============================================================
 // CUSTOMER SYNC
-//
-// Creates or updates a customer when a new order is created.
-// This runs on the server instead of inside checkout.js.
 // ============================================================
 
 export const syncCustomerOnOrderCreated =
   onDocumentCreated(
     "orders/{orderId}",
     async (event) => {
-      const orderSnapshot = event.data;
+      const orderSnapshot =
+        event.data;
 
       if (!orderSnapshot) {
         console.warn(
@@ -414,7 +582,8 @@ export const syncCustomerOnOrderCreated =
       }
 
       const order =
-        orderSnapshot.data() || {};
+        orderSnapshot.data() ||
+        {};
 
       const orderId =
         event.params.orderId;
@@ -441,10 +610,12 @@ export const syncCustomerOnOrderCreated =
         "";
 
       const city =
-        order.city || "";
+        order.city ||
+        "";
 
       const region =
-        order.region || "";
+        order.region ||
+        "";
 
       const orderTotal =
         Number(
@@ -463,7 +634,9 @@ export const syncCustomerOnOrderCreated =
 
       try {
         const customersRef =
-          db.collection("customers");
+          db.collection(
+            "customers"
+          );
 
         let customerSnapshot =
           await customersRef
@@ -567,7 +740,8 @@ export const syncCustomerOnOrderCreated =
           customerSnapshot.docs[0];
 
         const existingCustomer =
-          customerDoc.data() || {};
+          customerDoc.data() ||
+          {};
 
         const previousOrders =
           Number(
@@ -652,6 +826,141 @@ export const syncCustomerOnOrderCreated =
 
 
 // ============================================================
+// CUSTOMER INITIAL NOTIFICATION
+//
+// IMPORTANT:
+//
+// This runs when a customer's notification device is registered.
+//
+// This solves the situation where:
+//
+// 1. Customer places order.
+// 2. Order is created.
+// 3. Tracking page loads.
+// 4. Customer's FCM token is registered.
+//
+// The order already exists by the time the token is registered,
+// so this function sends the initial notification at that point.
+// ============================================================
+
+export const notifyCustomerOnNotificationRegistration =
+  onDocumentCreated(
+    "notificationRegistrations/{registrationId}",
+    async (event) => {
+      const registrationSnapshot =
+        event.data;
+
+      if (!registrationSnapshot) {
+        return;
+      }
+
+      const registration =
+        registrationSnapshot.data() ||
+        {};
+
+      const role =
+        String(
+          registration.role ||
+            ""
+        )
+          .trim()
+          .toLowerCase();
+
+      if (
+        role !== "customer"
+      ) {
+        return;
+      }
+
+      const orderNumber =
+        registration.orderNumber ||
+        "";
+
+      const token =
+        registration.token ||
+        "";
+
+      if (
+        !orderNumber ||
+        !token
+      ) {
+        console.log(
+          "Customer initial notification skipped: missing orderNumber or token."
+        );
+
+        return;
+      }
+
+      try {
+        const ordersSnapshot =
+          await db
+            .collection(
+              "orders"
+            )
+            .where(
+              "orderNumber",
+              "==",
+              orderNumber
+            )
+            .limit(1)
+            .get();
+
+        if (
+          ordersSnapshot.empty
+        ) {
+          console.log(
+            `Customer initial notification skipped: order ${orderNumber} was not found.`
+          );
+
+          return;
+        }
+
+        const order =
+          ordersSnapshot.docs[0]
+            .data() || {};
+
+        const trackingToken =
+          order.trackingToken ||
+          "";
+
+        const currentStatus =
+          normalizeStatus(
+            order.status
+          ) ||
+          "pending";
+
+        await sendCustomerNotification({
+          orderNumber,
+          trackingToken,
+          status:
+            currentStatus,
+          tokens: [token]
+        });
+
+        await registrationSnapshot.ref.update({
+          initialNotificationSent:
+            true,
+
+          initialNotificationSentAt:
+            new Date()
+        });
+
+        console.log(
+          `Initial customer notification sent for ${orderNumber}.`
+        );
+      } catch (error) {
+        console.error(
+          `Initial customer notification failed for ${orderNumber}:`,
+          error
+        );
+
+        throw error;
+      }
+    }
+  );
+
+
+// ============================================================
 // CUSTOMER PUSH NOTIFICATION
 //
 // Runs whenever an order is updated and the order status changes.
@@ -675,10 +984,12 @@ export const notifyCustomerOnOrderStatusChange =
       }
 
       const before =
-        beforeSnapshot.data() || {};
+        beforeSnapshot.data() ||
+        {};
 
       const after =
-        afterSnapshot.data() || {};
+        afterSnapshot.data() ||
+        {};
 
       const previousStatus =
         normalizeStatus(
@@ -699,7 +1010,12 @@ export const notifyCustomerOnOrderStatusChange =
       }
 
       const orderNumber =
-        after.orderNumber || "";
+        after.orderNumber ||
+        "";
+
+      const trackingToken =
+        after.trackingToken ||
+        "";
 
       if (!orderNumber) {
         console.warn(
@@ -766,64 +1082,13 @@ export const notifyCustomerOnOrderStatusChange =
           return;
         }
 
-        const response =
-          await messaging.sendEachForMulticast(
-            {
-              tokens,
-
-              notification: {
-                title:
-                  messageConfig.title,
-
-                body:
-                  messageConfig.body
-              },
-
-              data: {
-                orderNumber:
-                  String(
-                    orderNumber
-                  ),
-
-                status:
-                  String(
-                    currentStatus
-                  ),
-
-                url:
-                  `/order-tracking.html?order=${encodeURIComponent(
-                    orderNumber
-                  )}`
-              },
-
-              webpush: {
-                fcmOptions: {
-                  link:
-                    `/order-tracking.html?order=${encodeURIComponent(
-                      orderNumber
-                    )}`
-                }
-              }
-            }
-          );
-
-        console.log(
-          `Notification sent for ${orderNumber}: ${response.successCount} successful, ${response.failureCount} failed.`
-        );
-
-        const invalidTokens =
-          cleanupInvalidTokens(
-            tokens,
-            response
-          );
-
-        if (
-          invalidTokens.length
-        ) {
-          await removeInvalidTokens(
-            invalidTokens
-          );
-        }
+        await sendCustomerNotification({
+          orderNumber,
+          trackingToken,
+          status:
+            currentStatus,
+          tokens
+        });
       } catch (error) {
         console.error(
           `Customer notification failed for ${orderNumber}:`,
@@ -858,7 +1123,8 @@ export const notifyAdminOnNewOrder =
       }
 
       const order =
-        orderSnapshot.data() || {};
+        orderSnapshot.data() ||
+        {};
 
       const orderNumber =
         order.orderNumber ||
@@ -915,6 +1181,11 @@ export const notifyAdminOnNewOrder =
           return;
         }
 
+        const adminUrl =
+          `/admin/order-details.html?order=${encodeURIComponent(
+            orderNumber
+          )}`;
+
         const response =
           await messaging.sendEachForMulticast(
             {
@@ -937,17 +1208,13 @@ export const notifyAdminOnNewOrder =
                   ),
 
                 url:
-                  `/admin/order-details.html?order=${encodeURIComponent(
-                    orderNumber
-                  )}`
+                  adminUrl
               },
 
               webpush: {
                 fcmOptions: {
                   link:
-                    `/admin/order-details.html?order=${encodeURIComponent(
-                      orderNumber
-                    )}`
+                    adminUrl
                 }
               }
             }
@@ -973,6 +1240,588 @@ export const notifyAdminOnNewOrder =
       } catch (error) {
         console.error(
           `Admin notification failed for ${orderNumber}:`,
+          error
+        );
+
+        throw error;
+      }
+    }
+  );
+
+// ============================================================
+// EMAIL NOTIFICATION HELPERS
+//
+// Firebase Trigger Email extension watches the "mail" collection.
+// These helpers only queue email documents. The extension handles
+// the actual SMTP delivery.
+// ============================================================
+
+const ADMIN_EMAIL = "treatsbyrichparfait@gmail.com";
+const SITE_URL = "https://treatsbyrich.com";
+
+function escapeEmailHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+async function getBusinessSettings() {
+  const snapshot = await db
+    .collection("settings")
+    .doc("business")
+    .get();
+
+  return snapshot.exists
+    ? snapshot.data() || {}
+    : {};
+}
+
+async function queueAdminEmail({
+  subject,
+  html,
+  text
+}) {
+  await db.collection("mail").add({
+    to: ADMIN_EMAIL,
+    message: {
+      subject,
+      html,
+      text
+    }
+  });
+
+  console.log(
+    `[Treats By Rich] Email queued: ${subject}`
+  );
+}
+
+function getOrderTotal(order) {
+  return Number(
+    order.totals?.grandTotal ??
+    order.grandTotal ??
+    0
+  );
+}
+
+function getOrderItemsText(order) {
+  if (!Array.isArray(order.items) || !order.items.length) {
+    return "No item details available.";
+  }
+
+  return order.items
+    .map((item) => {
+      const name =
+        item.productName ||
+        "Treat Item";
+
+      const size =
+        item.size ||
+        "Standard";
+
+      const quantity =
+        Number(item.quantity || 1);
+
+      const total =
+        Number(
+          item.totalPrice ??
+          item.price ??
+          0
+        );
+
+      return `${name} (${size}) × ${quantity} — GH₵${total.toFixed(2)}`;
+    })
+    .join("\n");
+}
+
+function getOrderItemsHtml(order) {
+  if (!Array.isArray(order.items) || !order.items.length) {
+    return "<p>No item details available.</p>";
+  }
+
+  return `
+    <ul style="padding-left:20px;">
+      ${order.items
+        .map((item) => {
+          const name = escapeEmailHtml(
+            item.productName || "Treat Item"
+          );
+
+          const size = escapeEmailHtml(
+            item.size || "Standard"
+          );
+
+          const quantity =
+            Number(item.quantity || 1);
+
+          const total =
+            Number(
+              item.totalPrice ??
+              item.price ??
+              0
+            );
+
+          return `
+            <li style="margin-bottom:8px;">
+              ${name} (${size}) × ${quantity}
+              — <strong>GH₵${total.toFixed(2)}</strong>
+            </li>
+          `;
+        })
+        .join("")}
+    </ul>
+  `;
+}
+
+function buildAdminOrderEmail({
+  order,
+  subject,
+  heading,
+  intro
+}) {
+  const orderNumber =
+    order.orderNumber || "Unknown";
+
+  const customerName =
+    order.fullName ||
+    order.customerName ||
+    "Customer";
+
+  const paymentMethod =
+    order.paymentMethod ||
+    order.payment ||
+    "Not provided";
+
+  const paymentStatus =
+    order.paymentStatus ||
+    "Not provided";
+
+  const deliveryMethod =
+    order.deliveryMethod ||
+    "Not provided";
+
+  const total =
+    getOrderTotal(order);
+
+  const adminUrl =
+    `${SITE_URL}/admin/order-details.html?order=${encodeURIComponent(
+      orderNumber
+    )}`;
+
+  const safeCustomerName =
+    escapeEmailHtml(customerName);
+
+  const safeOrderNumber =
+    escapeEmailHtml(orderNumber);
+
+  const safePaymentMethod =
+    escapeEmailHtml(paymentMethod);
+
+  const safePaymentStatus =
+    escapeEmailHtml(paymentStatus);
+
+  const safeDeliveryMethod =
+    escapeEmailHtml(deliveryMethod);
+
+  const safeIntro =
+    escapeEmailHtml(intro);
+
+  const text =
+`${heading}
+
+${intro}
+
+Order: ${orderNumber}
+Customer: ${customerName}
+Total: GH₵${total.toFixed(2)}
+Payment method: ${paymentMethod}
+Payment status: ${paymentStatus}
+Delivery method: ${deliveryMethod}
+
+Items:
+${getOrderItemsText(order)}
+
+Open order:
+${adminUrl}
+
+Treats By Rich
+Love at First Scoop.`;
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;line-height:1.6;color:#4A2412;max-width:680px;margin:auto;">
+      <div style="padding:24px;background:#FFF8E8;border-radius:12px;">
+        <h1 style="margin-top:0;">${escapeEmailHtml(heading)}</h1>
+        <p>${safeIntro}</p>
+
+        <div style="background:#ffffff;padding:18px;border-radius:10px;">
+          <p><strong>Order:</strong> ${safeOrderNumber}</p>
+          <p><strong>Customer:</strong> ${safeCustomerName}</p>
+          <p><strong>Total:</strong> GH₵${total.toFixed(2)}</p>
+          <p><strong>Payment method:</strong> ${safePaymentMethod}</p>
+          <p><strong>Payment status:</strong> ${safePaymentStatus}</p>
+          <p><strong>Delivery method:</strong> ${safeDeliveryMethod}</p>
+
+          <h3>Items</h3>
+          ${getOrderItemsHtml(order)}
+
+          <p style="margin-top:24px;">
+            <a
+              href="${adminUrl}"
+              style="display:inline-block;padding:12px 18px;background:#E85D04;color:#ffffff;text-decoration:none;border-radius:8px;"
+            >
+              Open Order in Admin
+            </a>
+          </p>
+        </div>
+
+        <p style="margin-bottom:0;margin-top:20px;">
+          <strong>Treats By Rich</strong><br>
+          Love at First Scoop.
+        </p>
+      </div>
+    </div>
+  `;
+
+  return {
+    subject,
+    html,
+    text
+  };
+}
+
+
+// ============================================================
+// NEW ORDER EMAIL
+//
+// Runs whenever a new order is created.
+// Controlled by settings.business.notifyNewOrder.
+// ============================================================
+
+export const emailAdminOnNewOrder =
+  onDocumentCreated(
+    "orders/{orderId}",
+    async (event) => {
+      const snapshot =
+        event.data;
+
+      if (!snapshot) {
+        return;
+      }
+
+      const order =
+        snapshot.data() || {};
+
+      try {
+        const settings =
+          await getBusinessSettings();
+
+        if (
+          settings.notifyNewOrder === false
+        ) {
+          console.log(
+            "New order email skipped: notifyNewOrder is disabled."
+          );
+
+          return;
+        }
+
+        const orderNumber =
+          order.orderNumber ||
+          event.params.orderId;
+
+        const customerName =
+          order.fullName ||
+          order.customerName ||
+          "Customer";
+
+        const total =
+          getOrderTotal(order);
+
+        const email =
+          buildAdminOrderEmail({
+            order,
+            subject:
+              `New Order ${orderNumber} 🛒 | Treats By Rich`,
+            heading:
+              "New Order Received 🛒",
+            intro:
+              `${customerName} has placed a new order worth GH₵${total.toFixed(
+                2
+              )}.`
+          });
+
+        await queueAdminEmail(email);
+      } catch (error) {
+        console.error(
+          "New order email failed:",
+          error
+        );
+
+        throw error;
+      }
+    }
+  );
+
+
+// ============================================================
+// PAYMENT VERIFICATION EMAIL
+//
+// Sends when a new order needs manual payment verification,
+// and when an existing order changes into a payment-verification
+// state. Controlled by settings.business.notifyPayment.
+// ============================================================
+
+function isAwaitingPaymentVerification(
+  paymentStatus
+) {
+  const value =
+    normalizeStatus(
+      paymentStatus
+    );
+
+  return (
+    value ===
+      "awaiting manual payment verification" ||
+    value ===
+      "payment verification" ||
+    value ===
+      "awaiting payment verification" ||
+    value ===
+      "pending payment verification"
+  );
+}
+
+export const emailAdminOnPaymentVerification =
+  onDocumentUpdated(
+    "orders/{orderId}",
+    async (event) => {
+      const beforeSnapshot =
+        event.data?.before;
+
+      const afterSnapshot =
+        event.data?.after;
+
+      if (
+        !beforeSnapshot ||
+        !afterSnapshot
+      ) {
+        return;
+      }
+
+      const before =
+        beforeSnapshot.data() || {};
+
+      const after =
+        afterSnapshot.data() || {};
+
+      const paymentChanged =
+        normalizeStatus(
+          before.paymentStatus
+        ) !==
+        normalizeStatus(
+          after.paymentStatus
+        );
+
+      const statusChangedToVerification =
+        normalizeStatus(
+          before.status
+        ) !==
+          "payment verification" &&
+        normalizeStatus(
+          after.status
+        ) ===
+          "payment verification";
+
+      if (
+        !paymentChanged &&
+        !statusChangedToVerification
+      ) {
+        return;
+      }
+
+      const needsVerification =
+        isAwaitingPaymentVerification(
+          after.paymentStatus
+        ) ||
+        normalizeStatus(
+          after.status
+        ) ===
+          "payment verification";
+
+      if (!needsVerification) {
+        return;
+      }
+
+      try {
+        const settings =
+          await getBusinessSettings();
+
+        if (
+          settings.notifyPayment === false
+        ) {
+          console.log(
+            "Payment verification email skipped: notifyPayment is disabled."
+          );
+
+          return;
+        }
+
+        const orderNumber =
+          after.orderNumber ||
+          event.params.orderId;
+
+        const email =
+          buildAdminOrderEmail({
+            order: after,
+            subject:
+              `Payment Verification Needed ${orderNumber} 💳 | Treats By Rich`,
+            heading:
+              "Payment Verification Needed 💳",
+            intro:
+              `Order ${orderNumber} is waiting for manual payment verification.`
+          });
+
+        await queueAdminEmail(email);
+      } catch (error) {
+        console.error(
+          `Payment verification email failed for ${
+            after.orderNumber ||
+            event.params.orderId
+          }:`,
+          error
+        );
+
+        throw error;
+      }
+    }
+  );
+
+
+// ============================================================
+// REVIEW EMAIL
+//
+// Runs whenever a customer submits a new review.
+// Controlled by settings.business.notifyReview.
+// ============================================================
+
+export const emailAdminOnNewReview =
+  onDocumentCreated(
+    "reviews/{reviewId}",
+    async (event) => {
+      const snapshot =
+        event.data;
+
+      if (!snapshot) {
+        return;
+      }
+
+      const review =
+        snapshot.data() || {};
+
+      try {
+        const settings =
+          await getBusinessSettings();
+
+        if (
+          settings.notifyReview === false
+        ) {
+          console.log(
+            "Review email skipped: notifyReview is disabled."
+          );
+
+          return;
+        }
+
+        const name =
+          review.name ||
+          "Customer";
+
+        const order =
+          review.order ||
+          "Not provided";
+
+        const rating =
+          Number(
+            review.rating || 0
+          );
+
+        const message =
+          review.message ||
+          "";
+
+        const safeName =
+          escapeEmailHtml(name);
+
+        const safeOrder =
+          escapeEmailHtml(order);
+
+        const safeMessage =
+          escapeEmailHtml(message)
+            .replaceAll(
+              "\n",
+              "<br>"
+            );
+
+        const stars =
+          "★".repeat(
+            Math.max(
+              0,
+              Math.min(
+                5,
+                rating
+              )
+            )
+          ) || "No rating";
+
+        const subject =
+          `New Customer Review ⭐ | Treats By Rich`;
+
+        const text =
+`New customer review received.
+
+Customer: ${name}
+Order: ${order}
+Rating: ${rating}/5
+Stars: ${stars}
+
+Review:
+${message}
+
+Treats By Rich
+Love at First Scoop.`;
+
+        const html = `
+          <div style="font-family:Arial,sans-serif;line-height:1.6;color:#4A2412;max-width:680px;margin:auto;">
+            <div style="padding:24px;background:#FFF8E8;border-radius:12px;">
+              <h1 style="margin-top:0;">New Customer Review ⭐</h1>
+
+              <div style="background:#ffffff;padding:18px;border-radius:10px;">
+                <p><strong>Customer:</strong> ${safeName}</p>
+                <p><strong>Order:</strong> ${safeOrder}</p>
+                <p><strong>Rating:</strong> ${rating}/5 ${stars}</p>
+
+                <h3>Review</h3>
+                <p>${safeMessage}</p>
+              </div>
+
+              <p style="margin-bottom:0;margin-top:20px;">
+                <strong>Treats By Rich</strong><br>
+                Love at First Scoop.
+              </p>
+            </div>
+          </div>
+        `;
+
+        await queueAdminEmail({
+          subject,
+          html,
+          text
+        });
+      } catch (error) {
+        console.error(
+          "New review email failed:",
           error
         );
 

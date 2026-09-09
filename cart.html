@@ -2,159 +2,594 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <title>Cart | Treats By Rich</title>
-    <meta name="description" content="Review your Treats By Rich order, adjust quantities, and checkout with a premium cart experience." />
+
+    <meta
+      name="description"
+      content="Review your Treats By Rich order, adjust quantities, choose pickup or delivery, and checkout."
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/animations.css" />
   </head>
+
   <body>
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="site-header" id="top">
       <div class="container nav-shell">
-        <a class="brand" href="index.html" aria-label="Treats By Rich home">
-          <img src="images/logo.png" alt="Treats By Rich logo" />
+
+        <a
+          class="brand"
+          href="index.html"
+          aria-label="Treats By Rich home"
+        >
+          <img
+            src="images/logo.png"
+            alt="Treats By Rich logo"
+          />
+
           <span>
             <strong>Treats By Rich</strong>
             <small>Love at First Scoop</small>
           </span>
         </a>
 
-        <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
           <span></span>
           <span></span>
           <span></span>
         </button>
 
-        <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+        <nav
+          id="site-nav"
+          class="site-nav"
+          aria-label="Primary navigation"
+        >
           <a href="index.html">Home</a>
+
           <a href="menu.html">Menu</a>
+
           <a href="about.html">About</a>
+
           <a href="gallery.html">Gallery</a>
-            <a href="events.html">Events</a>
+
+          <a href="events.html">Events</a>
+
           <a href="contact.html">Contact</a>
-          <a class="nav-cart" href="cart.html" aria-label="View cart">
-            <span class="icon icon-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></span>
+
+          <a
+            class="nav-cart"
+            href="cart.html"
+            aria-label="View cart"
+          >
+            <span
+              class="icon icon-cart"
+              aria-hidden="true"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="9" cy="20" r="1"></circle>
+                <circle cx="18" cy="20" r="1"></circle>
+
+                <path
+                  d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"
+                ></path>
+              </svg>
+            </span>
+
             <em class="cart-count">0</em>
           </a>
-          <a class="button button-ghost nav-cta" href="checkout.html">Order Now</a>
+
+          <a
+            class="button button-ghost nav-cta"
+            href="checkout.html"
+          >
+            Order Now
+          </a>
         </nav>
+
       </div>
     </header>
 
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
     <main>
+
+      <!-- PAGE HERO -->
+
       <section class="page-hero cart-page">
         <div class="container">
-          <p class="eyebrow">Your order</p>
-          <h1>Cart with premium flow</h1>
-          <p>Review your parfaits, adjust your customizations and move smoothly to checkout.</p>
+
+          <p class="eyebrow">
+            Your order
+          </p>
+
+          <h1>
+            Cart with premium flow
+          </h1>
+
+          <p>
+            Review your parfaits, adjust your
+            customizations and move smoothly to checkout.
+          </p>
+
         </div>
       </section>
 
+
+      <!-- ===================================================
+           CART SECTION
+           =================================================== -->
+
       <section class="section">
+
         <div class="container cart-shell">
+
+          <!-- =================================================
+               CART ITEMS
+               ================================================= -->
+
           <div class="cart-section">
+
             <div class="cart-empty-state">
-              <div class="empty-illustration" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></div>
-              <h2>Your cart is ready</h2>
-              <p>Pick a parfait from the menu to start your first indulgent order.</p>
-              <a class="button button-primary" href="menu.html">Browse Menu</a>
+
+              <div
+                class="empty-illustration"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle
+                    cx="9"
+                    cy="20"
+                    r="1"
+                  ></circle>
+
+                  <circle
+                    cx="18"
+                    cy="20"
+                    r="1"
+                  ></circle>
+
+                  <path
+                    d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"
+                  ></path>
+                </svg>
+              </div>
+
+              <h2>
+                Your cart is ready
+              </h2>
+
+              <p>
+                Pick a parfait from the menu to start
+                your first indulgent order.
+              </p>
+
+              <a
+                class="button button-primary"
+                href="menu.html"
+              >
+                Browse Menu
+              </a>
+
             </div>
+
+
+            <!-- CART ITEMS ARE RENDERED HERE -->
 
             <div id="cart-items"></div>
 
+
+            <!-- SAVED ITEMS -->
+
             <div class="saved-section">
-              <h3>Saved for later</h3>
+
+              <h3>
+                Saved for later
+              </h3>
+
               <div id="saved-items"></div>
+
             </div>
+
           </div>
+
+
+          <!-- =================================================
+               ORDER SUMMARY
+               ================================================= -->
 
           <aside class="cart-summary-card">
-            <h2>Order Summary</h2>
+
+            <h2>
+              Order Summary
+            </h2>
+
+
+            <!-- PRICE SUMMARY -->
+
             <div class="summary-stack">
-              <div class="summary-row"><span>Subtotal</span><strong data-summary="subtotal">₵0</strong></div>
-              <div class="summary-row"><span>Delivery</span><strong data-summary="delivery-fee">₵0</strong></div>
-              <div class="summary-row summary-total"><span>Estimated Total</span><strong data-summary="estimated-total">₵0</strong></div>
+
+              <div class="summary-row">
+                <span>
+                  Subtotal
+                </span>
+
+                <strong data-summary="subtotal">
+                  GH₵0.00
+                </strong>
+              </div>
+
+
+              <div class="summary-row summary-total">
+
+                <span>
+                  Total
+                </span>
+
+                <strong data-summary="estimated-total">
+                  GH₵0.00
+                </strong>
+
+              </div>
+
             </div>
+
+
+            <!-- =================================================
+                 PICKUP / DELIVERY
+                 ================================================= -->
 
             <div class="option-block">
-              <h3>Delivery</h3>
+
+              <h3>
+                How would you like to receive your order?
+              </h3>
+
+
               <div class="checkbox-list">
+
+                <!-- PICKUP -->
+
                 <label class="checkbox-card">
-                  <span>Pickup</span>
-                  <input type="radio" name="delivery" value="pickup" checked />
+
+                  <span>
+                    <strong>Pickup</strong>
+
+                    <small>
+                      Pick up your order from Treats By Rich.
+                    </small>
+                  </span>
+
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value="pickup"
+                    checked
+                  />
+
                 </label>
+
+
+                <!-- DELIVERY -->
+
                 <label class="checkbox-card">
-                  <span>Delivery</span>
-                  <input type="radio" name="delivery" value="delivery" />
+
+                  <span>
+                    <strong>Delivery</strong>
+
+                    <small>
+                      Arrange and pay for your preferred rider.
+                    </small>
+                  </span>
+
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value="delivery"
+                  />
+
                 </label>
+
               </div>
+
+
+              <!-- DELIVERY INFORMATION -->
+
+              <div class="delivery-note">
+
+                <strong>
+                  For delivery orders:
+                </strong>
+
+                Treats By Rich does not provide a
+                delivery rider. Customers are responsible
+                for arranging and paying for their
+                preferred delivery service.
+
+              </div>
+
             </div>
 
-            <label class="option-block" for="promo-code">
-              <h3>Promo code</h3>
-              <input id="promo-code" type="text" placeholder="Coming soon" />
+
+            <!-- =================================================
+                 PROMO CODE
+                 ================================================= -->
+
+            <label
+              class="option-block"
+              for="promo-code"
+            >
+
+              <h3>
+                Promo code
+              </h3>
+
+              <input
+                id="promo-code"
+                type="text"
+                placeholder="Coming soon"
+              />
+
             </label>
 
+
+            <!-- =================================================
+                 CART ACTIONS
+                 ================================================= -->
+
             <div class="cart-cta-stack">
-              <button class="button button-primary" type="button" data-action="checkout">Checkout</button>
-              <a class="button button-ghost-dark" href="menu.html">Continue Shopping</a>
+
+              <button
+                class="button button-primary"
+                type="button"
+                data-action="checkout"
+              >
+                Checkout
+              </button>
+
+              <a
+                class="button button-ghost-dark"
+                href="menu.html"
+              >
+                Continue Shopping
+              </a>
+
             </div>
+
           </aside>
+
         </div>
+
       </section>
+
     </main>
 
-    <div class="edit-item-modal" id="edit-item-modal" aria-hidden="true">
-      <div class="edit-item-backdrop" data-action="close-edit"></div>
-      <div class="edit-item-panel" role="dialog" aria-modal="true" aria-labelledby="edit-item-title">
+
+    <!-- =====================================================
+         EDIT ITEM MODAL
+         ===================================================== -->
+
+    <div
+      class="edit-item-modal"
+      id="edit-item-modal"
+      aria-hidden="true"
+    >
+
+      <div
+        class="edit-item-backdrop"
+        data-action="close-edit"
+      ></div>
+
+
+      <div
+        class="edit-item-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="edit-item-title"
+      >
+
+        <!-- MODAL HEADER -->
+
         <div class="edit-item-header">
-          <h2 id="edit-item-title">Edit Item</h2>
-          <button class="icon-button" type="button" data-action="close-edit" aria-label="Close editor">✕</button>
+
+          <h2 id="edit-item-title">
+            Edit Item
+          </h2>
+
+          <button
+            class="icon-button"
+            type="button"
+            data-action="close-edit"
+            aria-label="Close editor"
+          >
+            ✕
+          </button>
+
         </div>
 
-        <div class="option-block">
-          <h3>Choose size</h3>
-          <div class="option-grid" data-role="edit-size-options"></div>
-        </div>
+
+        <!-- SIZE -->
 
         <div class="option-block">
-          <h3>Extras</h3>
-          <div class="checkbox-list" data-role="edit-extra-options"></div>
+
+          <h3>
+            Choose size
+          </h3>
+
+          <div
+            class="option-grid"
+            data-role="edit-size-options"
+          ></div>
+
         </div>
 
+
+        <!-- EXTRAS -->
+
         <div class="option-block">
-          <h3>Quantity</h3>
+
+          <h3>
+            Extras
+          </h3>
+
+          <div
+            class="checkbox-list"
+            data-role="edit-extra-options"
+          ></div>
+
+        </div>
+
+
+        <!-- QUANTITY -->
+
+        <div class="option-block">
+
+          <h3>
+            Quantity
+          </h3>
+
           <div class="quantity-selector">
-            <button class="quantity-btn" type="button" data-action="edit-decrease" aria-label="Decrease quantity">−</button>
-            <input id="edit-quantity" type="number" min="1" value="1" aria-label="Quantity" />
-            <button class="quantity-btn" type="button" data-action="edit-increase" aria-label="Increase quantity">+</button>
+
+            <button
+              class="quantity-btn"
+              type="button"
+              data-action="edit-decrease"
+              aria-label="Decrease quantity"
+            >
+              −
+            </button>
+
+            <input
+              id="edit-quantity"
+              type="number"
+              min="1"
+              value="1"
+              aria-label="Quantity"
+            />
+
+            <button
+              class="quantity-btn"
+              type="button"
+              data-action="edit-increase"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+
           </div>
+
         </div>
+
+
+        <!-- PRICE -->
 
         <div class="price-box">
+
           <div>
-            <span class="price-label">Total</span>
-            <h2 id="edit-total-price">₵80</h2>
+
+            <span class="price-label">
+              Total
+            </span>
+
+            <h2 id="edit-total-price">
+              GH₵80.00
+            </h2>
+
           </div>
+
         </div>
+
+
+        <!-- MODAL ACTIONS -->
 
         <div class="product-actions">
-          <button class="button button-primary" type="button" data-action="save-edit">Save Changes</button>
-          <button class="button button-ghost-dark" type="button" data-action="close-edit">Cancel</button>
+
+          <button
+            class="button button-primary"
+            type="button"
+            data-action="save-edit"
+          >
+            Save Changes
+          </button>
+
+          <button
+            class="button button-ghost-dark"
+            type="button"
+            data-action="close-edit"
+          >
+            Cancel
+          </button>
+
         </div>
+
       </div>
+
     </div>
 
-    <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
+
+    <!-- BACK TO TOP -->
+
+    <button
+      class="back-to-top"
+      type="button"
+      aria-label="Back to top"
+    >
+      ↑
+    </button>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
 
     <script src="js/cart.js"></script>
+
     <script src="js/app.js"></script>
+
   </body>
 </html>
