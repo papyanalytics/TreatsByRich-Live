@@ -32,7 +32,6 @@
   </head>
 
   <body>
-
     <!-- =====================================================
          HEADER
          ===================================================== -->
@@ -102,8 +101,17 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               >
-                <circle cx="9" cy="20" r="1"></circle>
-                <circle cx="18" cy="20" r="1"></circle>
+                <circle
+                  cx="9"
+                  cy="20"
+                  r="1"
+                ></circle>
+
+                <circle
+                  cx="18"
+                  cy="20"
+                  r="1"
+                ></circle>
 
                 <path
                   d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"
@@ -167,6 +175,8 @@
                ================================================= -->
 
           <div class="cart-section">
+
+            <!-- EMPTY CART -->
 
             <div class="cart-empty-state">
 
@@ -255,6 +265,7 @@
             <div class="summary-stack">
 
               <div class="summary-row">
+
                 <span>
                   Subtotal
                 </span>
@@ -262,6 +273,7 @@
                 <strong data-summary="subtotal">
                   GH₵0.00
                 </strong>
+
               </div>
 
 
@@ -392,9 +404,13 @@
                 Checkout
               </button>
 
+
+              <!-- FIXED: CART JS CAN NOW TARGET THIS -->
+
               <a
                 class="button button-ghost-dark"
                 href="menu.html"
+                data-action="continue-shopping"
               >
                 Continue Shopping
               </a>
