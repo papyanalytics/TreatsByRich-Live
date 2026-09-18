@@ -483,6 +483,13 @@ import {
 
             <div class="menu-actions">
 
+              <a
+                class="button button-ghost-dark button-small"
+                href="product.html?id=${encodeURIComponent(product.id)}"
+              >
+                View Details
+              </a>
+
               <button
                 class="button button-ghost-dark button-small add-to-cart"
                 type="button"
@@ -792,7 +799,7 @@ import {
         button
       );
 
-      // NEW: show visible confirmation popup
+      // Show visible confirmation popup
       showCartToast(
         productName
       );
