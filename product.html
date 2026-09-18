@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Product | Treats By Rich</title>
+
+  <meta
+    name="description"
+    content="Customize your favorite Treats By Rich parfait."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <style>
+    /* =========================================================
+       DYNAMIC PRODUCT PAGE
+    ========================================================= */
+
+    .dynamic-product-page {
+      padding-top: 40px;
+    }
+
+    .dynamic-product-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 55px;
+      align-items: start;
+    }
+
+    .dynamic-product-image {
+      position: sticky;
+      top: 110px;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #f7f1eb;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dynamic-product-image img {
+      width: 100%;
+      height: 560px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .dynamic-product-info {
+      padding: 10px 0;
+    }
+
+    .dynamic-breadcrumb {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    .dynamic-breadcrumb a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .dynamic-breadcrumb a:hover {
+      color: #3f2418;
+    }
+
+    .dynamic-category {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: #f4e4cc;
+      color: #3f2418;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .dynamic-product-info h1 {
+      margin: 0 0 14px;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.05;
+      color: #3f2418;
+    }
+
+    .dynamic-description {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .dynamic-price-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px;
+      margin-bottom: 28px;
+      border-radius: 18px;
+      background: #faf7f3;
+      border: 1px solid rgba(63, 36, 24, 0.08);
+    }
+
+    .dynamic-price-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    #product-total {
+      margin: 0;
+      color: #3f2418;
+      font-size: 32px;
+    }
+
+    #product-price-caption {
+      margin: 0;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .dynamic-option-block {
+      margin-bottom: 28px;
+    }
+
+    .dynamic-option-block h3 {
+      margin-bottom: 13px;
+      color: #3f2418;
+      font-size: 18px;
+    }
+
+    .dynamic-size-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .dynamic-size-card {
+      position: relative;
+      cursor: pointer;
+      padding: 15px 10px;
+      border: 1px solid rgba(63, 36, 24, 0.15);
+      border-radius: 14px;
+      text-align: center;
+      transition: 0.2s ease;
+      background: #fff;
+    }
+
+    .dynamic-size-card:hover {
+      border-color: #d99a3d;
+      transform: translateY(-2px);
+    }
+
+    .dynamic-size-card.is-selected {
+      border-color: #d99a3d;
+      background: #fff8ed;
+      box-shadow: 0 5px 15px rgba(63, 36, 24, 0.08);
+    }
+
+    .dynamic-size-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dynamic-size-card strong {
+      display: block;
+      color: #3f2418;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .dynamic-size-card small {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .dynamic-extras {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .dynamic-extra-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      padding: 14px;
+      border: 1px solid rgba(63, 36, 24, 0.12);
+      border-radius: 13px;
+      background: #fff;
+      transition: 0.2s ease;
+    }
+
+    .dynamic-extra-card:hover {
+      border-color: #d99a3d;
+    }
+
+    .dynamic-extra-card.is-selected {
+      background: #fff8ed;
+      border-color: #d99a3d;
+    }
+
+    .dynamic-extra-card input {
+      accent-color: #3f2418;
+    }
+
+    .dynamic-extra-name {
+      flex: 1;
+      color: #3f2418;
+      font-size: 14px;
+    }
+
+    .dynamic-extra-price {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .dynamic-quantity {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(63, 36, 24, 0.15);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .dynamic-quantity button {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      background: #faf7f3;
+      color: #3f2418;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .dynamic-quantity input {
+      width: 55px;
+      height: 44px;
+      border: 0;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: #3f2418;
+      outline: none;
+    }
+
+    .dynamic-product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .dynamic-product-actions .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dynamic-continue {
+      margin-top: 12px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dynamic-loading {
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #777;
+    }
+
+    .dynamic-error {
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .dynamic-error h1 {
+      color: #3f2418;
+      margin-bottom: 12px;
+    }
+
+    .dynamic-error p {
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    .dynamic-detail-section {
+      margin-top: 70px;
+    }
+
+    .dynamic-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+
+    .dynamic-detail-card {
+      padding: 28px;
+      border-radius: 20px;
+      background: #faf7f3;
+      border: 1px solid rgba(63, 36, 24, 0.08);
+    }
+
+    .dynamic-detail-card h2 {
+      margin-top: 0;
+      color: #3f2418;
+      font-family: "Playfair Display", serif;
+    }
+
+    .dynamic-ingredients {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .dynamic-ingredients span {
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid rgba(63, 36, 24, 0.1);
+      font-size: 13px;
+      color: #555;
+    }
+
+    @media (max-width: 850px) {
+      .dynamic-product-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .dynamic-product-image {
+        position: static;
+        min-height: auto;
+      }
+
+      .dynamic-product-image img {
+        height: 420px;
+      }
+
+      .dynamic-size-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .dynamic-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .dynamic-product-page {
+        padding-top: 20px;
+      }
+
+      .dynamic-product-image img {
+        height: 330px;
+      }
+
+      .dynamic-size-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dynamic-extras {
+        grid-template-columns: 1fr;
+      }
+
+      .dynamic-product-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .dynamic-product-info h1 {
+        font-size: 38px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
+  <header class="site-header" id="top">
+    <div class="container nav-shell">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Treats By Rich home"
+      >
+        <img
+          src="images/logo.png"
+          alt="Treats By Rich logo"
+        />
+
+        <span>
+          <strong>Treats By Rich</strong>
+          <small>Love at First Scoop</small>
+        </span>
+      </a>
+
+      <nav
+        class="site-nav"
+        aria-label="Primary navigation"
+      >
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="order-tracking.html">Track Order</a>
+
+        <a
+          class="nav-cart"
+          href="cart.html"
+          aria-label="View cart"
+        >
+          <span
+            class="icon icon-cart"
+            aria-hidden="true"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="9" cy="20" r="1"></circle>
+              <circle cx="18" cy="20" r="1"></circle>
+              <path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path>
+            </svg>
+          </span>
+
+          <em class="cart-count">0</em>
+        </a>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- =======================================================
+       MAIN PRODUCT CONTENT
+  ======================================================== -->
+
+  <main class="dynamic-product-page">
+
+    <div
+      id="product-loading"
+      class="container dynamic-loading"
+    >
+      <div>
+        <p>Loading product...</p>
+      </div>
+    </div>
+
+
+    <section
+      id="product-content"
+      class="section"
+      style="display:none;"
+    >
+
+      <div class="container">
+
+        <div class="dynamic-product-grid">
+
+          <!-- PRODUCT IMAGE -->
+
+          <div class="dynamic-product-image reveal">
+
+            <img
+              id="product-image"
+              src="images/menu/heavenly-combo.png"
+              alt="Treats By Rich parfait"
+            />
+
+          </div>
+
+
+          <!-- PRODUCT INFORMATION -->
+
+          <div class="dynamic-product-info reveal">
+
+            <nav
+              class="dynamic-breadcrumb"
+              aria-label="Breadcrumb"
+            >
+              <a href="index.html">Home</a>
+              <span>/</span>
+              <a href="menu.html">Menu</a>
+              <span>/</span>
+              <span id="breadcrumb-product">
+                Product
+              </span>
+            </nav>
+
+
+            <span
+              id="product-category"
+              class="dynamic-category"
+            >
+              Parfait
+            </span>
+
+
+            <h1 id="product-name">
+              Product
+            </h1>
+
+
+            <p
+              id="product-description"
+              class="dynamic-description"
+            >
+              Loading product description...
+            </p>
+
+
+            <!-- PRICE -->
+
+            <div class="dynamic-price-box">
+
+              <div>
+                <span class="dynamic-price-label">
+                  Total
+                </span>
+
+                <h2 id="product-total">
+                  GH₵80.00
+                </h2>
+              </div>
+
+              <p id="product-price-caption">
+                For 255ml
+              </p>
+
+            </div>
+
+
+            <!-- SIZE -->
+
+            <div class="dynamic-option-block">
+
+              <h3>Choose Size</h3>
+
+              <div
+                id="size-options"
+                class="dynamic-size-grid"
+              >
+
+                <label
+                  class="dynamic-size-card is-selected"
+                >
+                  <input
+                    type="radio"
+                    name="product-size"
+                    value="255ml"
+                    data-price="80"
+                    checked
+                  />
+
+                  <strong>255ml</strong>
+                  <small>GH₵80.00</small>
+                </label>
+
+
+                <label
+                  class="dynamic-size-card"
+                >
+                  <input
+                    type="radio"
+                    name="product-size"
+                    value="355ml"
+                    data-price="110"
+                  />
+
+                  <strong>355ml</strong>
+                  <small>GH₵110.00</small>
+                </label>
+
+
+                <label
+                  class="dynamic-size-card"
+                >
+                  <input
+                    type="radio"
+                    name="product-size"
+                    value="500ml"
+                    data-price="155"
+                  />
+
+                  <strong>500ml</strong>
+                  <small>GH₵155.00</small>
+                </label>
+
+
+                <label
+                  class="dynamic-size-card"
+                >
+                  <input
+                    type="radio"
+                    name="product-size"
+                    value="750ml"
+                    data-price="310"
+                  />
+
+                  <strong>750ml</strong>
+                  <small>GH₵310.00</small>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- EXTRAS -->
+
+            <div class="dynamic-option-block">
+
+              <h3>Extras</h3>
+
+              <div class="dynamic-extras">
+
+                <label
+                  class="dynamic-extra-card"
+                >
+                  <input
+                    type="checkbox"
+                    value="Cashew"
+                    data-price="25"
+                  />
+
+                  <span class="dynamic-extra-name">
+                    Cashew
+                  </span>
+
+                  <span class="dynamic-extra-price">
+                    +GH₵25.00
+                  </span>
+                </label>
+
+
+                <label
+                  class="dynamic-extra-card"
+                >
+                  <input
+                    type="checkbox"
+                    value="Almond"
+                    data-price="25"
+                  />
+
+                  <span class="dynamic-extra-name">
+                    Almond
+                  </span>
+
+                  <span class="dynamic-extra-price">
+                    +GH₵25.00
+                  </span>
+                </label>
+
+
+                <label
+                  class="dynamic-extra-card"
+                >
+                  <input
+                    type="checkbox"
+                    value="Coco Flakes"
+                    data-price="25"
+                  />
+
+                  <span class="dynamic-extra-name">
+                    Coco Flakes
+                  </span>
+
+                  <span class="dynamic-extra-price">
+                    +GH₵25.00
+                  </span>
+                </label>
+
+
+                <label
+                  class="dynamic-extra-card"
+                >
+                  <input
+                    type="checkbox"
+                    value="Crispy Bis"
+                    data-price="25"
+                  />
+
+                  <span class="dynamic-extra-name">
+                    Crispy Bis
+                  </span>
+
+                  <span class="dynamic-extra-price">
+                    +GH₵25.00
+                  </span>
+                </label>
+
+
+                <label
+                  class="dynamic-extra-card"
+                >
+                  <input
+                    type="checkbox"
+                    value="Extra Yogurt"
+                    data-price="25"
+                  />
+
+                  <span class="dynamic-extra-name">
+                    Extra Yogurt
+                  </span>
+
+                  <span class="dynamic-extra-price">
+                    +GH₵25.00
+                  </span>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="dynamic-option-block">
+
+              <h3>Quantity</h3>
+
+              <div class="dynamic-quantity">
+
+                <button
+                  id="decrease-quantity"
+                  type="button"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+
+                <input
+                  id="product-quantity"
+                  type="number"
+                  min="1"
+                  value="1"
+                />
+
+                <button
+                  id="increase-quantity"
+                  type="button"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="dynamic-product-actions">
+
+              <button
+                id="add-product-to-cart"
+                class="button button-primary"
+                type="button"
+              >
+                Add To Cart
+              </button>
+
+
+              <button
+                id="whatsapp-order"
+                class="button button-ghost-dark"
+                type="button"
+              >
+                Order via WhatsApp
+              </button>
+
+            </div>
+
+
+            <a
+              class="button button-ghost-dark dynamic-continue"
+              href="menu.html"
+            >
+              ← Continue Shopping
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===================================================
+             PRODUCT DETAILS
+        ==================================================== -->
+
+        <section class="dynamic-detail-section">
+
+          <div class="dynamic-detail-grid">
+
+            <div class="dynamic-detail-card">
+
+              <h2>About this parfait</h2>
+
+              <p id="product-long-description">
+                Freshly prepared with carefully selected
+                ingredients for a delicious Treats By Rich
+                experience.
+              </p>
+
+            </div>
+
+
+            <div class="dynamic-detail-card">
+
+              <h2>Ingredients</h2>
+
+              <div
+                id="product-ingredients"
+                class="dynamic-ingredients"
+              >
+
+                <span>Fresh Fruit</span>
+                <span>Yogurt</span>
+                <span>Granola</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+
+    <!-- ERROR -->
+
+    <div
+      id="product-error"
+      class="container dynamic-error"
+      style="display:none;"
+    >
+
+      <div>
+
+        <h1>Product not found</h1>
+
+        <p>
+          Sorry, we couldn't find this parfait.
+        </p>
+
+        <a
+          href="menu.html"
+          class="button button-primary"
+        >
+          Back to Menu
+        </a>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+      <div class="footer-brand">
+
+        <a
+          class="brand brand-footer"
+          href="index.html"
+        >
+          <img
+            src="images/logo.png"
+            alt="Treats By Rich logo"
+          />
+
+          <span>
+            <strong>Treats By Rich</strong>
+            <small>Love at First Scoop</small>
+          </span>
+        </a>
+
+        <p>
+          Luxury parfaits crafted with fresh
+          ingredients and modern elegance.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <p>
+        © 2026 Treats By Rich. All rights reserved.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <button
+    class="back-to-top"
+    type="button"
+    aria-label="Back to top"
+  >
+    ↑
+  </button>
+
+
+  <!-- EXISTING CART SYSTEM -->
+
+  <script src="js/cart.js"></script>
+
+
+  <!-- =======================================================
+       FIREBASE + PRODUCT LOGIC
+  ======================================================== -->
+
+  <script type="module">
+
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+    import {
+      db,
+      configOk
+    } from "./config/firebaseConfig.js";
+
+
+    /* =======================================================
+       ELEMENTS
+    ======================================================== */
+
+    const loadingElement =
+      document.getElementById("product-loading");
+
+    const contentElement =
+      document.getElementById("product-content");
+
+    const errorElement =
+      document.getElementById("product-error");
+
+    const productImage =
+      document.getElementById("product-image");
+
+    const productName =
+      document.getElementById("product-name");
+
+    const productDescription =
+      document.getElementById("product-description");
+
+    const productLongDescription =
+      document.getElementById(
+        "product-long-description"
+      );
+
+    const productCategory =
+      document.getElementById("product-category");
+
+    const breadcrumbProduct =
+      document.getElementById(
+        "breadcrumb-product"
+      );
+
+    const productTotal =
+      document.getElementById("product-total");
+
+    const priceCaption =
+      document.getElementById(
+        "product-price-caption"
+      );
+
+    const quantityInput =
+      document.getElementById(
+        "product-quantity"
+      );
+
+    const addToCartButton =
+      document.getElementById(
+        "add-product-to-cart"
+      );
+
+    const whatsappButton =
+      document.getElementById(
+        "whatsapp-order"
+      );
+
+    const ingredientsContainer =
+      document.getElementById(
+        "product-ingredients"
+      );
+
+
+    /* =======================================================
+       PRODUCT STATE
+    ======================================================== */
+
+    let currentProduct = null;
+
+    let quantity = 1;
+
+
+    const sizes = [
+      {
+        name: "255ml",
+        price: 80
+      },
+      {
+        name: "355ml",
+        price: 110
+      },
+      {
+        name: "500ml",
+        price: 155
+      },
+      {
+        name: "750ml",
+        price: 310
+      }
+    ];
+
+
+    const extras = [
+      {
+        name: "Cashew",
+        price: 25
+      },
+      {
+        name: "Almond",
+        price: 25
+      },
+      {
+        name: "Coco Flakes",
+        price: 25
+      },
+      {
+        name: "Crispy Bis",
+        price: 25
+      },
+      {
+        name: "Extra Yogurt",
+        price: 25
+      }
+    ];
+
+
+    /* =======================================================
+       FORMAT MONEY
+    ======================================================== */
+
+    function formatMoney(value) {
+
+      return `GH₵${Number(value).toFixed(2)}`;
+
+    }
+
+
+    /* =======================================================
+       ESCAPE HTML
+    ======================================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[char]));
+
+    }
+
+
+    /* =======================================================
+       URL PRODUCT ID
+    ======================================================== */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const productId =
+      params.get("id");
+
+
+    /* =======================================================
+       CART COUNT
+    ======================================================== */
+
+    function updateCartCount() {
+
+      const cart =
+        window.TBRCartAPI;
+
+      let count = 0;
+
+      if (
+        cart &&
+        typeof cart.getCartCount ===
+          "function"
+      ) {
+
+        count =
+          cart.getCartCount();
+
+      }
+
+      document
+        .querySelectorAll(".cart-count")
+        .forEach((element) => {
+
+          element.textContent =
+            String(count);
+
+        });
+
+    }
+
+
+    /* =======================================================
+       GET SELECTED SIZE
+    ======================================================== */
+
+    function getSelectedSize() {
+
+      const selected =
+        document.querySelector(
+          'input[name="product-size"]:checked'
+        );
+
+      return {
+
+        name:
+          selected?.value ||
+          "255ml",
+
+        price:
+          Number(
+            selected?.dataset.price ||
+            80
+          )
+
+      };
+
+    }
+
+
+    /* =======================================================
+       GET SELECTED EXTRAS
+    ======================================================== */
+
+    function getSelectedExtras() {
+
+      return Array.from(
+        document.querySelectorAll(
+          ".dynamic-extra-card input:checked"
+        )
+      ).map((input) => ({
+
+        name:
+          input.value,
+
+        price:
+          Number(
+            input.dataset.price ||
+            25
+          )
+
+      }));
+
+    }
+
+
+    /* =======================================================
+       CALCULATE TOTAL
+    ======================================================== */
+
+    function calculateTotal() {
+
+      const size =
+        getSelectedSize();
+
+      const selectedExtras =
+        getSelectedExtras();
+
+      const extrasTotal =
+        selectedExtras.reduce(
+          (sum, extra) =>
+            sum + extra.price,
+          0
+        );
+
+      const unitPrice =
+        size.price +
+        extrasTotal;
+
+      return {
+
+        unitPrice,
+
+        total:
+          unitPrice *
+          quantity,
+
+        size,
+
+        selectedExtras
+
+      };
+
+    }
+
+
+    /* =======================================================
+       UPDATE PRICE
+    ======================================================== */
+
+    function updatePrice() {
+
+      const totals =
+        calculateTotal();
+
+      productTotal.textContent =
+        formatMoney(
+          totals.total
+        );
+
+      priceCaption.textContent =
+        `For ${totals.size.name}`;
+
+    }
+
+
+    /* =======================================================
+       SIZE SELECTION UI
+    ======================================================== */
+
+    function refreshSizeCards() {
+
+      document
+        .querySelectorAll(
+          ".dynamic-size-card"
+        )
+        .forEach((card) => {
+
+          const input =
+            card.querySelector(
+              "input"
+            );
+
+          card.classList.toggle(
+            "is-selected",
+            Boolean(input?.checked)
+          );
+
+        });
+
+    }
+
+
+    /* =======================================================
+       EXTRA SELECTION UI
+    ======================================================== */
+
+    function refreshExtraCards() {
+
+      document
+        .querySelectorAll(
+          ".dynamic-extra-card"
+        )
+        .forEach((card) => {
+
+          const input =
+            card.querySelector(
+              "input"
+            );
+
+          card.classList.toggle(
+            "is-selected",
+            Boolean(input?.checked)
+          );
+
+        });
+
+    }
+
+
+    /* =======================================================
+       ADD TO CART
+    ======================================================== */
+
+    function addProductToCart() {
+
+      if (!currentProduct) {
+        return;
+      }
+
+      if (
+        !window.TBRCartAPI ||
+        typeof window.TBRCartAPI.addItem !==
+          "function"
+      ) {
+
+        alert(
+          "Your cart is currently unavailable. Please refresh the page and try again."
+        );
+
+        return;
+
+      }
+
+
+      const totals =
+        calculateTotal();
+
+
+      const image =
+        currentProduct.imageDataUrl ||
+        "images/menu/heavenly-combo.png";
+
+
+      window.TBRCartAPI.addItem({
+
+        name:
+          currentProduct.name ||
+          "Treat Item",
+
+        image,
+
+        size:
+          totals.size.name,
+
+        extras:
+          totals.selectedExtras.map(
+            (extra) =>
+              extra.name
+          ),
+
+        unitPrice:
+          totals.unitPrice,
+
+        quantity,
+
+        totalPrice:
+          totals.total
+
+      });
+
+
+      updateCartCount();
+
+
+      const originalText =
+        addToCartButton.textContent;
+
+
+      addToCartButton.textContent =
+        "✓ Added to Cart";
+
+
+      addToCartButton.classList.add(
+        "added"
+      );
+
+
+      setTimeout(() => {
+
+        addToCartButton.textContent =
+          originalText;
+
+        addToCartButton.classList.remove(
+          "added"
+        );
+
+      }, 1600);
+
+
+      showCartToast(
+        currentProduct.name
+      );
+
+    }
+
+
+    /* =======================================================
+       CART TOAST
+    ======================================================== */
+
+    function showCartToast(
+      name
+    ) {
+
+      let toast =
+        document.getElementById(
+          "dynamic-cart-toast"
+        );
+
+
+      if (!toast) {
+
+        toast =
+          document.createElement(
+            "div"
+          );
+
+        toast.id =
+          "dynamic-cart-toast";
+
+
+        Object.assign(
+          toast.style,
+          {
+
+            position: "fixed",
+
+            right: "24px",
+
+            bottom: "24px",
+
+            zIndex: "99999",
+
+            padding: "15px 20px",
+
+            borderRadius: "14px",
+
+            background: "#3f2418",
+
+            color: "#ffffff",
+
+            fontFamily:
+              "Poppins, sans-serif",
+
+            fontSize: "14px",
+
+            boxShadow:
+              "0 12px 30px rgba(0,0,0,.2)",
+
+            opacity: "0",
+
+            transform:
+              "translateY(20px)",
+
+            transition:
+              "opacity .25s ease, transform .25s ease"
+
+          }
+        );
+
+
+        document.body.appendChild(
+          toast
+        );
+
+      }
+
+
+      toast.textContent =
+        `✓ ${name} has been added to your cart.`;
+
+
+      toast.style.opacity =
+        "1";
+
+      toast.style.transform =
+        "translateY(0)";
+
+
+      clearTimeout(
+        toast._timer
+      );
+
+
+      toast._timer =
+        setTimeout(() => {
+
+          toast.style.opacity =
+            "0";
+
+          toast.style.transform =
+            "translateY(20px)";
+
+        }, 2500);
+
+    }
+
+
+    /* =======================================================
+       WHATSAPP ORDER
+    ======================================================== */
+
+    function orderViaWhatsApp() {
+
+      if (!currentProduct) {
+        return;
+      }
+
+
+      const totals =
+        calculateTotal();
+
+
+      const extrasText =
+        totals.selectedExtras.length
+
+          ? totals.selectedExtras
+              .map(
+                (extra) =>
+                  `${extra.name} (+${formatMoney(extra.price)})`
+              )
+              .join(", ")
+
+          : "None";
+
+
+      const message =
+
+`Hello Treats By Rich 👋
+
+I'd like to order:
+
+*${currentProduct.name}*
+
+Size: ${totals.size.name}
+Quantity: ${quantity}
+Extras: ${extrasText}
+
+Total: ${formatMoney(totals.total)}
+
+Please let me know the next steps. Thank you!`;
+
+
+      const whatsappNumber =
+        "233538517831";
+
+
+      const url =
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+
+      window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    }
+
+
+    /* =======================================================
+       LOAD PRODUCT
+    ======================================================== */
+
+    async function loadProduct() {
+
+      if (
+        !productId ||
+        !configOk ||
+        !db
+      ) {
+
+        loadingElement.style.display =
+          "none";
+
+        errorElement.style.display =
+          "grid";
+
+        return;
+
+      }
+
+
+      try {
+
+        const productRef =
+          doc(
+            db,
+            "products",
+            productId
+          );
+
+
+        const snapshot =
+          await getDoc(
+            productRef
+          );
+
+
+        if (!snapshot.exists()) {
+
+          throw new Error(
+            "Product does not exist."
+          );
+
+        }
+
+
+        currentProduct = {
+
+          id:
+            snapshot.id,
+
+          ...snapshot.data()
+
+        };
+
+
+        renderProduct();
+
+
+      } catch (error) {
+
+        console.error(
+          "[Treats By Rich] Product loading failed:",
+          error
+        );
+
+
+        loadingElement.style.display =
+          "none";
+
+        errorElement.style.display =
+          "grid";
+
+      }
+
+    }
+
+
+    /* =======================================================
+       RENDER PRODUCT
+    ======================================================== */
+
+    function renderProduct() {
+
+      const product =
+        currentProduct;
+
+
+      const name =
+        product.name ||
+        "Treat Item";
+
+
+      const description =
+        product.description ||
+        "A delicious Treats By Rich parfait prepared with fresh ingredients.";
+
+
+      const image =
+        product.imageDataUrl ||
+        "images/menu/heavenly-combo.png";
+
+
+      const category =
+        product.category ||
+        "Parfait";
+
+
+      productName.textContent =
+        name;
+
+
+      document.title =
+        `${name} | Treats By Rich`;
+
+
+      productDescription.textContent =
+        description;
+
+
+      productLongDescription.textContent =
+        description;
+
+
+      productCategory.textContent =
+        category;
+
+
+      breadcrumbProduct.textContent =
+        name;
+
+
+      productImage.src =
+        image;
+
+
+      productImage.alt =
+        `${name} parfait`;
+
+
+      renderIngredients();
+
+
+      loadingElement.style.display =
+        "none";
+
+
+      contentElement.style.display =
+        "block";
+
+
+      updatePrice();
+
+      refreshSizeCards();
+
+      refreshExtraCards();
+
+      updateCartCount();
+
+    }
+
+
+    /* =======================================================
+       INGREDIENTS
+    ======================================================== */
+
+    function renderIngredients() {
+
+      if (!ingredientsContainer) {
+        return;
+      }
+
+
+      const productIngredients =
+        currentProduct.ingredients;
+
+
+      let ingredients = [];
+
+
+      if (
+        Array.isArray(
+          productIngredients
+        )
+      ) {
+
+        ingredients =
+          productIngredients;
+
+      } else if (
+        typeof productIngredients ===
+        "string"
+      ) {
+
+        ingredients =
+          productIngredients
+            .split(",")
+            .map(
+              (item) =>
+                item.trim()
+            )
+            .filter(Boolean);
+
+      }
+
+
+      if (!ingredients.length) {
+
+        ingredients = [
+          "Fresh Fruit",
+          "Yogurt",
+          "Granola"
+        ];
+
+      }
+
+
+      ingredientsContainer.innerHTML =
+        ingredients
+          .map(
+            (ingredient) =>
+              `<span>${escapeHtml(
+                ingredient
+              )}</span>`
+          )
+          .join("");
+
+    }
+
+
+    /* =======================================================
+       SIZE EVENTS
+    ======================================================== */
+
+    document
+      .querySelectorAll(
+        'input[name="product-size"]'
+      )
+      .forEach((input) => {
+
+        input.addEventListener(
+          "change",
+          () => {
+
+            refreshSizeCards();
+
+            updatePrice();
+
+          }
+        );
+
+      });
+
+
+    /* =======================================================
+       EXTRA EVENTS
+    ======================================================== */
+
+    document
+      .querySelectorAll(
+        ".dynamic-extra-card input"
+      )
+      .forEach((input) => {
+
+        input.addEventListener(
+          "change",
+          () => {
+
+            refreshExtraCards();
+
+            updatePrice();
+
+          }
+        );
+
+      });
+
+
+    /* =======================================================
+       QUANTITY
+    ======================================================== */
+
+    document
+      .getElementById(
+        "increase-quantity"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          quantity++;
+
+          quantityInput.value =
+            quantity;
+
+          updatePrice();
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "decrease-quantity"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          quantity =
+            Math.max(
+              1,
+              quantity - 1
+            );
+
+          quantityInput.value =
+            quantity;
+
+          updatePrice();
+
+        }
+      );
+
+
+    quantityInput.addEventListener(
+      "input",
+      () => {
+
+        quantity =
+          Math.max(
+            1,
+            Number(
+              quantityInput.value
+            ) || 1
+          );
+
+
+        quantityInput.value =
+          quantity;
+
+
+        updatePrice();
+
+      }
+    );
+
+
+    /* =======================================================
+       BUTTONS
+    ======================================================== */
+
+    addToCartButton.addEventListener(
+      "click",
+      addProductToCart
+    );
+
+
+    whatsappButton.addEventListener(
+      "click",
+      orderViaWhatsApp
+    );
+
+
+    /* =======================================================
+       CART COUNT
+    ======================================================== */
+
+    window.addEventListener(
+      "tbr:cart-updated",
+      updateCartCount
+    );
+
+
+    window.addEventListener(
+      "storage",
+      updateCartCount
+    );
+
+
+    /* =======================================================
+       INITIAL LOAD
+    ======================================================== */
+
+    loadProduct();
+
+  </script>
+
+</body>
+</html>

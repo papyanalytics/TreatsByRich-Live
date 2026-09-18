@@ -484,7 +484,7 @@ import {
             <div class="menu-actions">
 
               <a
-                class="button button-ghost-dark button-small"
+                class="button button-primary button-small"
                 href="product.html?id=${encodeURIComponent(product.id)}"
               >
                 View Details
