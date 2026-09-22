@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -15,29 +14,28 @@
     content="Customize your favorite Treats By Rich parfait."
   />
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
+  <!-- Existing site styles -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <link rel="stylesheet" href="css/animations.css" />
 
   <style>
     /* =========================================================
-       DYNAMIC PRODUCT PAGE
+       PRODUCT PAGE
     ========================================================= */
 
     .dynamic-product-page {
-      padding-top: 40px;
+      padding-top: 55px;
+      padding-bottom: 70px;
     }
 
     .dynamic-product-grid {
@@ -46,6 +44,10 @@
       gap: 55px;
       align-items: start;
     }
+
+    /* =========================================================
+       PRODUCT IMAGE
+    ========================================================= */
 
     .dynamic-product-image {
       position: sticky;
@@ -57,6 +59,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
     }
 
     .dynamic-product-image img {
@@ -66,8 +72,16 @@
       display: block;
     }
 
+    /* =========================================================
+       PRODUCT INFORMATION
+    ========================================================= */
+
     .dynamic-product-info {
       padding: 10px 0;
+
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
     }
 
     .dynamic-breadcrumb {
@@ -116,38 +130,114 @@
       margin-bottom: 25px;
     }
 
+    /* =========================================================
+       RATING & AVAILABILITY
+    ========================================================= */
+
+    .product-rating-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 18px 0 24px;
+      flex-wrap: wrap;
+    }
+
+    .rating-summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6f5142;
+      font-size: 14px;
+    }
+
+    .rating-stars {
+      color: #d99a3d;
+      font-size: 17px;
+      letter-spacing: 2px;
+    }
+
+    .rating-summary strong {
+      color: #2f1b12;
+      font-size: 15px;
+    }
+
+    .rating-summary span:last-child {
+      color: #8a7164;
+    }
+
+    .availability-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #eef7ef;
+      color: #3d7045;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .availability-pill::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4d9b58;
+    }
+
+    /* =========================================================
+       PRICE
+    ========================================================= */
+
     .dynamic-price-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      padding: 20px;
+      padding: 22px 24px;
       margin-bottom: 28px;
-      border-radius: 18px;
-      background: #faf7f3;
-      border: 1px solid rgba(63, 36, 24, 0.08);
+      border-radius: 20px;
+
+      background: linear-gradient(
+        135deg,
+        #fffaf4 0%,
+        #f8eee4 100%
+      );
+
+      border: 1px solid rgba(217, 154, 61, 0.22);
+      box-shadow: 0 8px 24px rgba(63, 36, 24, 0.06);
     }
 
     .dynamic-price-label {
       display: block;
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #888;
+      letter-spacing: 0.1em;
+      color: #8a7164;
+      font-weight: 700;
       margin-bottom: 4px;
     }
 
     #product-total {
       margin: 0;
-      color: #3f2418;
-      font-size: 32px;
+      color: #2f1b12;
+      font-size: 34px;
+      line-height: 1.1;
+      font-weight: 700;
     }
 
     #product-price-caption {
       margin: 0;
-      color: #777;
+      color: #8a7164;
       font-size: 13px;
+      font-weight: 600;
     }
+
+    /* =========================================================
+       OPTIONS
+    ========================================================= */
 
     .dynamic-option-block {
       margin-bottom: 28px;
@@ -159,9 +249,13 @@
       font-size: 18px;
     }
 
+    /* =========================================================
+       SIZE
+    ========================================================= */
+
     .dynamic-size-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
 
@@ -204,6 +298,10 @@
       color: #777;
       font-size: 12px;
     }
+
+    /* =========================================================
+       EXTRAS
+    ========================================================= */
 
     .dynamic-extras {
       display: grid;
@@ -248,6 +346,10 @@
       font-size: 12px;
     }
 
+    /* =========================================================
+       QUANTITY
+    ========================================================= */
+
     .dynamic-quantity {
       display: inline-flex;
       align-items: center;
@@ -277,6 +379,10 @@
       outline: none;
     }
 
+    /* =========================================================
+       ACTION BUTTONS
+    ========================================================= */
+
     .dynamic-product-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -291,12 +397,21 @@
       justify-content: center;
     }
 
+    .dynamic-product-actions .button.added {
+      background: #3d7045;
+      color: #fff;
+    }
+
     .dynamic-continue {
       margin-top: 12px;
       width: 100%;
       display: flex;
       justify-content: center;
     }
+
+    /* =========================================================
+       LOADING / ERROR
+    ========================================================= */
 
     .dynamic-loading {
       min-height: 60vh;
@@ -322,6 +437,10 @@
       color: #777;
       margin-bottom: 25px;
     }
+
+    /* =========================================================
+       DETAILS
+    ========================================================= */
 
     .dynamic-detail-section {
       margin-top: 70px;
@@ -361,6 +480,34 @@
       color: #555;
     }
 
+    /* =========================================================
+       CART TOAST
+    ========================================================= */
+
+    #dynamic-cart-toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 99999;
+      padding: 15px 20px;
+      border-radius: 14px;
+      background: #3f2418;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      font-size: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
     @media (max-width: 850px) {
       .dynamic-product-grid {
         grid-template-columns: 1fr;
@@ -385,9 +532,9 @@
       }
     }
 
-    @media (max-width: 550px) {
+    @media (max-width: 600px) {
       .dynamic-product-page {
-        padding-top: 20px;
+        padding-top: 25px;
       }
 
       .dynamic-product-image img {
@@ -408,6 +555,17 @@
 
       .dynamic-product-info h1 {
         font-size: 38px;
+      }
+
+      .dynamic-price-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      #dynamic-cart-toast {
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
       }
     }
   </style>
@@ -481,10 +639,12 @@
 
 
   <!-- =======================================================
-       MAIN PRODUCT CONTENT
+       MAIN PRODUCT PAGE
   ======================================================== -->
 
   <main class="dynamic-product-page">
+
+    <!-- Loading -->
 
     <div
       id="product-loading"
@@ -496,10 +656,12 @@
     </div>
 
 
+    <!-- Product Content -->
+
     <section
       id="product-content"
-      class="section"
-      style="display:none;"
+      class="section dynamic-product-content"
+      style="display: none;"
     >
 
       <div class="container">
@@ -508,7 +670,7 @@
 
           <!-- PRODUCT IMAGE -->
 
-          <div class="dynamic-product-image reveal">
+          <div class="dynamic-product-image">
 
             <img
               id="product-image"
@@ -521,7 +683,9 @@
 
           <!-- PRODUCT INFORMATION -->
 
-          <div class="dynamic-product-info reveal">
+          <div class="dynamic-product-info">
+
+            <!-- Breadcrumb -->
 
             <nav
               class="dynamic-breadcrumb"
@@ -529,13 +693,17 @@
             >
               <a href="index.html">Home</a>
               <span>/</span>
+
               <a href="menu.html">Menu</a>
               <span>/</span>
+
               <span id="breadcrumb-product">
                 Product
               </span>
             </nav>
 
+
+            <!-- Category -->
 
             <span
               id="product-category"
@@ -545,10 +713,19 @@
             </span>
 
 
+            <p class="eyebrow">
+              Signature parfait
+            </p>
+
+
+            <!-- Product Name -->
+
             <h1 id="product-name">
               Product
             </h1>
 
+
+            <!-- Description -->
 
             <p
               id="product-description"
@@ -558,11 +735,35 @@
             </p>
 
 
+            <!-- Rating & Availability -->
+
+            <div class="product-rating-row">
+
+              <div class="rating-summary">
+                <span class="rating-stars">
+                  ★★★★★
+                </span>
+
+                <strong>4.9</strong>
+
+                <span>
+                  126 reviews
+                </span>
+              </div>
+
+              <span class="availability-pill">
+                Available
+              </span>
+
+            </div>
+
+
             <!-- PRICE -->
 
             <div class="dynamic-price-box">
 
               <div>
+
                 <span class="dynamic-price-label">
                   Total
                 </span>
@@ -570,6 +771,7 @@
                 <h2 id="product-total">
                   GH₵80.00
                 </h2>
+
               </div>
 
               <p id="product-price-caption">
@@ -583,12 +785,16 @@
 
             <div class="dynamic-option-block">
 
-              <h3>Choose Size</h3>
+              <h3>
+                Choose Size
+              </h3>
 
               <div
                 id="size-options"
                 class="dynamic-size-grid"
               >
+
+                <!-- 255ML -->
 
                 <label
                   class="dynamic-size-card is-selected"
@@ -601,14 +807,20 @@
                     checked
                   />
 
-                  <strong>255ml</strong>
-                  <small>GH₵80.00</small>
+                  <strong>
+                    255ml
+                  </strong>
+
+                  <small>
+                    GH₵80.00
+                  </small>
                 </label>
 
 
-                <label
-                  class="dynamic-size-card"
-                >
+                <!-- 355ML -->
+
+                <label class="dynamic-size-card">
+
                   <input
                     type="radio"
                     name="product-size"
@@ -616,14 +828,21 @@
                     data-price="110"
                   />
 
-                  <strong>355ml</strong>
-                  <small>GH₵110.00</small>
+                  <strong>
+                    355ml
+                  </strong>
+
+                  <small>
+                    GH₵110.00
+                  </small>
+
                 </label>
 
 
-                <label
-                  class="dynamic-size-card"
-                >
+                <!-- 500ML -->
+
+                <label class="dynamic-size-card">
+
                   <input
                     type="radio"
                     name="product-size"
@@ -631,14 +850,43 @@
                     data-price="155"
                   />
 
-                  <strong>500ml</strong>
-                  <small>GH₵155.00</small>
+                  <strong>
+                    500ml
+                  </strong>
+
+                  <small>
+                    GH₵155.00
+                  </small>
+
                 </label>
 
 
-                <label
-                  class="dynamic-size-card"
-                >
+                <!-- 700ML -->
+
+                <label class="dynamic-size-card">
+
+                  <input
+                    type="radio"
+                    name="product-size"
+                    value="700ml"
+                    data-price="299"
+                  />
+
+                  <strong>
+                    700ml
+                  </strong>
+
+                  <small>
+                    GH₵299.00
+                  </small>
+
+                </label>
+
+
+                <!-- 750ML -->
+
+                <label class="dynamic-size-card">
+
                   <input
                     type="radio"
                     name="product-size"
@@ -646,8 +894,14 @@
                     data-price="310"
                   />
 
-                  <strong>750ml</strong>
-                  <small>GH₵310.00</small>
+                  <strong>
+                    750ml
+                  </strong>
+
+                  <small>
+                    GH₵310.00
+                  </small>
+
                 </label>
 
               </div>
@@ -659,13 +913,16 @@
 
             <div class="dynamic-option-block">
 
-              <h3>Extras</h3>
+              <h3>
+                Extras
+              </h3>
 
               <div class="dynamic-extras">
 
-                <label
-                  class="dynamic-extra-card"
-                >
+                <!-- CASHEW -->
+
+                <label class="dynamic-extra-card">
+
                   <input
                     type="checkbox"
                     value="Cashew"
@@ -679,12 +936,14 @@
                   <span class="dynamic-extra-price">
                     +GH₵25.00
                   </span>
+
                 </label>
 
 
-                <label
-                  class="dynamic-extra-card"
-                >
+                <!-- ALMOND -->
+
+                <label class="dynamic-extra-card">
+
                   <input
                     type="checkbox"
                     value="Almond"
@@ -698,12 +957,14 @@
                   <span class="dynamic-extra-price">
                     +GH₵25.00
                   </span>
+
                 </label>
 
 
-                <label
-                  class="dynamic-extra-card"
-                >
+                <!-- COCO FLAKES -->
+
+                <label class="dynamic-extra-card">
+
                   <input
                     type="checkbox"
                     value="Coco Flakes"
@@ -717,12 +978,14 @@
                   <span class="dynamic-extra-price">
                     +GH₵25.00
                   </span>
+
                 </label>
 
 
-                <label
-                  class="dynamic-extra-card"
-                >
+                <!-- CRISPY BIS -->
+
+                <label class="dynamic-extra-card">
+
                   <input
                     type="checkbox"
                     value="Crispy Bis"
@@ -736,12 +999,14 @@
                   <span class="dynamic-extra-price">
                     +GH₵25.00
                   </span>
+
                 </label>
 
 
-                <label
-                  class="dynamic-extra-card"
-                >
+                <!-- EXTRA YOGURT -->
+
+                <label class="dynamic-extra-card">
+
                   <input
                     type="checkbox"
                     value="Extra Yogurt"
@@ -755,6 +1020,7 @@
                   <span class="dynamic-extra-price">
                     +GH₵25.00
                   </span>
+
                 </label>
 
               </div>
@@ -766,7 +1032,9 @@
 
             <div class="dynamic-option-block">
 
-              <h3>Quantity</h3>
+              <h3>
+                Quantity
+              </h3>
 
               <div class="dynamic-quantity">
 
@@ -798,7 +1066,7 @@
             </div>
 
 
-            <!-- ACTIONS -->
+            <!-- ACTION BUTTONS -->
 
             <div class="dynamic-product-actions">
 
@@ -810,7 +1078,6 @@
                 Add To Cart
               </button>
 
-
               <button
                 id="whatsapp-order"
                 class="button button-ghost-dark"
@@ -821,6 +1088,8 @@
 
             </div>
 
+
+            <!-- CONTINUE SHOPPING -->
 
             <a
               class="button button-ghost-dark dynamic-continue"
@@ -842,9 +1111,13 @@
 
           <div class="dynamic-detail-grid">
 
+            <!-- ABOUT -->
+
             <div class="dynamic-detail-card">
 
-              <h2>About this parfait</h2>
+              <h2>
+                About this parfait
+              </h2>
 
               <p id="product-long-description">
                 Freshly prepared with carefully selected
@@ -855,19 +1128,29 @@
             </div>
 
 
+            <!-- INGREDIENTS -->
+
             <div class="dynamic-detail-card">
 
-              <h2>Ingredients</h2>
+              <h2>
+                Ingredients
+              </h2>
 
               <div
                 id="product-ingredients"
                 class="dynamic-ingredients"
               >
+                <span>
+                  Fresh Fruit
+                </span>
 
-                <span>Fresh Fruit</span>
-                <span>Yogurt</span>
-                <span>Granola</span>
+                <span>
+                  Yogurt
+                </span>
 
+                <span>
+                  Granola
+                </span>
               </div>
 
             </div>
@@ -886,12 +1169,14 @@
     <div
       id="product-error"
       class="container dynamic-error"
-      style="display:none;"
+      style="display: none;"
     >
 
       <div>
 
-        <h1>Product not found</h1>
+        <h1>
+          Product not found
+        </h1>
 
         <p>
           Sorry, we couldn't find this parfait.
@@ -925,15 +1210,22 @@
           class="brand brand-footer"
           href="index.html"
         >
+
           <img
             src="images/logo.png"
             alt="Treats By Rich logo"
           />
 
           <span>
-            <strong>Treats By Rich</strong>
-            <small>Love at First Scoop</small>
+            <strong>
+              Treats By Rich
+            </strong>
+
+            <small>
+              Love at First Scoop
+            </small>
           </span>
+
         </a>
 
         <p>
@@ -957,6 +1249,8 @@
   </footer>
 
 
+  <!-- Back to top -->
+
   <button
     class="back-to-top"
     type="button"
@@ -966,7 +1260,7 @@
   </button>
 
 
-  <!-- EXISTING CART SYSTEM -->
+  <!-- Existing cart system -->
 
   <script src="js/cart.js"></script>
 
@@ -1061,19 +1355,31 @@
     let quantity = 1;
 
 
+    /* =======================================================
+       AVAILABLE SIZES
+    ======================================================== */
+
     const sizes = [
       {
         name: "255ml",
         price: 80
       },
+
       {
         name: "355ml",
         price: 110
       },
+
       {
         name: "500ml",
         price: 155
       },
+
+      {
+        name: "700ml",
+        price: 299
+      },
+
       {
         name: "750ml",
         price: 310
@@ -1081,23 +1387,31 @@
     ];
 
 
+    /* =======================================================
+       AVAILABLE EXTRAS
+    ======================================================== */
+
     const extras = [
       {
         name: "Cashew",
         price: 25
       },
+
       {
         name: "Almond",
         price: 25
       },
+
       {
         name: "Coco Flakes",
         price: 25
       },
+
       {
         name: "Crispy Bis",
         price: 25
       },
+
       {
         name: "Extra Yogurt",
         price: 25
@@ -1123,19 +1437,22 @@
     function escapeHtml(value) {
 
       return String(value ?? "")
-        .replace(/[&<>"']/g, (char) => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;"
-        }[char]));
+        .replace(
+          /[&<>"']/g,
+          (char) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          }[char])
+        );
 
     }
 
 
     /* =======================================================
-       URL PRODUCT ID
+       GET PRODUCT ID
     ======================================================== */
 
     const params =
@@ -1148,7 +1465,7 @@
 
 
     /* =======================================================
-       CART COUNT
+       UPDATE CART COUNT
     ======================================================== */
 
     function updateCartCount() {
@@ -1160,8 +1477,7 @@
 
       if (
         cart &&
-        typeof cart.getCartCount ===
-          "function"
+        typeof cart.getCartCount === "function"
       ) {
 
         count =
@@ -1308,9 +1624,7 @@
         .forEach((card) => {
 
           const input =
-            card.querySelector(
-              "input"
-            );
+            card.querySelector("input");
 
           card.classList.toggle(
             "is-selected",
@@ -1335,9 +1649,7 @@
         .forEach((card) => {
 
           const input =
-            card.querySelector(
-              "input"
-            );
+            card.querySelector("input");
 
           card.classList.toggle(
             "is-selected",
@@ -1350,7 +1662,7 @@
 
 
     /* =======================================================
-       ADD TO CART
+       ADD PRODUCT TO CART
     ======================================================== */
 
     function addProductToCart() {
@@ -1450,9 +1762,7 @@
        CART TOAST
     ======================================================== */
 
-    function showCartToast(
-      name
-    ) {
+    function showCartToast(name) {
 
       let toast =
         document.getElementById(
@@ -1469,47 +1779,6 @@
 
         toast.id =
           "dynamic-cart-toast";
-
-
-        Object.assign(
-          toast.style,
-          {
-
-            position: "fixed",
-
-            right: "24px",
-
-            bottom: "24px",
-
-            zIndex: "99999",
-
-            padding: "15px 20px",
-
-            borderRadius: "14px",
-
-            background: "#3f2418",
-
-            color: "#ffffff",
-
-            fontFamily:
-              "Poppins, sans-serif",
-
-            fontSize: "14px",
-
-            boxShadow:
-              "0 12px 30px rgba(0,0,0,.2)",
-
-            opacity: "0",
-
-            transform:
-              "translateY(20px)",
-
-            transition:
-              "opacity .25s ease, transform .25s ease"
-
-          }
-        );
-
 
         document.body.appendChild(
           toast
@@ -1565,14 +1834,12 @@
 
       const extrasText =
         totals.selectedExtras.length
-
           ? totals.selectedExtras
               .map(
                 (extra) =>
                   `${extra.name} (+${formatMoney(extra.price)})`
               )
               .join(", ")
-
           : "None";
 
 
@@ -1611,7 +1878,7 @@ Please let me know the next steps. Thank you!`;
 
 
     /* =======================================================
-       LOAD PRODUCT
+       LOAD PRODUCT FROM FIRESTORE
     ======================================================== */
 
     async function loadProduct() {
@@ -1680,6 +1947,9 @@ Please let me know the next steps. Thank you!`;
 
 
         loadingElement.style.display =
+          "none";
+
+        contentElement.style.display =
           "none";
 
         errorElement.style.display =
@@ -1891,7 +2161,7 @@ Please let me know the next steps. Thank you!`;
 
 
     /* =======================================================
-       QUANTITY
+       INCREASE QUANTITY
     ======================================================== */
 
     document
@@ -1912,6 +2182,10 @@ Please let me know the next steps. Thank you!`;
         }
       );
 
+
+    /* =======================================================
+       DECREASE QUANTITY
+    ======================================================== */
 
     document
       .getElementById(
@@ -1935,6 +2209,10 @@ Please let me know the next steps. Thank you!`;
         }
       );
 
+
+    /* =======================================================
+       MANUAL QUANTITY
+    ======================================================== */
 
     quantityInput.addEventListener(
       "input",
@@ -1976,7 +2254,7 @@ Please let me know the next steps. Thank you!`;
 
 
     /* =======================================================
-       CART COUNT
+       CART COUNT EVENTS
     ======================================================== */
 
     window.addEventListener(
@@ -1998,6 +2276,4 @@ Please let me know the next steps. Thank you!`;
     loadProduct();
 
   </script>
-
-</body>
 </html>
