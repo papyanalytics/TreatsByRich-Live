@@ -43,30 +43,6 @@ window.loadValue = function (key, fallback = []) {
   const cursorId = 'tbr-cursor';
   const whatsappId = 'tbr-whatsapp';
 
-  function initOrderPauseAnnouncement() {
-    if (body.classList.contains('order-success')) return;
-
-    const announcement = document.createElement('section');
-    announcement.className = 'order-pause-announcement';
-    announcement.setAttribute('role', 'region');
-    announcement.setAttribute('aria-label', 'Important announcement: orders are not being accepted until Monday.');
-    announcement.innerHTML = `
-      <div class="order-pause-announcement__track">
-        <p class="order-pause-announcement__message">
-          ⚠️ IMPORTANT ANNOUNCEMENT — Dear customers, please be advised that we are currently
-          <strong>NOT accepting orders</strong>. Kindly <strong>DO NOT place any orders until Monday</strong>.
-          We apologize for any inconvenience and appreciate your understanding. ❤️
-        </p>
-        <p class="order-pause-announcement__message" aria-hidden="true">
-          ⚠️ IMPORTANT ANNOUNCEMENT — Dear customers, please be advised that we are currently
-          <strong>NOT accepting orders</strong>. Kindly <strong>DO NOT place any orders until Monday</strong>.
-          We apologize for any inconvenience and appreciate your understanding. ❤️
-        </p>
-      </div>
-    `;
-    body.prepend(announcement);
-  }
-
   function createLoader() {
     if (document.getElementById(loaderId)) return;
     const marker = document.createElement('div');
@@ -345,7 +321,6 @@ window.loadValue = function (key, fallback = []) {
   }
 
   function init() {
-    initOrderPauseAnnouncement();
     showLoader();
     updateHeaderState();
     updateCartCount();
