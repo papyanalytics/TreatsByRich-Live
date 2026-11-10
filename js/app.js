@@ -21,6 +21,50 @@ window.safeString = function (value, fallback = '') {
   return value === undefined || value === null ? fallback : String(value);
 };
 
+const ORDER_CLOSURE_MESSAGE = 'Orders are temporarily closed until 4:00 PM today. Please hold off on placing your orders for now. Kindly return at 4:00 PM when checkout reopens. Thank you for your patience and continued support!';
+
+function isOrderClosureActive() {
+  const now = new Date();
+  const currentMinutes = (now.getHours() * 60) + now.getMinutes();
+  const reopensAtMinutes = 16 * 60;
+  return currentMinutes < reopensAtMinutes;
+}
+
+function applyOrderClosureBanner() {
+  if (window.location.pathname.includes('/admin/')) return;
+  if (!isOrderClosureActive()) return;
+  if (document.getElementById('tbr-order-closure-banner')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'tbr-order-closure-banner';
+  banner.className = 'tbr-announcement-bar';
+  document.body.classList.add('has-order-closure-banner');
+  banner.setAttribute('role', 'status');
+  banner.setAttribute('aria-live', 'polite');
+  const accessibleText = document.createElement('span');
+  accessibleText.className = 'tbr-announcement-sr-only';
+  accessibleText.textContent = `IMPORTANT ANNOUNCEMENT: ${ORDER_CLOSURE_MESSAGE}`;
+
+  const marquee = document.createElement('div');
+  marquee.className = 'tbr-announcement-marquee';
+  marquee.setAttribute('aria-hidden', 'true');
+  marquee.innerHTML = `
+    <div class="tbr-announcement-track">
+      <span class="tbr-announcement-item">
+        <strong>IMPORTANT ANNOUNCEMENT:</strong>
+        <span>${ORDER_CLOSURE_MESSAGE}</span>
+      </span>
+      <span class="tbr-announcement-item">
+        <strong>IMPORTANT ANNOUNCEMENT:</strong>
+        <span>${ORDER_CLOSURE_MESSAGE}</span>
+      </span>
+    </div>
+  `;
+
+  banner.append(accessibleText, marquee);
+  document.body.insertBefore(banner, document.body.firstChild);
+}
+
 window.storeValue = function (key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 };
@@ -322,6 +366,7 @@ window.loadValue = function (key, fallback = []) {
 
   function init() {
     showLoader();
+    applyOrderClosureBanner();
     updateHeaderState();
     updateCartCount();
     initNavigation();
