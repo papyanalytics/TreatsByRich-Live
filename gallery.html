@@ -390,8 +390,14 @@
       }
     </style>
   </head>
-  <body>
+  <body class="seasonal-page seasonal-gallery-page">
     <header class="site-header" id="top">
+      <div class="holiday-announcement" role="note">
+        <span class="announcement-star" aria-hidden="true">✦</span>
+        <span>Christmas is sweeter with Treats By Rich.</span>
+        <span class="announcement-detail">Made in Accra, shared with love</span>
+        <span class="announcement-star" aria-hidden="true">✦</span>
+      </div>
       <div class="container nav-shell">
         <a class="brand" href="index.html" aria-label="Treats By Rich home">
           <img src="images/logo.png" alt="Treats By Rich logo" />
@@ -436,7 +442,9 @@
 
         <section class="feature-grid" aria-label="Signature parfaits">
           <article class="gallery-feature-card reveal">
-            <img src="images/menu/fruity-fresh.png" alt="Heavenly Combo" loading="lazy" />
+            <div class="holiday-product-stage">
+              <img src="images/menu/heavenly-combo.png" alt="Heavenly Combo" loading="lazy" />
+            </div>
             <h3>Heavenly Combo</h3>
             <p>Bright berries, tropical fruit and creamy layers.</p>
             <div class="gallery-actions">
@@ -445,7 +453,9 @@
             </div>
           </article>
           <article class="gallery-feature-card reveal">
-            <img src="images/menu/heavenly-combo.png" alt="Fruity Fresh" loading="lazy" />
+            <div class="holiday-product-stage">
+              <img src="images/menu/fruity-fresh.png" alt="Fruity Fresh" loading="lazy" />
+            </div>
             <h3>Fruity Fresh</h3>
             <p>Refreshing fruit-forward layers with crisp texture.</p>
             <div class="gallery-actions">
@@ -454,7 +464,9 @@
             </div>
           </article>
           <article class="gallery-feature-card reveal">
-            <img src="images/menu/biscuit-bliss.png" alt="Biscuit Bliss" loading="lazy" />
+            <div class="holiday-product-stage">
+              <img src="images/menu/biscuit-bliss.png" alt="Biscuit Bliss" loading="lazy" />
+            </div>
             <h3>Biscuit Bliss</h3>
             <p>A buttery, crunchy parfait with polished finesse.</p>
             <div class="gallery-actions">
@@ -463,7 +475,9 @@
             </div>
           </article>
           <article class="gallery-feature-card reveal">
-            <img src="images/menu/choco-craze.png" alt="Choco Craze" loading="lazy" />
+            <div class="holiday-product-stage">
+              <img src="images/menu/choco-craze.png" alt="Choco Craze" loading="lazy" />
+            </div>
             <h3>Choco Craze</h3>
             <p>Deep chocolate luxury finished with elegance.</p>
             <div class="gallery-actions">
@@ -472,7 +486,9 @@
             </div>
           </article>
           <article class="gallery-feature-card reveal">
-            <img src="images/menu/oatmeal-parfait.png" alt="Oatmeal Parfait" loading="lazy" />
+            <div class="holiday-product-stage">
+              <img src="images/menu/oatmeal-parfait.png" alt="Oatmeal Parfait" loading="lazy" />
+            </div>
             <h3>Oatmeal Parfait</h3>
             <p>Healthy, wholesome and beautifully balanced.</p>
             <div class="gallery-actions">
@@ -598,6 +614,48 @@
       </div>
     </main>
 
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand reveal">
+          <a class="brand brand-footer" href="index.html">
+            <img src="images/logo.png" alt="Treats By Rich logo" />
+            <span>
+              <strong>Treats By Rich</strong>
+              <small>Love at First Scoop</small>
+            </span>
+          </a>
+          <p>Luxury Ghanaian parfaits crafted with freshness, warmth and polished presentation.</p>
+        </div>
+        <div class="reveal">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3>Contact</h3>
+          <ul>
+            <li><a href="tel:+233538517831">+233 53 851 7831</a></li>
+            <li><a href="https://wa.me/233538517831">WhatsApp</a></li>
+            <li><a href="https://www.instagram.com/">Instagram</a></li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3>Business Hours</h3>
+          <ul>
+            <li>Mon – Sat: 8:00 AM – 8:00 PM</li>
+            <li>Sunday: 10:00 AM – 5:00 PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>&copy; 2026 Treats By Rich. All rights reserved.</p>
+      </div>
+    </footer>
+
     <div id="lightbox" class="lightbox" aria-label="Image preview" aria-hidden="true">
       <div class="lightbox-inner">
         <div class="lightbox-controls">
@@ -618,9 +676,9 @@
       ];
 
       const heroHeaderImages = [
-        { src: 'images/gallery-header/header1.jpg', alt: 'Treats By Rich hero image one' },
-        { src: 'images/gallery-header/header2.jpg', alt: 'Treats By Rich hero image two' },
-        { src: 'images/gallery-header/header3.jpg', alt: 'Treats By Rich hero image three' }
+        { src: 'images/gallery/gallery1.png', alt: 'Treats By Rich hero image one' },
+        { src: 'images/gallery/gallery2.png', alt: 'Treats By Rich hero image two' },
+        { src: 'images/gallery/gallery3.png', alt: 'Treats By Rich hero image three' }
       ];
 
       const container = document.getElementById('galleryMasonry');

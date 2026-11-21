@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Treats By Rich | Premium Ghanaian Parfaits</title>
+    <title>Christmas 2026 | Treats By Rich</title>
     <meta
       name="description"
-      content="Treats By Rich is a premium Ghanaian parfait brand crafting fresh, healthy, and luxurious desserts with elegant presentation."
+      content="Make Christmas sweeter with Treats By Rich: handcrafted parfaits made with fresh fruit, creamy yogurt and beautiful layers."
     />
     <meta name="author" content="Treats By Rich" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,8 +19,14 @@
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/animations.css" />
   </head>
-  <body>
+  <body class="home-page">
     <header class="site-header" id="top">
+      <div class="holiday-announcement" role="note" data-message="Christmas is sweeter with Treats By Rich.">
+        <span class="announcement-star" aria-hidden="true">✦</span>
+        <span>Christmas is sweeter with Treats By Rich.</span>
+        <span class="announcement-detail">Made in Accra, shared with love</span>
+        <span class="announcement-star" aria-hidden="true">✦</span>
+      </div>
       <div class="container nav-shell">
         <a class="brand" href="index.html" aria-label="Treats By Rich home">
           <img src="images/logo.png" alt="Treats By Rich logo" />
@@ -41,7 +47,7 @@
           <a href="menu.html">Menu</a>
           <a href="about.html">About</a>
           <a href="gallery.html">Gallery</a>
-            <a href="events.html">Events</a>
+          <a href="events.html">Events</a>
           <a href="contact.html">Contact</a>
           <a class="nav-cart" href="cart.html" aria-label="View cart">
             <span class="icon icon-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></span>
@@ -53,75 +59,275 @@
     </header>
 
     <main id="home">
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero home-hero" aria-labelledby="hero-title">
         <video class="hero-video" autoplay muted loop playsinline poster="images/backgrounds/hero-bg.png">
           <source src="images/hero-video.mp4" type="video/mp4" />
         </video>
         <div class="hero-overlay"></div>
-        <div class="hero-content container">
-          <p class="eyebrow">Ghana's premium dessert house</p>
-          <h1 id="hero-title">Ghana's Premium Parfait</h1>
-          <p class="hero-subtitle">Love at First Scoop</p>
-          <p class="hero-copy">
-            Crafted with premium ingredients, fresh fruit and layered textures that elevate everyday indulgence.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="menu.html">Explore Menu</a>
-            <a class="button button-ghost" href="checkout.html">Order Now</a>
+        <div class="hero-snow" aria-hidden="true"></div>
+        <img
+          class="santa-flight"
+          src="images/backgrounds/christmas-santa-sleigh.svg"
+          alt=""
+          aria-hidden="true"
+          fetchpriority="high"
+        />
+        <div class="hero-inner container">
+          <div class="hero-content reveal">
+            <p class="eyebrow">A Christmas celebration, crafted in Accra</p>
+            <h1 id="hero-title">Celebrate the Magic of <em>Christmas</em> with Treats By Rich</h1>
+            <p class="hero-subtitle">Love at First Scoop</p>
+            <p class="hero-copy">
+              Make every celebration sweeter with our deliciously crafted parfaits. Share the joy, spread the love
+              and make this Christmas unforgettable.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="menu.html">Shop Christmas Collection <span aria-hidden="true">↗</span></a>
+              <a class="button button-ghost" href="checkout.html">Order now</a>
+            </div>
+            <p class="hero-note"><span aria-hidden="true">✦</span> Handcrafted in Accra, made to be shared</p>
+            <a
+              class="hero-event-feature"
+              href="events.html"
+              aria-label="Planning a Special Celebration? Explore Our Event Services. Watch Our Event Highlights."
+            >
+              <span class="hero-event-poster">
+                <img
+                  src="images/events/event-2-poster.jpg"
+                  alt="Treats By Rich decorated event service counter"
+                  loading="eager"
+                  decoding="async"
+                />
+                <span class="hero-event-play" aria-hidden="true">▶</span>
+              </span>
+              <span class="hero-event-copy">
+                <strong>Planning a Special Celebration?</strong>
+                <span class="hero-event-description">
+                  Let Treats By Rich make your event sweeter. From intimate gatherings to special celebrations,
+                  explore our event work and discover how to book us.
+                </span>
+                <span class="hero-event-actions">
+                  <span class="hero-event-cta">Explore Our Event Services <span aria-hidden="true">↗</span></span>
+                  <span class="hero-event-watch"><span aria-hidden="true">▶</span> Watch Our Event Highlights</span>
+                </span>
+              </span>
+            </a>
           </div>
-          <a class="scroll-indicator" href="#menu" aria-label="Scroll to featured menu">
-            <span></span>
-            <small>Scroll</small>
-          </a>
+          <div class="hero-visual reveal reveal-zoom">
+            <img class="hero-garland" src="images/backgrounds/christmas-garland.svg" alt="" aria-hidden="true" decoding="async" />
+            <div class="hero-tree-stage" aria-hidden="true">
+              <img
+                class="hero-tree"
+                src="images/backgrounds/christmas-tree.svg"
+                alt=""
+                decoding="async"
+                fetchpriority="high"
+              />
+            </div>
+            <div class="hero-photo-frame">
+              <img
+                src="images/menu/heavenly-combo.png"
+                alt="Heavenly Combo parfait layered with creamy yogurt, fruit and granola"
+                fetchpriority="high"
+              />
+            </div>
+            <div class="hero-photo-caption">
+              <span>Made for the moment</span>
+              <span aria-hidden="true">—</span>
+              <span>Heavenly Combo</span>
+            </div>
+            <span class="hero-ornament ornament-one" aria-hidden="true"></span>
+            <span class="hero-ornament ornament-two" aria-hidden="true"></span>
+            <span class="hero-star hero-star-one" aria-hidden="true">✦</span>
+            <span class="hero-star hero-star-two" aria-hidden="true">✧</span>
+            <svg class="hero-evergreen" viewBox="0 0 220 230" fill="none" aria-hidden="true">
+              <path d="M22 215C72 164 83 92 194 16" stroke="currentColor" stroke-width="2" />
+              <path d="M62 176 34 154m43 2-6-35m37 22 20-31m-58 6-30-10m72-14-2-34m29 19 29-19m-76 6-27-23m48 2-4-31m30 30 27-9m-89 66-34 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <circle cx="149" cy="83" r="7" fill="#D6AD60" />
+              <circle cx="91" cy="133" r="5" fill="#8B1E2D" />
+            </svg>
+          </div>
         </div>
+        <a class="scroll-indicator" href="#menu" aria-label="Scroll to featured menu">
+          <span></span>
+          <small>Discover</small>
+        </a>
+      </section>
+
+      <section class="section brand-intro" id="brand-intro">
+        <div class="container brand-intro-grid">
+          <div class="brand-intro-copy reveal">
+            <p class="eyebrow">The Treats By Rich feeling</p>
+            <h2>Small moments deserve <em>something special.</em></h2>
+          </div>
+          <div class="brand-intro-detail reveal">
+            <span class="intro-rule" aria-hidden="true"></span>
+            <p>
+              We make every parfait with care, layering fresh fruit, creamy yogurt and the textures you love.
+              This season, bring a little more warmth to the table with a treat worth slowing down for.
+            </p>
+            <a class="text-link" href="about.html">A little about us <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <span class="brand-intro-star" aria-hidden="true">✦</span>
       </section>
 
       <section class="section best-sellers" id="menu">
         <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Best sellers</p>
-            <h2>Signature parfaits designed for indulgence</h2>
-            <p>
-              Discover our most-loved creations, each layered with fresh fruit, creamy texture and an elegant finish.
-            </p>
+          <div class="section-heading home-section-heading reveal">
+            <p class="eyebrow">The Christmas collection</p>
+            <h2>Five favourites for a season <em>worth sharing.</em></h2>
+            <p>Find your new favourite, made fresh and layered with care.</p>
           </div>
 
-          <div class="product-grid">
-            <article class="product-card reveal">
-              <img src="images/menu/oatmeal-parfait.png" alt="Oatmeal Parfait" loading="lazy" />
+          <img class="collection-wreath" src="images/backgrounds/christmas-wreath.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <div class="product-grid home-product-grid">
+            <article class="product-card home-product-card reveal">
+              <a class="home-product-image" href="products/heavenly-combo.html" aria-label="View Heavenly Combo">
+                <img src="images/menu/heavenly-combo.png" alt="Heavenly Combo parfait with fruit, granola and mixed nuts" loading="lazy" />
+                <span class="product-image-index">01</span>
+              </a>
               <div class="card-body">
+                <p class="product-kicker">Signature parfait</p>
+                <h3>Heavenly Combo</h3>
+                <p>A premium blend of creamy yogurt, crunchy granola, fresh fruits and carefully selected mixed nuts. Every scoop delivers freshness, texture and satisfaction.</p>
+                <div class="card-meta">
+                  <span>Starting at GH₵80</span>
+                  <a href="products/heavenly-combo.html">Discover <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card home-product-card reveal">
+              <a class="home-product-image" href="products/fruity-fresh.html" aria-label="View Fruity Fresh">
+                <img src="images/menu/fruity-fresh.png" alt="Fruity Fresh parfait with fresh berries and kiwi" loading="lazy" />
+                <span class="product-image-index">02</span>
+              </a>
+              <div class="card-body">
+                <p class="product-kicker">Fresh favourite</p>
+                <h3>Fruity Fresh</h3>
+                <p>Packed with nature's sweetest fruits layered in creamy yogurt for a refreshing and healthy treat perfect for every time of the day.</p>
+                <div class="card-meta">
+                  <span>Starting at GH₵80</span>
+                  <a href="products/fruity-fresh.html">Discover <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card home-product-card reveal">
+              <a class="home-product-image" href="products/biscuit-bliss.html" aria-label="View Biscuit Bliss">
+                <img src="images/menu/biscuit-bliss.png" alt="Biscuit Bliss parfait with crunchy biscuit pieces" loading="lazy" />
+                <span class="product-image-index">03</span>
+              </a>
+              <div class="card-body">
+                <p class="product-kicker">Crunchy classic</p>
+                <h3>Biscuit Bliss</h3>
+                <p>Creamy yogurt layered with crunchy biscuit crumbs creating the perfect balance between comfort and sweetness.</p>
+                <div class="card-meta">
+                  <span>Starting at GH₵80</span>
+                  <a href="products/biscuit-bliss.html">Discover <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card home-product-card reveal">
+              <a class="home-product-image" href="products/choco-craze.html" aria-label="View Choco Craze">
+                <img src="images/menu/choco-craze.png" alt="Choco Craze parfait with dark chocolate pieces" loading="lazy" />
+                <span class="product-image-index">04</span>
+              </a>
+              <div class="card-body">
+                <p class="product-kicker">Chocolate indulgence</p>
+                <h3>Choco Craze</h3>
+                <p>Fresh fruit parfait finished with premium dark chocolate chunks and smooth chocolate drizzle for chocolate lovers.</p>
+                <div class="card-meta">
+                  <span>Starting at GH₵80</span>
+                  <a href="products/choco-craze.html">Discover <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card home-product-card reveal">
+              <a class="home-product-image" href="products/oatmeal-parfait.html" aria-label="View Oatmeal Parfait">
+                <img src="images/menu/oatmeal-parfait.png" alt="Oatmeal Parfait with oats and creamy yogurt" loading="lazy" />
+                <span class="product-image-index">05</span>
+              </a>
+              <div class="card-body">
+                <p class="product-kicker">Healthy balance</p>
                 <h3>Oatmeal Parfait</h3>
                 <p>A wholesome combination of oats, creamy yogurt and fresh fruits crafted for a healthy lifestyle.</p>
                 <div class="card-meta">
                   <span>Starting at GH₵80</span>
-                  <a href="products/oatmeal-parfait.html">View Details</a>
+                  <a href="products/oatmeal-parfait.html">Discover <span aria-hidden="true">↗</span></a>
                 </div>
               </div>
             </article>
+          </div>
+          <div class="menu-more reveal">
+            <a class="button button-ghost-dark" href="menu.html">Explore the full menu <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </section>
 
-            <article class="product-card reveal">
-              <img src="images/menu/fruity-fresh.png" alt="Heavenly Combo parfait" loading="lazy" />
-              <div class="card-body">
-                <h3>Heavenly Combo</h3>
-                <p>Bright berries, tropical fruit and creamy layers in a balanced, luxurious treat.</p>
-                <div class="card-meta">
-                  <span>Starting at GH₵80</span>
-                  <a href="products/heavenly-combo.html">View Details</a>
-                </div>
-              </div>
-            </article>
+      <section class="holiday-editorial" aria-labelledby="holiday-editorial-title">
+        <div class="holiday-editorial-art" aria-hidden="true">
+          <img
+            class="editorial-garland"
+            src="images/backgrounds/christmas-garland.svg"
+            alt=""
+            decoding="async"
+          />
+          <span class="editorial-star editorial-star-one">✦</span>
+          <span class="editorial-star editorial-star-two">✧</span>
+          <span class="editorial-bauble"></span>
+          <span class="editorial-ribbon"></span>
+        </div>
+        <div class="container holiday-editorial-grid">
+          <div class="editorial-copy reveal">
+            <p class="eyebrow">A season for sharing</p>
+            <h2 id="holiday-editorial-title">Share a little <em>Christmas magic.</em></h2>
+            <p>
+              Whether you're gathering around the table or surprising someone special, our freshly layered parfaits
+              bring a touch of festive delight to every celebration.
+            </p>
+            <div class="editorial-gift-arrangement" aria-hidden="true">
+              <img
+                class="editorial-gift-art"
+                src="images/backgrounds/christmas-gifts.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+              <img
+                class="editorial-lantern-art"
+                src="images/backgrounds/christmas-lantern.svg"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <a class="button button-light" href="events.html">Celebrate with us <span aria-hidden="true">↗</span></a>
+          </div>
+          <figure class="editorial-photo reveal reveal-zoom">
+            <img src="images/gallery/gallery3.png" alt="A beautifully layered Treats By Rich parfait ready to share" loading="lazy" />
+            <figcaption>Gather close. Take another spoonful.</figcaption>
+          </figure>
+        </div>
+      </section>
 
-            <article class="product-card reveal">
-              <img src="images/menu/biscuit-bliss.png" alt="Biscuit Bliss parfait" loading="lazy" />
-              <div class="card-body">
-                <h3>Biscuit Bliss</h3>
-                <p>Buttery biscuit notes and caramelized fruit for a rich, comforting scoop.</p>
-                <div class="card-meta">
-                  <span>Starting at GH₵80</span>
-                  <a href="products/biscuit-bliss.html">View Details</a>
-                </div>
-              </div>
-            </article>
+      <section class="section sharing-story">
+        <div class="container sharing-story-grid">
+          <figure class="sharing-photo reveal">
+            <img src="images/gallery/gallery1.png" alt="Fresh fruit and creamy layers in a Treats By Rich parfait" loading="lazy" />
+            <span class="sharing-photo-note">Love at First Scoop</span>
+          </figure>
+          <div class="sharing-copy reveal">
+            <p class="eyebrow">Made with care, shared with love</p>
+            <h2>Good things taste even better <em>together.</em></h2>
+            <p>
+              At Treats By Rich, every layer is an invitation to pause, connect and enjoy the people around you.
+              Bring a little sweetness to your celebrations, and let the moment linger.
+            </p>
+            <a class="text-link" href="about.html">Get to know our story <span aria-hidden="true">↗</span></a>
           </div>
         </div>
       </section>
@@ -187,7 +393,7 @@
               <strong>Esther</strong>
             </article>
 
-            <article class="review-card reveal">
+            <article class="review-card reveal" hidden>
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
                 <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
               </div>
@@ -207,7 +413,7 @@
               <strong>Dhavi</strong>
             </article>
 
-            <article class="review-card reveal">
+            <article class="review-card reveal" hidden>
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
                 <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
               </div>
@@ -226,7 +432,7 @@
             </article>
           </div>
 
-          <ul class="dm-strip reveal" aria-label="Real conversation snippets from customers">
+          <ul class="dm-strip reveal" aria-label="Real conversation snippets from customers" hidden>
             <li class="dm-chip">
               <span>“Honestly....we literally text like we’ve known each other before 😂”</span>
               <strong>— Esther</strong>
@@ -249,7 +455,8 @@
                   controls
                   muted
                   playsinline
-                  preload="metadata"
+                  preload="none"
+                  poster="videos/reviews/review-esther-poster.jpg"
                   aria-label="Video review from Esther, Treats By Rich customer"
                   onerror="this.closest('figure').style.display='none'"
                 >
@@ -263,7 +470,8 @@
                   controls
                   muted
                   playsinline
-                  preload="metadata"
+                  preload="none"
+                  poster="videos/reviews/review-dhavi-poster.jpg"
                   aria-label="Video review from Dhavi, Treats By Rich customer"
                   onerror="this.closest('figure').style.display='none'"
                 >
@@ -272,7 +480,7 @@
                 </video>
               </figure>
 
-              <figure class="video-review-card reveal">
+              <figure class="video-review-card reveal" hidden>
                 <video
                   controls
                   muted
@@ -286,7 +494,7 @@
                 </video>
               </figure>
 
-              <figure class="video-review-card reveal">
+              <figure class="video-review-card reveal" hidden>
                 <video
                   controls
                   muted

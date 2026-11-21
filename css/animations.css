@@ -67,3 +67,88 @@
   opacity: 1;
   transform: scale(1);
 }
+
+@keyframes home-snowfall {
+  from {
+    background-position: 12px -138px, 58px -116px, 122px -210px;
+  }
+  to {
+    background-position: 48px 520px, 12px 610px, 172px 740px;
+  }
+}
+
+@keyframes home-twinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes home-fairy-light-glow {
+  0%,
+  100% {
+    opacity: 0.88;
+    filter: drop-shadow(0 3px 7px rgba(214, 173, 96, 0.2));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 4px 12px rgba(255, 225, 160, 0.4));
+  }
+}
+
+.home-page .best-sellers::before,
+.home-page .editorial-garland {
+  animation: home-fairy-light-glow 3.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page *,
+  .home-page *::before,
+  .home-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .home-page .reveal,
+  .home-page .reveal-left,
+  .home-page .reveal-right,
+  .home-page .reveal-zoom {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .home-page .hero-snow {
+    display: none;
+  }
+
+  .seasonal-page *,
+  .seasonal-page *::before,
+  .seasonal-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .home-page .santa-flight {
+    left: auto;
+    right: 3%;
+    animation: none !important;
+    transform: none;
+  }
+
+  .home-page .santa-flight {
+    left: auto;
+    right: 3%;
+    animation: none !important;
+    transform: none;
+  }
+}

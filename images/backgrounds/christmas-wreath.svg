@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" fill="none">
+  <defs>
+    <linearGradient id="needle" x1="70" y1="62" x2="351" y2="355" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#527B4E"/>
+      <stop offset=".52" stop-color="#1D563A"/>
+      <stop offset="1" stop-color="#103A2B"/>
+    </linearGradient>
+    <radialGradient id="berry" cx="0" cy="0" r="1" gradientTransform="matrix(12 17 -17 12 0 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5C4A0"/>
+      <stop offset=".3" stop-color="#B53B43"/>
+      <stop offset="1" stop-color="#6C1525"/>
+    </radialGradient>
+    <radialGradient id="ornament" cx="0" cy="0" r="1" gradientTransform="matrix(17 22 -22 17 0 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1C2"/>
+      <stop offset=".28" stop-color="#E4BB68"/>
+      <stop offset="1" stop-color="#9E6828"/>
+    </radialGradient>
+    <linearGradient id="ribbon" x1="158" y1="335" x2="261" y2="405" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C2494C"/>
+      <stop offset="1" stop-color="#781C2A"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="30" y="24" width="360" height="398" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="9"/>
+      <feOffset dy="7"/>
+      <feComponentTransfer><feFuncA slope=".2" type="linear"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <g id="sprig" stroke="#9CB280" stroke-linecap="round">
+      <path d="M0 0c-29-28-53-57-67-88" stroke="url(#needle)" stroke-width="8"/>
+      <path d="m-8-10-28-5m18 18-31 4m30 3-27 17m19-56-26-14m35 30-11-29m27 48 5-30m-20 57 16-23m-40-35-27-4m36 17-31 12m34 6-24 23" stroke-width="3.2"/>
+    </g>
+  </defs>
+  <g filter="url(#soft-shadow)">
+    <circle cx="210" cy="202" r="133" stroke="#0D3527" stroke-opacity=".8" stroke-width="36"/>
+    <circle cx="210" cy="202" r="133" stroke="url(#needle)" stroke-width="29"/>
+    <g opacity=".96">
+      <use href="#sprig" transform="translate(210 76) rotate(-8)"/>
+      <use href="#sprig" transform="translate(273 91) rotate(34)"/>
+      <use href="#sprig" transform="translate(318 139) rotate(76)"/>
+      <use href="#sprig" transform="translate(337 204) rotate(122)"/>
+      <use href="#sprig" transform="translate(313 267) rotate(166)"/>
+      <use href="#sprig" transform="translate(263 309) rotate(205)"/>
+      <use href="#sprig" transform="translate(202 330) rotate(250)"/>
+      <use href="#sprig" transform="translate(141 309) rotate(293)"/>
+      <use href="#sprig" transform="translate(96 261) rotate(334)"/>
+      <use href="#sprig" transform="translate(83 197) rotate(378)"/>
+      <use href="#sprig" transform="translate(108 136) rotate(420)"/>
+      <use href="#sprig" transform="translate(157 94) rotate(462)"/>
+    </g>
+    <path d="M91 125c33 41 74 61 119 62m-98 116c23-35 57-58 103-71m109-113c-34 40-76 61-120 64m98 117c-25-37-59-58-104-72" stroke="#D2C28B" stroke-opacity=".62" stroke-width="2.4" stroke-linecap="round"/>
+    <g fill="#A82635" stroke="#E4BD75" stroke-width="1.5">
+      <circle cx="113" cy="130" r="6"/><circle cx="128" cy="141" r="5"/>
+      <circle cx="293" cy="124" r="6"/><circle cx="278" cy="137" r="5"/>
+      <circle cx="322" cy="246" r="6"/><circle cx="307" cy="255" r="5"/>
+      <circle cx="102" cy="248" r="6"/><circle cx="118" cy="258" r="5"/>
+      <circle cx="159" cy="304" r="6"/><circle cx="270" cy="302" r="6"/>
+    </g>
+    <g stroke="#D6AD60" stroke-width="2">
+      <path d="M133 120v24m152-24v24m30 105v23M103 232v24m56 36v26m111-26v26"/>
+    </g>
+    <g stroke="#F0D28E" stroke-width="2">
+      <circle cx="133" cy="153" r="13" fill="url(#ornament)"/>
+      <circle cx="285" cy="153" r="11" fill="url(#berry)"/>
+      <circle cx="333" cy="248" r="12" fill="url(#ornament)"/>
+      <circle cx="95" cy="248" r="11" fill="url(#berry)"/>
+      <circle cx="159" cy="308" r="10" fill="url(#berry)"/>
+      <circle cx="271" cy="308" r="12" fill="url(#ornament)"/>
+    </g>
+    <path d="M210 326c-27-31-59-8-4 18-55 27-23 49 4 19 27 30 59 8 4-19 55-26 23-49-4-18Z" fill="url(#ribbon)" stroke="#E9C679" stroke-width="2.5"/>
+    <path d="m210 342-20 71 20-10 20 10-20-71Z" fill="url(#ribbon)" stroke="#E9C679" stroke-width="2"/>
+    <path d="M210 52v13m-7-7h14" stroke="#E9D396" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="210" cy="58" r="15" stroke="#E9D396" stroke-opacity=".7" stroke-width="1.5"/>
+  </g>
+</svg>

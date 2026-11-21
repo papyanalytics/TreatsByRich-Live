@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" fill="none">
+  <defs>
+    <radialGradient id="ruby" cx="0" cy="0" r="1" gradientTransform="matrix(10 13 -13 10 0 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFC9AB"/><stop offset=".35" stop-color="#B63D49"/><stop offset="1" stop-color="#721A2A"/>
+    </radialGradient>
+    <radialGradient id="gold" cx="0" cy="0" r="1" gradientTransform="matrix(11 14 -14 11 0 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF3CA"/><stop offset=".42" stop-color="#DEB963"/><stop offset="1" stop-color="#9B692E"/>
+    </radialGradient>
+  </defs>
+  <g stroke="#1B5338" stroke-linecap="round" stroke-width="5">
+    <path d="M13 25c49 15 69 43 83 86m371-86c-49 15-69 43-83 86M9 452c32 1 57 19 78 49m384-49c-32 1-57 19-78 49"/>
+  </g>
+  <g stroke="#78915D" stroke-linecap="round" stroke-width="2.4">
+    <path d="m34 34-24-19m37 23-7-31m23 44 19-25m1 47 28-9m308-30 24-19m-37 23 7-31m-23 44-19-25m-1 47-28-9M25 466 8 448m34 30-5-25m24 41 16-20m-1 39 25-4m334-43 17-18m-34 30 5-25m-24 41-16-20m1 39-25-4"/>
+  </g>
+  <g stroke="#D6AD60" stroke-width="2">
+    <path d="M51 31v21m370-21v21M41 447v21m398-21v21"/>
+  </g>
+  <g stroke="#EBD28D" stroke-width="2">
+    <circle cx="51" cy="67" r="13" fill="url(#ruby)"/><circle cx="421" cy="67" r="13" fill="url(#gold)"/>
+  </g>
+  <g fill="#FFF1C2">
+    <circle cx="27" cy="108" r="3"/><circle cx="96" cy="83" r="3"/><circle cx="453" cy="107" r="3"/><circle cx="385" cy="82" r="3"/>
+    <circle cx="22" cy="427" r="3"/><circle cx="458" cy="427" r="3"/>
+  </g>
+  <g stroke="#D6AD60" stroke-linecap="round" stroke-width="2">
+    <path d="M110 32v12m-6-6h12m-9-3 6 6m0-6-6 6M369 37v12m-6-6h12m-9-3 6 6m0-6-6 6"/>
+  </g>
+</svg>

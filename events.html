@@ -3,167 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Something Special Is Coming | Treats By Rich</title>
-    <meta name="description" content="A special Treats By Rich experience is being prepared for our loyal customers." />
+    <title>Event Catering | Treats By Rich</title>
+    <meta name="description" content="Explore real Treats By Rich event moments and discover our catering for birthdays, gatherings and special celebrations." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/animations.css" />
-    <style>
-      .events-page {
-        padding: 5.5rem 0;
-      }
-
-      .events-intro {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
-        gap: 2rem;
-        align-items: center;
-      }
-
-      .events-copy {
-        max-width: 620px;
-      }
-
-      .events-copy h1 {
-        margin: 0 0 1rem;
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2.5rem, 5vw, 4.4rem);
-        line-height: 1.08;
-        color: var(--brown);
-      }
-
-      .events-copy p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 1.05rem;
-      }
-
-      .events-copy p + p {
-        margin-top: 1rem;
-      }
-
-      .events-family-note {
-        color: var(--brown) !important;
-        font-family: "Playfair Display", serif;
-        font-size: 1.35rem !important;
-      }
-
-      .events-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        margin-top: 1.8rem;
-      }
-
-      .events-visual {
-        position: relative;
-        min-height: 420px;
-        overflow: hidden;
-        border: 1px solid rgba(74, 36, 18, 0.1);
-        border-radius: var(--radius);
-        background: #2b160d;
-        box-shadow: var(--shadow);
-      }
-
-      .events-visual img {
-        width: 100%;
-        height: 100%;
-        min-height: 420px;
-        object-fit: cover;
-        opacity: 0.72;
-      }
-
-      .events-visual::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(140deg, rgba(43, 22, 13, 0.72), rgba(232, 93, 4, 0.18));
-      }
-
-      .events-seal {
-        position: absolute;
-        z-index: 1;
-        inset: 50% auto auto 50%;
-        display: grid;
-        place-items: center;
-        width: min(230px, 62%);
-        aspect-ratio: 1;
-        padding: 1.3rem;
-        border: 1px solid rgba(255, 248, 232, 0.68);
-        border-radius: 50%;
-        background: rgba(43, 22, 13, 0.52);
-        box-shadow: 0 0 0 12px rgba(255, 190, 50, 0.12);
-        color: var(--cream);
-        text-align: center;
-        transform: translate(-50%, -50%);
-      }
-
-      .events-seal span {
-        font-family: "Montserrat", sans-serif;
-        font-size: 0.68rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-      }
-
-      .events-seal strong {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.6rem, 3vw, 2.1rem);
-        line-height: 1.05;
-      }
-
-      .events-message {
-        max-width: 880px;
-        margin: 4rem auto 0;
-        padding: 2rem;
-        border: 1px solid rgba(74, 36, 18, 0.08);
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.88);
-        box-shadow: var(--shadow);
-        text-align: center;
-      }
-
-      .events-message p {
-        margin: 0;
-        color: var(--brown);
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.35rem, 2.5vw, 1.9rem);
-        line-height: 1.4;
-      }
-
-      .events-message small {
-        display: block;
-        margin-top: 0.75rem;
-        color: var(--muted);
-        font-size: 0.95rem;
-      }
-
-      @media (max-width: 767px) {
-        .events-page {
-          padding: 4rem 0;
-        }
-
-        .events-intro {
-          grid-template-columns: 1fr;
-        }
-
-        .events-visual,
-        .events-visual img {
-          min-height: 340px;
-        }
-
-        .events-message {
-          margin-top: 2rem;
-          padding: 1.4rem 1rem;
-        }
-      }
-    </style>
   </head>
-  <body>
+  <body class="seasonal-page seasonal-events-page">
     <header class="site-header" id="top">
+      <div class="holiday-announcement" role="note">
+        <span class="announcement-star" aria-hidden="true">✦</span>
+        <span>Christmas is sweeter with Treats By Rich.</span>
+        <span class="announcement-detail">Made in Accra, shared with love</span>
+        <span class="announcement-star" aria-hidden="true">✦</span>
+      </div>
       <div class="container nav-shell">
         <a class="brand" href="index.html" aria-label="Treats By Rich home">
           <img src="images/logo.png" alt="Treats By Rich logo" />
@@ -196,32 +52,146 @@
     </header>
 
     <main>
-      <section class="events-page">
+      <section class="events-page" aria-labelledby="events-title">
         <div class="container events-intro">
-          <div class="events-copy reveal">
-            <p class="eyebrow">For our loyal customers</p>
-            <h1>Something Special Is Coming...</h1>
-            <p>Our next Treats By Rich experience is being prepared specially for our loyal customers.</p>
-            <p class="events-family-note">This one is for the Treats By Rich family. <span aria-label="love">&#10084;</span></p>
-            <div class="events-actions">
-              <a class="button button-primary" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Follow Treats By Rich</a>
-              <a class="button button-ghost-dark" href="contact.html">Stay Connected</a>
-            </div>
+          <div class="events-intro-copy reveal">
+            <p class="eyebrow">Treats By Rich event catering</p>
+            <h1 id="events-title">Parfait catering for moments worth celebrating.</h1>
+            <p>
+              Planning a birthday, party or special gathering? Explore real event footage to see the care and
+              presentation Treats By Rich brings to celebrations, then get in touch to ask about parfait orders for
+              your occasion.
+            </p>
+            <a class="button button-primary" href="contact.html">
+              Enquire about your event <span aria-hidden="true">↗</span>
+            </a>
           </div>
-
-          <div class="events-visual reveal" aria-label="An exclusive Treats By Rich experience is coming soon">
-            <img src="images/gallery/gallery1.png" alt="Treats By Rich parfait prepared with a premium presentation" />
-            <div class="events-seal" aria-hidden="true">
-              <span>Treats By Rich</span>
-              <strong>A little something sweet</strong>
-            </div>
+          <div class="events-intro-note reveal">
+            <span class="events-intro-ornament" aria-hidden="true">✦</span>
+            <p>Thoughtful details, freshly prepared treats and warm service for moments worth sharing.</p>
           </div>
         </div>
+      </section>
 
+      <section class="events-showcase" aria-labelledby="events-showcase-title">
         <div class="container">
-          <div class="events-message reveal">
-            <p>Details will be shared directly with invited customers.</p>
-            <small>Stay tuned. Something sweet is on the way.</small>
+          <div class="section-heading events-showcase-heading reveal">
+            <p class="eyebrow">A taste of the occasion</p>
+            <h2 id="events-showcase-title">A little sweetness, <em>beautifully shared.</em></h2>
+            <p>Take a look at real Treats By Rich celebrations and the moments in between.</p>
+          </div>
+
+          <div class="events-video-grid">
+            <figure class="event-video-card reveal">
+              <div class="event-video-stage">
+                <video
+                  class="event-showcase-video"
+                  id="event-video-one"
+                  muted
+                  playsinline
+                  controls
+                  preload="none"
+                  poster="images/events/event-1-poster.jpg"
+                  aria-label="Treats By Rich serving guests at an event"
+                >
+                  <source src="images/events/Event%201.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <button
+                  class="event-video-toggle"
+                  type="button"
+                  aria-label="Play event video"
+                  aria-controls="event-video-one"
+                  aria-pressed="false"
+                >
+                  <span aria-hidden="true">▶</span>
+                </button>
+                <p class="event-video-status" role="status" aria-live="polite"></p>
+              </div>
+              <figcaption class="event-video-caption">
+                <span>Warm service</span>
+                <strong>Freshly served, together</strong>
+              </figcaption>
+            </figure>
+
+            <figure class="event-video-card reveal">
+              <div class="event-video-stage">
+                <video
+                  class="event-showcase-video"
+                  id="event-video-two"
+                  muted
+                  playsinline
+                  controls
+                  preload="none"
+                  poster="images/events/event-2-poster.jpg"
+                  aria-label="The Treats By Rich service counter at an event"
+                >
+                  <source src="images/events/Event%202.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <button
+                  class="event-video-toggle"
+                  type="button"
+                  aria-label="Play event video"
+                  aria-controls="event-video-two"
+                  aria-pressed="false"
+                >
+                  <span aria-hidden="true">▶</span>
+                </button>
+                <p class="event-video-status" role="status" aria-live="polite"></p>
+              </div>
+              <figcaption class="event-video-caption">
+                <span>Made for the moment</span>
+                <strong>A little sweetness in every detail</strong>
+              </figcaption>
+            </figure>
+
+            <figure class="event-video-card reveal">
+              <div class="event-video-stage">
+                <video
+                  class="event-showcase-video"
+                  id="event-video-three"
+                  muted
+                  playsinline
+                  controls
+                  preload="none"
+                  poster="images/events/event-3-poster.jpg"
+                  aria-label="A guest enjoying a Treats By Rich parfait"
+                >
+                  <source src="images/events/Event%203.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <button
+                  class="event-video-toggle"
+                  type="button"
+                  aria-label="Play event video"
+                  aria-controls="event-video-three"
+                  aria-pressed="false"
+                >
+                  <span aria-hidden="true">▶</span>
+                </button>
+                <p class="event-video-status" role="status" aria-live="polite"></p>
+              </div>
+              <figcaption class="event-video-caption">
+                <span>A moment to savour</span>
+                <strong>The joy of a perfect spoonful</strong>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="events-enquiry" aria-labelledby="events-enquiry-title">
+        <div class="container events-enquiry-card">
+          <div>
+            <p class="eyebrow">Made for your gathering</p>
+            <h2 id="events-enquiry-title">Planning a celebration?</h2>
+            <p>Contact Treats By Rich to ask about parfait orders for your special occasion.</p>
+          </div>
+          <div class="events-enquiry-actions">
+            <a class="button button-light" href="contact.html">Contact us</a>
+            <a class="button button-ghost" href="tel:+233538517831">Call +233 53 851 7831</a>
+            <a class="button button-ghost" href="https://wa.me/233538517831">WhatsApp</a>
           </div>
         </div>
       </section>
@@ -276,5 +246,6 @@
     <button class="back-to-top" type="button" aria-label="Back to top">&#8593;</button>
     <script src="js/cart.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/event-videos.js"></script>
   </body>
 </html>

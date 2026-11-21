@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" fill="none">
+  <g stroke="#174B35" stroke-linecap="round" stroke-width="5">
+    <path d="M10 19c42 19 71 51 84 96m376-96c-42 19-71 51-84 96M8 452c41-4 71 13 100 48m372-48c-41-4-71 13-100 48"/>
+  </g>
+  <g stroke="#819368" stroke-linecap="round" stroke-width="2.4">
+    <path d="m25 24-16-20m36 33-3-29m19 51 20-22m2 42 27-6m311-49 16-20m-36 33 3-29m-19 51-20-22m-2 42-27-6M21 460 7 444m34 27-3-24m28 37 17-18m7 33 27-2m320-37 14-16m-34 27 3-24m-28 37-17-18m-7 33-27-2"/>
+  </g>
+  <g stroke="#D6AD60" stroke-width="2">
+    <path d="M42 39v20m396-20v20M39 449v20m402-20v20"/>
+  </g>
+  <g stroke="#F4DA9A" stroke-width="2">
+    <circle cx="42" cy="73" r="12" fill="#8B1E2D"/><circle cx="438" cy="73" r="12" fill="#D6AD60"/>
+  </g>
+  <g stroke="#D6AD60" stroke-width="3">
+    <path d="M88 37v18m-7-7c-8-9-17-5-9 3 3 3 10 3 16 5m0 0c6-2 13-2 16-5 8-8-1-12-9-3"/>
+    <path d="M392 37v18m-7-7c-8-9-17-5-9 3 3 3 10 3 16 5m0 0c6-2 13-2 16-5 8-8-1-12-9-3"/>
+  </g>
+  <path d="M88 56v8m304-8v8" stroke="#D6AD60" stroke-width="2"/>
+  <path d="M88 62c-6 5-8 11-8 17 0 8 3 12 8 12s8-4 8-12c0-6-2-12-8-17Zm304 0c-6 5-8 11-8 17 0 8 3 12 8 12s8-4 8-12c0-6-2-12-8-17Z" fill="#D6AD60" stroke="#FFF1C2" stroke-width="2"/>
+  <path d="M88 72v13m304-13v13" stroke="#FFF1C2" stroke-linecap="round" stroke-width="2"/>
+  <g fill="#FFF1C2">
+    <circle cx="19" cy="113" r="3"/><circle cx="74" cy="101" r="2.5"/><circle cx="461" cy="113" r="3"/><circle cx="406" cy="101" r="2.5"/>
+    <circle cx="20" cy="430" r="3"/><circle cx="460" cy="430" r="3"/>
+  </g>
+  <path d="M12 546c35 1 58-15 80-42m376 42c-35 1-58-15-80-42" stroke="#174B35" stroke-linecap="round" stroke-width="6"/>
+  <path d="M12 543c35 1 58-15 80-42m376 42c-35 1-58-15-80-42" stroke="#D6AD60" stroke-linecap="round" stroke-width="1.5"/>
+  <path d="m205 42 5 11 12 1-9 8 3 12-11-6-10 6 3-12-9-8 12-1 4-11Z" fill="#D6AD60" stroke="#FFF1C2" stroke-width="1.4"/>
+  <path d="m275 80 3 8 9 1-7 5 2 9-7-5-7 5 3-9-7-5 9-1 2-8Z" fill="#8B1E2D" stroke="#E8C77A" stroke-width="1.5"/>
+</svg>

@@ -150,11 +150,14 @@ import {
         alignItems: "center",
         gap: "12px",
         padding: "15px 20px",
-        background: "#3f2418",
-        color: "#ffffff",
+        boxSizing: "border-box",
+        maxWidth: "calc(100vw - 48px)",
+        border: "1px solid rgba(214, 173, 96, 0.55)",
+        background: "#174B35",
+        color: "#FFF8E8",
         borderRadius: "14px",
         boxShadow:
-          "0 12px 30px rgba(0,0,0,0.2)",
+          "0 12px 30px rgba(8, 28, 18, 0.28), 0 0 24px rgba(214, 173, 96, 0.2)",
         fontFamily:
           "Poppins, sans-serif",
         fontSize: "14px",
@@ -177,8 +180,8 @@ import {
         display: "grid",
         placeItems: "center",
         borderRadius: "50%",
-        background: "#d99a3d",
-        color: "#ffffff",
+        background: "#D6AD60",
+        color: "#174B35",
         fontWeight: "700",
         fontSize: "17px",
         flexShrink: "0"
@@ -192,7 +195,7 @@ import {
       Object.assign(message.style, {
         display: "block",
         marginTop: "2px",
-        opacity: "0.85",
+        opacity: "0.9",
         fontSize: "12px"
       });
 

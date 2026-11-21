@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" fill="none">
+  <defs>
+    <linearGradient id="brass" x1="84" y1="83" x2="263" y2="319" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0D799"/>
+      <stop offset=".42" stop-color="#B9863C"/>
+      <stop offset=".72" stop-color="#E9CA82"/>
+      <stop offset="1" stop-color="#855526"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="112" y1="144" x2="247" y2="295" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE7A3" stop-opacity=".4"/>
+      <stop offset=".48" stop-color="#FFC85B" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#FFE7A3" stop-opacity=".28"/>
+    </linearGradient>
+    <radialGradient id="flame" cx="0" cy="0" r="1" gradientTransform="matrix(0 53 -31 0 185 210)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8D6"/>
+      <stop offset=".32" stop-color="#FFE28A"/>
+      <stop offset="1" stop-color="#E79A32" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bauble" cx="0" cy="0" r="1" gradientTransform="matrix(10 13 -13 10 0 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8D594"/>
+      <stop offset=".3" stop-color="#B84146"/>
+      <stop offset="1" stop-color="#741928"/>
+    </radialGradient>
+    <filter id="glow" x="80" y="115" width="216" height="213" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="13"/>
+    </filter>
+    <filter id="shadow" x="38" y="37" width="287" height="377" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dy="8"/>
+      <feComponentTransfer><feFuncA slope=".22" type="linear"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="181" cy="389" rx="120" ry="15" fill="#061F18" fill-opacity=".26"/>
+  <g filter="url(#shadow)">
+    <path d="M143 106c0-37 18-61 41-61s41 24 41 61" stroke="url(#brass)" stroke-width="8"/>
+    <path d="M135 107h98l-8 22h-82l-8-22Z" fill="#8A5E2E" stroke="#E3C47E" stroke-width="3"/>
+    <path d="M119 128h130l-14 26H133l-14-26Z" fill="url(#brass)" stroke="#F0D799" stroke-width="3"/>
+    <path d="M132 151h104v147H132z" fill="#122F25" fill-opacity=".5" stroke="url(#brass)" stroke-width="5"/>
+    <path d="M138 157h92v135h-92z" fill="url(#glass)" stroke="#F4D991" stroke-opacity=".72" stroke-width="2"/>
+    <path d="M148 165v119m74-119v119" stroke="#FFF1C2" stroke-opacity=".48" stroke-width="3"/>
+    <ellipse cx="184" cy="231" rx="54" ry="65" fill="#FFCA62" fill-opacity=".26" filter="url(#glow)"/>
+    <path d="M184 260c-27-25-3-54 0-77 25 27 30 55 0 77Z" fill="url(#flame)"/>
+    <path d="M184 250c-13-15-1-30 2-43 12 17 13 32-2 43Z" fill="#FFF2C1"/>
+    <path d="M179 270h12l8 13h-28l8-13Z" fill="#E8C779"/>
+    <path d="M128 296h112l-10 22H138l-10-22Z" fill="url(#brass)" stroke="#F0D799" stroke-width="3"/>
+    <path d="M118 318h132l-11 20H129l-11-20Z" fill="#875B2C" stroke="#E7C77E" stroke-width="3"/>
+    <path d="M147 337h74v10h-74z" fill="url(#brass)"/>
+    <path d="M102 154c-32 19-44 53-40 96m192-94c33 17 50 51 49 85" stroke="#27573B" stroke-width="8" stroke-linecap="round"/>
+    <path d="m88 178-29-8m19 26-35 5m31 18-33 17m60-47-21-26m30 30-4-36m139 31 27-16m-16 32 34-1m-28 18 32 13m-66-34 19-28m-29 31 2-36" stroke="#78915D" stroke-width="4" stroke-linecap="round"/>
+    <path d="m70 267 37-30m149 23 32-22" stroke="#D6AD60" stroke-width="2"/>
+    <circle cx="78" cy="236" r="12" fill="url(#bauble)" stroke="#F1D28B" stroke-width="2"/>
+    <circle cx="277" cy="239" r="11" fill="url(#bauble)" stroke="#F1D28B" stroke-width="2"/>
+    <path d="M72 222v-12m211 18v-12" stroke="#D6AD60" stroke-width="2"/>
+    <g fill="#A82635" stroke="#E8C77A" stroke-width="1">
+      <circle cx="67" cy="286" r="5"/><circle cx="78" cy="293" r="4"/>
+      <circle cx="286" cy="286" r="5"/><circle cx="275" cy="295" r="4"/>
+    </g>
+    <path d="M151 347c-15-17-33-2-2 8m2-8c15-17 33-2 2 8m-2-4v12" stroke="#F1D28B" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

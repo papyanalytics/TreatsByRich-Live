@@ -2098,3 +2098,3506 @@ body {
   background: linear-gradient(180deg, rgba(255, 253, 249, 0.9), rgba(247, 242, 232, 0.9));
   border: 1px dashed rgba(46, 32, 23, 0.2);
 }
+
+/* Christmas 2026 homepage */
+.home-page {
+  --home-cream: #fff8e8;
+  --home-paper: #fbf5e9;
+  --home-forest: #174b35;
+  --home-forest-deep: #103a2a;
+  --home-burgundy: #8b1e2d;
+  --home-champagne: #d6ad60;
+  --home-ink: #342319;
+  --home-muted: #786758;
+  background: var(--home-paper);
+  color: var(--home-ink);
+}
+
+.home-page .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0;
+  background: var(--home-cream);
+  border-bottom: 1px solid rgba(74, 36, 18, 0.08);
+}
+
+.home-page .site-header.scrolled {
+  background: rgba(255, 248, 232, 0.97);
+  box-shadow: 0 10px 32px rgba(30, 43, 31, 0.09);
+  backdrop-filter: blur(14px);
+}
+
+.home-page .holiday-announcement {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.35rem 1rem;
+  background: var(--home-forest);
+  color: #fff8e8;
+  font-size: 0.69rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-align: center;
+}
+
+.home-page .announcement-star {
+  color: var(--home-champagne);
+  font-size: 0.8rem;
+}
+
+.home-page .announcement-detail {
+  color: rgba(255, 248, 232, 0.66);
+  letter-spacing: 0.04em;
+}
+
+.home-page .nav-shell {
+  min-height: 78px;
+}
+
+.home-page .brand {
+  gap: 0.7rem;
+}
+
+.home-page .brand img {
+  width: 46px;
+  height: 46px;
+}
+
+.home-page .brand strong {
+  color: var(--home-forest);
+  font-size: 1.04rem;
+}
+
+.home-page .brand small {
+  color: var(--home-muted);
+}
+
+.home-page .site-nav {
+  gap: clamp(0.7rem, 1.4vw, 1.25rem);
+  color: var(--home-ink);
+  font-size: 0.84rem;
+}
+
+.home-page .site-nav a::after {
+  height: 1px;
+  background: var(--home-champagne);
+}
+
+.home-page .site-nav a:hover,
+.home-page .site-nav a:focus-visible,
+.home-page .site-nav a.is-active {
+  color: var(--home-forest);
+}
+
+.home-page .site-nav .nav-cta {
+  padding: 0.68rem 1.05rem;
+  color: var(--home-cream);
+  background: var(--home-forest);
+  box-shadow: none;
+}
+
+.home-page .site-nav .nav-cta:hover,
+.home-page .site-nav .nav-cta:focus-visible {
+  color: var(--home-cream);
+  background: var(--home-forest-deep);
+  box-shadow: 0 10px 24px rgba(23, 75, 53, 0.18);
+}
+
+.home-page .nav-cart em {
+  background: var(--home-champagne);
+  color: var(--home-forest-deep);
+}
+
+.home-page .nav-toggle span {
+  background: var(--home-forest);
+}
+
+.home-page .home-hero {
+  position: relative;
+  min-height: max(690px, min(820px, calc(100vh - 114px)));
+  min-height: max(690px, min(820px, calc(100svh - 114px)));
+  overflow: hidden;
+  isolation: isolate;
+  place-items: initial;
+  background: var(--home-forest-deep);
+  color: var(--home-cream);
+}
+
+.home-page .home-hero .hero-video {
+  opacity: 0.22;
+  filter: saturate(0.72);
+}
+
+.home-page .home-hero .hero-overlay {
+  background:
+    radial-gradient(ellipse at 82% 50%, rgba(32, 83, 59, 0.16), transparent 44%),
+    linear-gradient(105deg, rgba(16, 58, 42, 0.98) 0%, rgba(16, 58, 42, 0.94) 47%, rgba(16, 58, 42, 0.72) 100%);
+}
+
+.home-page .hero-snow {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.42;
+  background-image:
+    radial-gradient(circle, rgba(255, 248, 232, 0.85) 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(214, 173, 96, 0.72) 1.2px, transparent 2px),
+    radial-gradient(circle, rgba(255, 248, 232, 0.6) 1px, transparent 1.8px);
+  background-size: 118px 138px, 184px 206px, 272px 246px;
+  background-position: 12px 16px, 58px 90px, 122px 36px;
+  animation: home-snowfall 24s linear infinite;
+}
+
+.home-page .hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(380px, 1.05fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  min-height: inherit;
+  padding-top: 4.5rem;
+  padding-bottom: 5.25rem;
+}
+
+.home-page .home-hero .hero-content {
+  max-width: 650px;
+  padding: 1rem 0;
+  text-align: left;
+}
+
+.home-page .home-hero .eyebrow {
+  margin-bottom: 1.2rem;
+  color: var(--home-champagne);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+}
+
+.home-page .home-hero h1 {
+  max-width: 700px;
+  margin: 0 0 1.2rem;
+  color: var(--home-cream);
+  font-size: clamp(3.2rem, 6vw, 6rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.99;
+}
+
+.home-page .home-hero h1 em,
+.home-page .brand-intro h2 em,
+.home-page .home-section-heading h2 em,
+.home-page .editorial-copy h2 em,
+.home-page .sharing-copy h2 em {
+  color: var(--home-champagne);
+  font-weight: 500;
+}
+
+.home-page .home-hero .hero-subtitle {
+  margin: 0 0 0.9rem;
+  color: rgba(255, 248, 232, 0.85);
+  font-size: 1.15rem;
+}
+
+.home-page .home-hero .hero-copy {
+  max-width: 490px;
+  margin: 0 0 1.8rem;
+  color: rgba(255, 248, 232, 0.78);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.home-page .home-hero .hero-actions {
+  justify-content: flex-start;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.home-page .home-hero .button {
+  min-height: 50px;
+  padding: 0.8rem 1.25rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.home-page .home-hero .button-primary {
+  background: var(--home-champagne);
+  color: var(--home-forest-deep);
+  box-shadow: 0 12px 28px rgba(4, 25, 16, 0.2);
+}
+
+.home-page .home-hero .button-primary:hover,
+.home-page .home-hero .button-primary:focus-visible {
+  background: #e2c47f;
+  box-shadow: 0 16px 34px rgba(4, 25, 16, 0.26);
+}
+
+.home-page .home-hero .button-ghost {
+  border-color: rgba(255, 248, 232, 0.42);
+  background: rgba(255, 248, 232, 0.04);
+  color: var(--home-cream);
+}
+
+.home-page .home-hero .button-ghost:hover,
+.home-page .home-hero .button-ghost:focus-visible {
+  border-color: var(--home-champagne);
+  background: rgba(255, 248, 232, 0.1);
+}
+
+.home-page .hero-note {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 2rem 0 0;
+  color: rgba(255, 248, 232, 0.68);
+  font-size: 0.74rem;
+  letter-spacing: 0.07em;
+}
+
+.home-page .hero-note span {
+  color: var(--home-champagne);
+}
+
+.home-page .hero-visual {
+  position: relative;
+  width: min(100%, 560px);
+  justify-self: end;
+  padding: 1.2rem 1rem 2.4rem;
+}
+
+.home-page .hero-photo-frame {
+  position: relative;
+  z-index: 1;
+  height: clamp(430px, 57vw, 650px);
+  overflow: hidden;
+  border: 1px solid rgba(214, 173, 96, 0.72);
+  border-radius: 48% 48% 1.2rem 1.2rem;
+  background: #fffaf1;
+  box-shadow: 0 28px 90px rgba(4, 25, 16, 0.32);
+}
+
+.home-page .hero-photo-frame::after {
+  position: absolute;
+  inset: 0;
+  border: 9px solid rgba(255, 248, 232, 0.12);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.home-page .hero-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 52%;
+}
+
+.home-page .hero-photo-caption {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0.15rem;
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  color: rgba(255, 248, 232, 0.75);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-page .hero-photo-caption span:last-child {
+  color: var(--home-champagne);
+}
+
+.home-page .hero-ornament {
+  position: absolute;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 232, 182, 0.82);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #f8e6b2 0 5%, #b78b42 28%, #8b1e2d 82%);
+  box-shadow: 0 8px 26px rgba(5, 28, 19, 0.22), inset -5px -5px 9px rgba(32, 14, 11, 0.18);
+}
+
+.home-page .hero-ornament::before {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 1px;
+  height: 34px;
+  background: rgba(214, 173, 96, 0.72);
+  content: "";
+}
+
+.home-page .ornament-one {
+  top: 13%;
+  left: 1%;
+  width: 42px;
+  height: 42px;
+}
+
+.home-page .ornament-two {
+  right: -1%;
+  bottom: 23%;
+  width: 27px;
+  height: 27px;
+  background: radial-gradient(circle at 34% 30%, #f8e6b2 0 5%, #b78b42 28%, #174b35 82%);
+}
+
+.home-page .hero-star {
+  position: absolute;
+  z-index: 2;
+  color: var(--home-champagne);
+  animation: home-twinkle 4.6s ease-in-out infinite;
+}
+
+.home-page .hero-star-one {
+  top: 26%;
+  right: 1%;
+  font-size: 1.7rem;
+}
+
+.home-page .hero-star-two {
+  bottom: 26%;
+  left: -3%;
+  font-size: 1.2rem;
+  animation-delay: 1.2s;
+}
+
+.home-page .hero-evergreen {
+  position: absolute;
+  z-index: 2;
+  top: -1.5rem;
+  right: -4.7rem;
+  width: clamp(120px, 15vw, 210px);
+  color: rgba(143, 175, 126, 0.8);
+  opacity: 0.85;
+  transform: rotate(7deg);
+  pointer-events: none;
+}
+
+.home-page .scroll-indicator {
+  position: absolute;
+  z-index: 3;
+  bottom: 1.5rem;
+  left: 50%;
+  color: rgba(255, 248, 232, 0.66);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  transform: translateX(-50%);
+}
+
+.home-page .scroll-indicator span {
+  width: 1.35rem;
+  height: 2.15rem;
+  border-color: rgba(214, 173, 96, 0.7);
+}
+
+.home-page .scroll-indicator span::before {
+  background: var(--home-champagne);
+}
+
+.home-page .brand-intro {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(5rem, 9vw, 8.5rem) 0;
+  background: var(--home-cream);
+}
+
+.home-page .brand-intro-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.75fr;
+  align-items: end;
+  gap: clamp(2.5rem, 9vw, 9rem);
+}
+
+.home-page .brand-intro-copy .eyebrow,
+.home-page .home-section-heading .eyebrow,
+.home-page .sharing-copy .eyebrow {
+  color: var(--home-forest);
+}
+
+.home-page .brand-intro h2,
+.home-page .home-section-heading h2,
+.home-page .sharing-copy h2 {
+  margin: 0;
+  color: var(--home-forest);
+  font-size: clamp(2.5rem, 5vw, 4.6rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+
+.home-page .brand-intro h2 em,
+.home-page .home-section-heading h2 em,
+.home-page .sharing-copy h2 em {
+  color: var(--home-burgundy);
+}
+
+.home-page .brand-intro-detail {
+  max-width: 430px;
+  padding-bottom: 0.35rem;
+}
+
+.home-page .intro-rule {
+  display: block;
+  width: 56px;
+  height: 1px;
+  margin-bottom: 1.4rem;
+  background: var(--home-champagne);
+}
+
+.home-page .brand-intro-detail p,
+.home-page .sharing-copy > p:not(.eyebrow) {
+  margin: 0 0 1.5rem;
+  color: var(--home-muted);
+  font-size: 0.98rem;
+  line-height: 1.9;
+}
+
+.home-page .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--home-champagne);
+  color: var(--home-forest);
+  font-size: 0.77rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-page .text-link:hover,
+.home-page .text-link:focus-visible {
+  gap: 0.9rem;
+  color: var(--home-burgundy);
+}
+
+.home-page .brand-intro-star {
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  color: rgba(214, 173, 96, 0.54);
+  font-size: 2rem;
+}
+
+.home-page .best-sellers {
+  position: relative;
+  padding: clamp(5rem, 8vw, 7.5rem) 0;
+  background:
+    radial-gradient(ellipse at 8% 22%, rgba(214, 173, 96, 0.11), transparent 22rem),
+    var(--home-paper);
+}
+
+.home-page .home-section-heading {
+  max-width: 740px;
+  margin: 0 auto 3.3rem;
+}
+
+.home-page .home-section-heading h2 {
+  font-size: clamp(2.3rem, 4.5vw, 3.8rem);
+}
+
+.home-page .home-section-heading > p:last-child {
+  margin-top: 1rem;
+  color: var(--home-muted);
+}
+
+.home-page .home-product-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(1.2rem, 2.2vw, 2rem);
+}
+
+.home-page .home-product-card {
+  grid-column: span 2;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.home-page .home-product-card:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+.home-page .home-product-card:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+
+.home-page .home-product-card:hover,
+.home-page .home-product-card:focus-within {
+  transform: translateY(-5px);
+  box-shadow: none;
+}
+
+.home-page .home-product-image {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 0.94 / 1;
+  background: #f0e8d8;
+}
+
+.home-page .home-product-image::after {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(74, 36, 18, 0.08);
+  content: "";
+  pointer-events: none;
+}
+
+.home-page .home-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.home-page .home-product-card:hover .home-product-image img,
+.home-page .home-product-card:focus-within .home-product-image img {
+  transform: scale(1.045);
+}
+
+.home-page .product-image-index {
+  position: absolute;
+  z-index: 1;
+  top: 0.8rem;
+  left: 0.8rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid rgba(214, 173, 96, 0.75);
+  border-radius: 50%;
+  background: rgba(255, 248, 232, 0.91);
+  color: var(--home-forest);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+}
+
+.home-page .home-product-card .card-body {
+  gap: 0.48rem;
+  padding: 1.1rem 0.1rem 0;
+}
+
+.home-page .product-kicker {
+  margin: 0;
+  color: var(--home-burgundy);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home-page .home-product-card .card-body h3 {
+  color: var(--home-forest);
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  font-weight: 500;
+}
+
+.home-page .home-product-card .card-body > p:not(.product-kicker) {
+  margin: 0;
+  color: var(--home-muted);
+  font-size: 0.84rem;
+  line-height: 1.75;
+}
+
+.home-page .home-product-card .card-meta {
+  align-items: center;
+  padding-top: 0.8rem;
+  margin-top: 0.15rem;
+  border-top: 1px solid rgba(74, 36, 18, 0.12);
+}
+
+.home-page .home-product-card .card-meta span {
+  color: var(--home-ink);
+  font-size: 0.77rem;
+  font-weight: 500;
+}
+
+.home-page .home-product-card .card-meta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--home-forest);
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.home-page .home-product-card .card-meta a:hover,
+.home-page .home-product-card .card-meta a:focus-visible {
+  color: var(--home-burgundy);
+}
+
+.home-page .menu-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.home-page .menu-more .button {
+  gap: 0.6rem;
+  border-color: rgba(23, 75, 53, 0.25);
+  background: transparent;
+  color: var(--home-forest);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-page .menu-more .button:hover,
+.home-page .menu-more .button:focus-visible {
+  background: var(--home-forest);
+  color: var(--home-cream);
+  box-shadow: 0 12px 26px rgba(23, 75, 53, 0.15);
+}
+
+.home-page .holiday-editorial {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(5rem, 9vw, 8.5rem) 0;
+  background:
+    radial-gradient(ellipse at 0% 100%, rgba(214, 173, 96, 0.16), transparent 35rem),
+    var(--home-forest);
+  color: var(--home-cream);
+  isolation: isolate;
+}
+
+.home-page .holiday-editorial::before,
+.home-page .holiday-editorial::after {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(214, 173, 96, 0.2);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.home-page .holiday-editorial::before {
+  top: -12rem;
+  right: -7rem;
+  width: 34rem;
+  height: 34rem;
+}
+
+.home-page .holiday-editorial::after {
+  top: -9rem;
+  right: -4rem;
+  width: 28rem;
+  height: 28rem;
+}
+
+.home-page .holiday-editorial-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: clamp(3rem, 8vw, 8rem);
+}
+
+.home-page .editorial-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .editorial-copy .eyebrow {
+  color: var(--home-champagne);
+}
+
+.home-page .editorial-copy h2 {
+  max-width: 540px;
+  margin: 0 0 1.2rem;
+  color: var(--home-cream);
+  font-size: clamp(2.7rem, 5vw, 4.7rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.03;
+}
+
+.home-page .editorial-copy h2 em {
+  color: var(--home-champagne);
+}
+
+.home-page .editorial-copy > p:not(.eyebrow) {
+  max-width: 460px;
+  margin: 0 0 1.8rem;
+  color: rgba(255, 248, 232, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.85;
+}
+
+.home-page .button-light {
+  gap: 0.6rem;
+  border-color: rgba(255, 248, 232, 0.6);
+  background: transparent;
+  color: var(--home-cream);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-page .button-light:hover,
+.home-page .button-light:focus-visible {
+  border-color: var(--home-champagne);
+  background: var(--home-champagne);
+  color: var(--home-forest-deep);
+  box-shadow: 0 14px 30px rgba(4, 25, 16, 0.2);
+}
+
+.home-page .editorial-photo {
+  position: relative;
+  margin: 0;
+  padding: 0 0 2.4rem 2.4rem;
+}
+
+.home-page .editorial-photo::before {
+  position: absolute;
+  inset: 1.1rem 1.1rem 3.4rem 0;
+  border: 1px solid rgba(214, 173, 96, 0.75);
+  content: "";
+}
+
+.home-page .editorial-photo img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.15 / 1;
+  object-fit: cover;
+  box-shadow: 0 24px 70px rgba(5, 25, 17, 0.28);
+}
+
+.home-page .editorial-photo figcaption {
+  position: absolute;
+  right: 2.4rem;
+  bottom: 0.45rem;
+  color: rgba(255, 248, 232, 0.72);
+  font-family: "Playfair Display", serif;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.home-page .holiday-editorial-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-page .editorial-star {
+  position: absolute;
+  color: var(--home-champagne);
+  opacity: 0.7;
+  animation: home-twinkle 5.4s ease-in-out infinite;
+}
+
+.home-page .editorial-star-one {
+  top: 16%;
+  left: 48%;
+  font-size: 1.8rem;
+}
+
+.home-page .editorial-star-two {
+  right: 8%;
+  bottom: 17%;
+  font-size: 1.25rem;
+  animation-delay: 1.6s;
+}
+
+.home-page .editorial-bauble {
+  position: absolute;
+  top: 4%;
+  right: 13%;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 232, 182, 0.8);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, #f8e6b2 0 4%, #b78b42 30%, #8b1e2d 85%);
+  box-shadow: inset -6px -6px 12px rgba(32, 14, 11, 0.2), 0 12px 26px rgba(4, 25, 16, 0.2);
+}
+
+.home-page .editorial-bauble::before {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 1px;
+  height: 65px;
+  background: rgba(214, 173, 96, 0.65);
+  content: "";
+}
+
+.home-page .editorial-ribbon {
+  position: absolute;
+  top: 20%;
+  left: 39%;
+  width: 110px;
+  height: 42px;
+  border-top: 1px solid rgba(214, 173, 96, 0.48);
+  border-bottom: 1px solid rgba(214, 173, 96, 0.48);
+  border-radius: 50%;
+  opacity: 0.5;
+  transform: rotate(-24deg);
+}
+
+.home-page .sharing-story {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(5rem, 8vw, 7.8rem) 0;
+  background: var(--home-cream);
+}
+
+.home-page .sharing-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  align-items: center;
+  gap: clamp(3rem, 8vw, 8rem);
+}
+
+.home-page .sharing-photo {
+  position: relative;
+  max-width: 600px;
+  margin: 0;
+  padding: 0 0 1.8rem 1.8rem;
+}
+
+.home-page .sharing-photo::before {
+  position: absolute;
+  inset: 1rem 1rem 0 0;
+  border: 1px solid var(--home-champagne);
+  content: "";
+}
+
+.home-page .sharing-photo img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.02 / 1;
+  object-fit: cover;
+}
+
+.home-page .sharing-photo-note {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0;
+  padding: 0.7rem 1rem;
+  background: var(--home-burgundy);
+  color: var(--home-cream);
+  font-family: "Playfair Display", serif;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.home-page .sharing-copy {
+  max-width: 480px;
+}
+
+.home-page .sharing-copy h2 {
+  margin-bottom: 1.1rem;
+  font-size: clamp(2.45rem, 4.3vw, 4rem);
+}
+
+.home-page .why-choose {
+  padding: clamp(4.5rem, 7vw, 6.5rem) 0;
+  background: #f3eddf;
+}
+
+.home-page .why-choose .section-heading {
+  margin-bottom: 2.3rem;
+}
+
+.home-page .why-choose .section-heading .eyebrow {
+  color: var(--home-forest);
+}
+
+.home-page .why-choose .section-heading h2 {
+  color: var(--home-forest);
+  font-size: clamp(2rem, 3.5vw, 3.15rem);
+  font-weight: 500;
+}
+
+.home-page .why-choose .section-heading > p:last-child {
+  color: var(--home-muted);
+}
+
+.home-page .why-choose .feature-grid {
+  gap: 1px;
+  background: rgba(23, 75, 53, 0.14);
+}
+
+.home-page .why-choose .feature-card {
+  border: 0;
+  border-radius: 0;
+  background: #f7f1e6;
+  box-shadow: none;
+  text-align: left;
+}
+
+.home-page .why-choose .feature-card:hover {
+  transform: none;
+  background: var(--home-cream);
+  box-shadow: none;
+}
+
+.home-page .why-choose .feature-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  margin: 0 0 1rem;
+  border: 1px solid rgba(214, 173, 96, 0.65);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--home-forest);
+}
+
+.home-page .why-choose .feature-icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.home-page .why-choose .feature-card h3 {
+  color: var(--home-forest);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.home-page .why-choose .feature-card p {
+  color: var(--home-muted);
+  font-size: 0.88rem;
+}
+
+.home-page .customer-love-section,
+.home-page .review-form-section {
+  background: var(--home-paper);
+}
+
+.home-page .customer-love-section {
+  padding: clamp(3.75rem, 5vw, 4.75rem) 0;
+}
+
+.home-page .customer-love-section .section-heading {
+  margin-bottom: 2rem;
+}
+
+.home-page .customer-love-section [hidden] {
+  display: none !important;
+}
+
+.home-page .customer-love-section .section-heading .eyebrow,
+.home-page .review-form-section .section-heading .eyebrow,
+.home-page .instagram-section .section-heading .eyebrow {
+  color: var(--home-forest);
+}
+
+.home-page .customer-love-section .section-heading h2,
+.home-page .review-form-section .section-heading h2,
+.home-page .instagram-section .section-heading h2 {
+  color: var(--home-forest);
+  font-weight: 500;
+}
+
+.home-page .customer-love-section .section-heading > p:last-child,
+.home-page .review-form-section .section-heading > p:last-child,
+.home-page .instagram-section .section-heading > p:last-child {
+  color: var(--home-muted);
+}
+
+.home-page .customer-review-grid .review-card {
+  gap: 0.55rem;
+  padding: 1rem;
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--home-cream);
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.05);
+}
+
+.home-page .customer-review-grid .review-card p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.home-page .customer-review-grid .review-card strong {
+  color: var(--home-forest);
+}
+
+.home-page .customer-review-grid .rating-row {
+  color: var(--home-champagne);
+}
+
+.home-page .dm-chip {
+  border-color: rgba(214, 173, 96, 0.3);
+  border-radius: 0.25rem;
+  background: #f3eddf;
+}
+
+.home-page .dm-chip strong {
+  color: var(--home-forest);
+}
+
+.home-page .video-review-card {
+  border-color: rgba(23, 75, 53, 0.12);
+  border-radius: 0.25rem;
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.06);
+}
+
+.home-page .video-reviews {
+  margin-top: 2rem;
+}
+
+.home-page .video-review-card video {
+  object-fit: cover;
+}
+
+.home-page .video-reviews-title {
+  color: var(--home-forest);
+  font-weight: 500;
+}
+
+.home-page .review-form {
+  border-color: rgba(23, 75, 53, 0.12);
+  border-radius: 0.35rem;
+  background: var(--home-cream);
+  box-shadow: 0 18px 48px rgba(45, 37, 25, 0.07);
+  backdrop-filter: none;
+}
+
+.home-page .review-form-field label {
+  color: var(--home-forest);
+}
+
+.home-page .review-form-field input[type="text"],
+.home-page .review-form-field textarea {
+  border-color: rgba(23, 75, 53, 0.18);
+  border-radius: 0.25rem;
+  background: #fffdf8;
+}
+
+.home-page .review-form-note {
+  color: var(--home-muted);
+}
+
+.home-page .review-form .button-primary {
+  background: var(--home-forest);
+  color: var(--home-cream);
+  box-shadow: none;
+}
+
+.home-page .review-form .button-primary:hover,
+.home-page .review-form .button-primary:focus-visible {
+  background: var(--home-forest-deep);
+  box-shadow: 0 12px 28px rgba(23, 75, 53, 0.16);
+}
+
+.home-page .instagram-section {
+  background: var(--home-cream);
+}
+
+.home-page .gallery-grid {
+  gap: 1rem;
+}
+
+.home-page .gallery-card {
+  border: 1px solid rgba(214, 173, 96, 0.4);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.home-page .cta-section {
+  padding: 0 0 clamp(4rem, 7vw, 6.5rem);
+  background: var(--home-cream);
+}
+
+.home-page .cta-banner {
+  padding: clamp(2rem, 5vw, 4rem);
+  border: 1px solid rgba(214, 173, 96, 0.4);
+  border-radius: 0.35rem;
+  background: var(--home-forest);
+  color: var(--home-cream);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.home-page .cta-banner h2 {
+  color: var(--home-cream);
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  font-weight: 500;
+}
+
+.home-page .cta-banner p:not(.eyebrow) {
+  color: rgba(255, 248, 232, 0.74);
+}
+
+.home-page .cta-banner .eyebrow {
+  color: var(--home-champagne);
+}
+
+.home-page .cta-banner .button-primary {
+  background: var(--home-champagne);
+  color: var(--home-forest-deep);
+  box-shadow: none;
+}
+
+.home-page .cta-banner .button-ghost-dark {
+  border-color: rgba(255, 248, 232, 0.5);
+  background: transparent;
+  color: var(--home-cream);
+}
+
+.home-page .cta-banner .button-ghost-dark:hover,
+.home-page .cta-banner .button-ghost-dark:focus-visible {
+  border-color: var(--home-champagne);
+  background: rgba(255, 248, 232, 0.08);
+}
+
+.home-page .site-footer {
+  position: relative;
+  overflow: hidden;
+  padding: 4.5rem 0 1.5rem;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(214, 173, 96, 0.1), transparent 27rem),
+    var(--home-forest-deep);
+  color: rgba(255, 248, 232, 0.82);
+}
+
+.home-page .site-footer::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1160px, calc(100% - 2rem));
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--home-champagne), transparent);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.home-page .brand-footer strong,
+.home-page .brand-footer small {
+  color: var(--home-cream);
+}
+
+.home-page .footer-brand p,
+.home-page .footer-grid li {
+  color: rgba(255, 248, 232, 0.68);
+}
+
+.home-page .footer-grid h3 {
+  color: var(--home-champagne);
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.home-page .footer-grid a {
+  color: rgba(255, 248, 232, 0.76);
+}
+
+.home-page .footer-grid a:hover,
+.home-page .footer-grid a:focus-visible {
+  color: var(--home-champagne);
+}
+
+.home-page .footer-bottom {
+  border-color: rgba(214, 173, 96, 0.24);
+  color: rgba(255, 248, 232, 0.58);
+}
+
+.home-page .back-to-top {
+  background: var(--home-champagne);
+  color: var(--home-forest-deep);
+}
+
+/* Shared Christmas styling for public pages outside the approved homepage. */
+.seasonal-page {
+  --seasonal-cream: #fff8e8;
+  --seasonal-paper: #fbf5e9;
+  --seasonal-forest: #174b35;
+  --seasonal-forest-deep: #103a2a;
+  --seasonal-burgundy: #8b1e2d;
+  --seasonal-gold: #d6ad60;
+  --seasonal-ink: #4a2412;
+  --seasonal-muted: #786758;
+  background: var(--seasonal-paper);
+  color: var(--seasonal-ink);
+}
+
+.seasonal-page .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0;
+  background: var(--seasonal-cream);
+  border-bottom: 1px solid rgba(74, 36, 18, 0.08);
+}
+
+.seasonal-page .site-header.scrolled {
+  background: rgba(255, 248, 232, 0.97);
+  box-shadow: 0 10px 32px rgba(30, 43, 31, 0.09);
+  backdrop-filter: blur(14px);
+}
+
+.seasonal-page .holiday-announcement {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.35rem 1rem;
+  background: var(--seasonal-forest);
+  color: var(--home-cream);
+  font-size: 0.69rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-align: center;
+}
+
+.seasonal-page .announcement-star {
+  color: var(--seasonal-gold);
+  font-size: 0.8rem;
+}
+
+.seasonal-page .announcement-detail {
+  color: rgba(255, 248, 232, 0.66);
+  letter-spacing: 0.04em;
+}
+
+.seasonal-page .nav-shell {
+  min-height: 78px;
+}
+
+.seasonal-page .brand {
+  gap: 0.7rem;
+}
+
+.seasonal-page .brand img {
+  width: 46px;
+  height: 46px;
+}
+
+.seasonal-page .brand strong {
+  color: var(--seasonal-forest);
+  font-size: 1.04rem;
+}
+
+.seasonal-page .brand small {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-page .site-nav {
+  gap: clamp(0.7rem, 1.4vw, 1.25rem);
+  color: var(--seasonal-ink);
+  font-size: 0.84rem;
+}
+
+.seasonal-page .site-nav a::after {
+  height: 1px;
+  background: var(--seasonal-gold);
+}
+
+.seasonal-page .site-nav a:hover,
+.seasonal-page .site-nav a:focus-visible,
+.seasonal-page .site-nav a.is-active {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-page .site-nav .nav-cta {
+  padding: 0.68rem 1.05rem;
+  background: var(--seasonal-forest);
+  color: var(--home-cream);
+  box-shadow: none;
+}
+
+.seasonal-page .site-nav .nav-cta:hover,
+.seasonal-page .site-nav .nav-cta:focus-visible {
+  background: var(--seasonal-forest-deep);
+  color: var(--seasonal-cream);
+  box-shadow: 0 10px 24px rgba(23, 75, 53, 0.18);
+}
+
+.seasonal-page .nav-cart em {
+  background: var(--seasonal-gold);
+  color: var(--seasonal-forest-deep);
+}
+
+.seasonal-page .nav-toggle span {
+  background: var(--seasonal-forest);
+}
+
+.seasonal-page main {
+  min-height: 45vh;
+}
+
+.seasonal-page .eyebrow {
+  color: var(--seasonal-forest);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+}
+
+.seasonal-page .page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(4.5rem, 8vw, 7rem) 0 clamp(2.5rem, 5vw, 4rem);
+  background:
+    radial-gradient(ellipse at 92% 8%, rgba(214, 173, 96, 0.16), transparent 22rem),
+    var(--seasonal-cream);
+}
+
+.seasonal-page .page-hero::after {
+  position: absolute;
+  top: 2rem;
+  right: max(3%, calc((100vw - 1160px) / 2));
+  color: rgba(214, 173, 96, 0.58);
+  content: "✦";
+  font-size: 1.7rem;
+  pointer-events: none;
+}
+
+.seasonal-page .page-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.seasonal-page .page-hero h1 {
+  max-width: 820px;
+  color: var(--seasonal-forest);
+  font-size: clamp(2.7rem, 5vw, 4.7rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+.seasonal-page .page-hero p:not(.eyebrow) {
+  max-width: 690px;
+  color: var(--seasonal-muted);
+}
+
+.seasonal-page .section-heading h2 {
+  color: var(--seasonal-forest);
+  font-weight: 500;
+}
+
+.seasonal-page .section-heading > p:last-child {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-page .button {
+  min-height: 44px;
+  border-radius: 0.2rem;
+  font-size: 0.73rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.seasonal-page .button-primary {
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+  box-shadow: none;
+}
+
+.seasonal-page .button-primary:hover,
+.seasonal-page .button-primary:focus-visible {
+  background: var(--seasonal-forest-deep);
+  color: var(--seasonal-cream);
+  box-shadow: 0 12px 26px rgba(23, 75, 53, 0.16);
+}
+
+.seasonal-page .button-ghost-dark {
+  border-color: rgba(23, 75, 53, 0.25);
+  background: transparent;
+  color: var(--seasonal-forest);
+}
+
+.seasonal-page .button-ghost-dark:hover,
+.seasonal-page .button-ghost-dark:focus-visible {
+  border-color: var(--seasonal-forest);
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+  box-shadow: 0 12px 26px rgba(23, 75, 53, 0.14);
+}
+
+.seasonal-page .site-footer {
+  position: relative;
+  overflow: hidden;
+  padding: 4.5rem 0 1.5rem;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(214, 173, 96, 0.1), transparent 27rem),
+    var(--seasonal-forest-deep);
+  color: rgba(255, 248, 232, 0.82);
+}
+
+.seasonal-page .site-footer::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1160px, calc(100% - 2rem));
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--seasonal-gold), transparent);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.seasonal-page .brand-footer strong,
+.seasonal-page .brand-footer small {
+  color: var(--seasonal-cream);
+}
+
+.seasonal-page .footer-brand p,
+.seasonal-page .footer-grid li {
+  color: rgba(255, 248, 232, 0.68);
+}
+
+.seasonal-page .footer-grid h3 {
+  color: var(--home-champagne);
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.seasonal-page .footer-grid a {
+  color: rgba(255, 248, 232, 0.76);
+}
+
+.seasonal-page .footer-grid a:hover,
+.seasonal-page .footer-grid a:focus-visible {
+  color: var(--seasonal-gold);
+}
+
+.seasonal-page .footer-bottom {
+  border-color: rgba(214, 173, 96, 0.24);
+  color: rgba(255, 248, 232, 0.58);
+}
+
+.seasonal-page .back-to-top {
+  background: var(--seasonal-gold);
+  color: var(--seasonal-forest-deep);
+}
+
+/* Seasonal menu presentation */
+.seasonal-menu-page .page-hero {
+  padding-bottom: 2.5rem;
+}
+
+.seasonal-menu-page .menu-toolbar {
+  margin-top: 2.2rem;
+}
+
+.seasonal-menu-page .search-shell {
+  max-width: 680px;
+  border: 1px solid rgba(23, 75, 53, 0.13);
+  border-radius: 0.2rem;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: none;
+}
+
+.seasonal-menu-page .search-shell .icon {
+  color: var(--home-forest);
+}
+
+.seasonal-menu-page .chip-list {
+  gap: 0.55rem;
+}
+
+.seasonal-menu-page .chip {
+  min-height: 42px;
+  border-color: rgba(23, 75, 53, 0.19);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--seasonal-forest);
+  font-size: 0.72rem;
+}
+
+.seasonal-menu-page .chip.is-active {
+  border-color: var(--seasonal-forest);
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+}
+
+.seasonal-menu-page .menu-section {
+  padding-top: 3.5rem;
+  background:
+    radial-gradient(ellipse at 8% 18%, rgba(214, 173, 96, 0.1), transparent 24rem),
+    var(--seasonal-paper);
+}
+
+.seasonal-menu-page .menu-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.2rem, 2.4vw, 2rem);
+}
+
+.seasonal-menu-page .menu-card {
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.seasonal-menu-page .menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: none;
+}
+
+.seasonal-menu-page .menu-card-media {
+  background: #f0e8d8;
+}
+
+.seasonal-menu-page .menu-card-media img {
+  aspect-ratio: 0.98 / 1;
+  transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.seasonal-menu-page .menu-card:hover .menu-card-media img {
+  transform: scale(1.045);
+}
+
+.seasonal-menu-page .floating-badge {
+  top: 0.85rem;
+  left: 0.85rem;
+  border: 1px solid rgba(214, 173, 96, 0.58);
+  border-radius: 999px;
+  background: rgba(255, 248, 232, 0.94);
+  color: var(--seasonal-forest);
+  box-shadow: none;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.seasonal-menu-page .menu-card-body {
+  gap: 0.55rem;
+  padding: 1rem 0.1rem 0;
+}
+
+.seasonal-menu-page .menu-card-body h3 {
+  color: var(--seasonal-forest);
+  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
+  font-weight: 500;
+}
+
+.seasonal-menu-page .menu-card-body > p {
+  margin: 0;
+  color: var(--home-muted);
+  font-size: 0.86rem;
+  line-height: 1.75;
+}
+
+.seasonal-menu-page .menu-card .rating-row {
+  color: var(--seasonal-gold);
+  font-size: 0.82rem;
+}
+
+.seasonal-menu-page .menu-card .rating-row small {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-menu-page .menu-card-meta {
+  gap: 0.75rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(74, 36, 18, 0.12);
+}
+
+.seasonal-menu-page .menu-card-meta > strong {
+  color: var(--seasonal-ink);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.seasonal-menu-page .menu-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.seasonal-menu-page .menu-actions .button {
+  width: 100%;
+}
+
+/* Seasonal product details and customization */
+.seasonal-product-page .product-detail-page > .section:first-child {
+  padding-top: clamp(3rem, 6vw, 5.5rem);
+}
+
+.seasonal-product-page .product-hero-grid {
+  gap: clamp(2.5rem, 6vw, 6rem);
+}
+
+.seasonal-product-page .product-media {
+  position: relative;
+  overflow: visible;
+  padding: 0 1rem 1rem 0;
+  background: transparent;
+}
+
+.seasonal-product-page .product-media::before {
+  position: absolute;
+  inset: 1rem 0 0 1rem;
+  border: 1px solid rgba(214, 173, 96, 0.76);
+  content: "";
+  pointer-events: none;
+}
+
+.seasonal-product-page .product-media img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.94 / 1;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: 0 22px 65px rgba(45, 37, 25, 0.12);
+}
+
+.seasonal-product-page .product-summary {
+  gap: 0.9rem;
+}
+
+.seasonal-product-page .breadcrumb {
+  color: var(--seasonal-muted);
+  font-size: 0.78rem;
+}
+
+.seasonal-product-page .breadcrumb a:hover,
+.seasonal-product-page .breadcrumb a:focus-visible {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-product-page .category-badge {
+  border: 1px solid rgba(214, 173, 96, 0.6);
+  border-radius: 999px;
+  background: rgba(214, 173, 96, 0.12);
+  color: var(--seasonal-forest);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+
+.seasonal-product-page .product-summary > .eyebrow {
+  margin: 0;
+  color: var(--seasonal-burgundy);
+}
+
+.seasonal-product-page .product-summary h1 {
+  color: var(--seasonal-forest);
+  font-size: clamp(2.6rem, 5vw, 4.3rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+.seasonal-product-page .product-description {
+  max-width: 590px;
+  color: var(--seasonal-muted);
+  font-size: 0.95rem;
+  line-height: 1.85;
+}
+
+.seasonal-product-page .product-top-actions .icon-button {
+  border-color: rgba(23, 75, 53, 0.18);
+  background: transparent;
+  color: var(--seasonal-forest);
+}
+
+.seasonal-product-page .product-top-actions .icon-button:hover,
+.seasonal-product-page .product-top-actions .icon-button:focus-visible,
+.seasonal-product-page .product-top-actions .icon-button.is-active {
+  border-color: var(--seasonal-gold);
+  color: var(--seasonal-burgundy);
+}
+
+.seasonal-product-page .rating-row {
+  color: var(--seasonal-gold);
+}
+
+.seasonal-product-page .availability-pill {
+  border: 1px solid rgba(23, 75, 53, 0.14);
+  border-radius: 999px;
+  background: rgba(23, 75, 53, 0.06);
+  color: var(--seasonal-forest);
+  font-size: 0.76rem;
+}
+
+.seasonal-product-page .price-box {
+  border: 1px solid rgba(214, 173, 96, 0.48);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+}
+
+.seasonal-product-page .price-label {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-product-page .price-box h2 {
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.seasonal-product-page .price-box p {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-product-page .option-block h3 {
+  color: var(--seasonal-forest);
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.seasonal-product-page .option-card,
+.seasonal-product-page .checkbox-card {
+  border-color: rgba(23, 75, 53, 0.16);
+  border-radius: 0.25rem;
+  background: rgba(255, 248, 232, 0.68);
+}
+
+.seasonal-product-page .option-card:hover,
+.seasonal-product-page .checkbox-card:hover {
+  border-color: rgba(214, 173, 96, 0.8);
+}
+
+.seasonal-product-page .option-card.is-selected {
+  border-color: var(--seasonal-forest);
+  background: rgba(23, 75, 53, 0.06);
+  box-shadow: inset 0 0 0 1px var(--seasonal-forest);
+}
+
+.seasonal-product-page .option-title,
+.seasonal-product-page .checkbox-card span {
+  color: var(--seasonal-ink);
+}
+
+.seasonal-product-page .checkbox-card small,
+.seasonal-product-page .option-card small {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-product-page .checkbox-card input {
+  accent-color: var(--seasonal-forest);
+}
+
+.seasonal-product-page .quantity-selector {
+  border-color: rgba(23, 75, 53, 0.18);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+}
+
+.seasonal-product-page .quantity-btn {
+  border-radius: 0.15rem;
+  background: rgba(23, 75, 53, 0.08);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-product-page .product-actions .button-primary {
+  min-width: 190px;
+}
+
+.seasonal-product-page .product-continue-shopping {
+  width: fit-content;
+}
+
+.seasonal-product-page .product-details-section {
+  background: #f3eddf;
+}
+
+.seasonal-product-page .detail-card,
+.seasonal-product-page .benefit-card,
+.seasonal-product-page .review-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.05);
+}
+
+.seasonal-product-page .detail-card h3,
+.seasonal-product-page .benefit-card strong,
+.seasonal-product-page .review-card strong {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-product-page .ingredient-grid span {
+  border: 1px solid rgba(23, 75, 53, 0.13);
+  background: rgba(23, 75, 53, 0.05);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-product-page .benefit-card p,
+.seasonal-product-page .review-card p {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-product-page .product-detail-page > .section:not(.product-details-section) .section-heading .eyebrow {
+  color: var(--seasonal-burgundy);
+}
+
+.seasonal-product-page .related-grid .menu-card {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.seasonal-product-page .related-grid .menu-card-body {
+  padding: 1rem 0;
+}
+
+.seasonal-product-page .related-grid .menu-card-body h3 {
+  color: var(--seasonal-forest);
+  font-weight: 500;
+}
+
+/* Seasonal editorial pages */
+.seasonal-about-page .about-page-hero {
+  padding-top: clamp(3rem, 5vw, 4.5rem);
+}
+
+.seasonal-about-page .about-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.8fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.seasonal-about-page .about-hero-copy h1 {
+  max-width: 700px;
+}
+
+.seasonal-about-page .about-hero-image {
+  position: relative;
+  margin: 0;
+  padding: 0 0.8rem 0.8rem 0;
+}
+
+.seasonal-about-page .about-hero-image::before {
+  position: absolute;
+  inset: 0.8rem 0 0 0.8rem;
+  border: 1px solid var(--seasonal-gold);
+  content: "";
+  pointer-events: none;
+}
+
+.seasonal-about-page .about-hero-image img {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.92 / 1;
+  object-fit: cover;
+}
+
+.seasonal-about-page .about-hero-image figcaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0.8rem 1rem;
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+.seasonal-about-page .detail-card,
+.seasonal-contact-page .detail-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.05);
+}
+
+.seasonal-about-page .detail-card h3,
+.seasonal-about-page .feature-card h3,
+.seasonal-contact-page .detail-card h3 {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-about-page .detail-card p,
+.seasonal-about-page .feature-card p,
+.seasonal-contact-page .detail-card p {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-about-page .why-choose {
+  background:
+    radial-gradient(ellipse at 92% 10%, rgba(214, 173, 96, 0.12), transparent 25rem),
+    #f3eddf;
+}
+
+.seasonal-about-page .feature-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.05);
+}
+
+.seasonal-gallery-page {
+  background: var(--seasonal-paper);
+}
+
+.seasonal-gallery-page .gallery-shell {
+  padding: 2.5rem 0 5rem;
+}
+
+.seasonal-gallery-page .gallery-hero {
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding-top: 1rem;
+}
+
+.seasonal-gallery-page .gallery-hero-card,
+.seasonal-gallery-page .gallery-feature-card,
+.seasonal-gallery-page .gallery-card,
+.seasonal-gallery-page .insta-card,
+.seasonal-gallery-page .info-card,
+.seasonal-gallery-page .testimonial-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.06);
+  backdrop-filter: none;
+}
+
+.seasonal-gallery-page .gallery-hero-card {
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.seasonal-gallery-page .gallery-hero-card h1,
+.seasonal-gallery-page .gallery-feature-card h3,
+.seasonal-gallery-page .info-card h3 {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-gallery-page .gallery-hero-card p,
+.seasonal-gallery-page .gallery-feature-card p,
+.seasonal-gallery-page .insta-tags,
+.seasonal-gallery-page .info-card p,
+.seasonal-gallery-page .testimonial-card p {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-gallery-page .hero-illustration {
+  border: 1px solid rgba(214, 173, 96, 0.62);
+  border-radius: 0.25rem;
+  background:
+    radial-gradient(ellipse at 20% 5%, rgba(214, 173, 96, 0.22), transparent 15rem),
+    var(--seasonal-forest);
+  box-shadow: 0 22px 48px rgba(23, 55, 39, 0.16);
+}
+
+.seasonal-gallery-page .hero-collage-slot {
+  border-radius: 0.15rem;
+}
+
+.seasonal-gallery-page .hero-collage-slot img {
+  border-radius: 0;
+}
+
+.seasonal-gallery-page .feature-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.seasonal-gallery-page .gallery-feature-card {
+  padding: 0.9rem;
+}
+
+.seasonal-gallery-page .gallery-feature-card img,
+.seasonal-gallery-page .insta-card img {
+  border-radius: 0;
+  aspect-ratio: 1.15 / 1;
+}
+
+.seasonal-gallery-page .gallery-masonry {
+  gap: 1.2rem;
+}
+
+.seasonal-gallery-page .gallery-card {
+  min-height: 250px;
+  border-radius: 0.15rem;
+}
+
+.seasonal-gallery-page .info-card .icon {
+  background: rgba(214, 173, 96, 0.16);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-gallery-page .testimonial-card .avatar {
+  background: rgba(23, 75, 53, 0.08);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-gallery-page .stars {
+  color: var(--seasonal-gold);
+}
+
+.seasonal-gallery-page .cta-panel {
+  border: 1px solid rgba(214, 173, 96, 0.48);
+  border-radius: 0.25rem;
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+}
+
+.seasonal-gallery-page .cta-panel .eyebrow {
+  color: var(--seasonal-gold);
+}
+
+.seasonal-gallery-page .cta-panel .button-ghost {
+  border-color: rgba(255, 248, 232, 0.52);
+  color: var(--seasonal-cream);
+}
+
+.seasonal-gallery-page .cta-panel .button-ghost-dark {
+  border-color: var(--seasonal-gold);
+  background: var(--seasonal-gold);
+  color: var(--seasonal-forest-deep);
+}
+
+.seasonal-gallery-page .lightbox button {
+  border: 1px solid rgba(214, 173, 96, 0.56);
+  background: var(--seasonal-forest);
+}
+
+.seasonal-events-page .events-page {
+  padding: clamp(3.5rem, 7vw, 6rem) 0;
+  background:
+    radial-gradient(ellipse at 5% 10%, rgba(214, 173, 96, 0.12), transparent 25rem),
+    var(--seasonal-paper);
+}
+
+.seasonal-events-page .events-copy h1 {
+  color: var(--seasonal-forest);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.seasonal-events-page .events-copy p {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-events-page .events-family-note {
+  color: var(--seasonal-burgundy) !important;
+}
+
+.seasonal-events-page .events-visual {
+  border: 1px solid rgba(214, 173, 96, 0.62);
+  border-radius: 0.2rem;
+  box-shadow: 0 22px 48px rgba(23, 55, 39, 0.15);
+}
+
+.seasonal-events-page .events-visual::after {
+  background: linear-gradient(140deg, rgba(16, 58, 42, 0.76), rgba(23, 75, 53, 0.16));
+}
+
+.seasonal-events-page .events-seal {
+  border-color: rgba(214, 173, 96, 0.86);
+  border-radius: 0.15rem;
+  background: rgba(16, 58, 42, 0.66);
+  box-shadow: 0 0 0 10px rgba(214, 173, 96, 0.12);
+}
+
+.seasonal-events-page .events-message {
+  border: 1px solid rgba(23, 75, 53, 0.12);
+  border-radius: 0.2rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 12px 36px rgba(45, 37, 25, 0.06);
+}
+
+.seasonal-events-page .events-message p {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-contact-page .detail-grid {
+  align-items: start;
+}
+
+.seasonal-contact-page .detail-card a:not(.button) {
+  color: var(--seasonal-forest);
+  text-decoration-color: var(--seasonal-gold);
+  text-underline-offset: 0.2em;
+}
+
+.seasonal-contact-page .contact-hours {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1.2rem 0;
+  padding: 1rem;
+  border-left: 2px solid var(--seasonal-gold);
+  background: rgba(23, 75, 53, 0.045);
+  color: var(--seasonal-muted);
+  font-size: 0.87rem;
+}
+
+.seasonal-contact-page .contact-hours strong {
+  margin-bottom: 0.1rem;
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+}
+
+.seasonal-contact-page .form-field label {
+  color: var(--seasonal-forest);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.seasonal-contact-page .form-field input,
+.seasonal-contact-page .form-field textarea {
+  border: 1px solid rgba(23, 75, 53, 0.18);
+  border-radius: 0.15rem;
+  background: #fffdf8;
+  color: var(--seasonal-ink);
+}
+
+.seasonal-contact-page .form-field input:focus,
+.seasonal-contact-page .form-field textarea:focus {
+  border-color: var(--seasonal-forest);
+  outline: 2px solid rgba(23, 75, 53, 0.12);
+}
+
+/* Seasonal shopping and order-management pages */
+.seasonal-cart-page .cart-section,
+.seasonal-cart-page .cart-summary-card,
+.seasonal-cart-page .edit-item-panel {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 14px 40px rgba(45, 37, 25, 0.06);
+}
+
+.seasonal-cart-page .cart-section {
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.seasonal-cart-page .cart-summary-card {
+  top: 6rem;
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.seasonal-cart-page .cart-empty-state {
+  border-color: rgba(23, 75, 53, 0.2);
+  border-radius: 0.2rem;
+  background: rgba(23, 75, 53, 0.035);
+}
+
+.seasonal-cart-page .cart-empty-state h2,
+.seasonal-cart-page .cart-summary-card h2,
+.seasonal-cart-page .cart-section h2,
+.seasonal-cart-page .saved-section h3 {
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+
+.seasonal-cart-page .cart-item,
+.seasonal-cart-page .saved-item {
+  border-color: rgba(23, 75, 53, 0.1);
+  border-radius: 0.2rem;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.seasonal-cart-page .cart-item-header h3,
+.seasonal-cart-page .saved-item h3,
+.seasonal-cart-page .cart-price-block strong,
+.seasonal-cart-page .summary-row strong {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-cart-page .cart-item-header p,
+.seasonal-cart-page .cart-item-extras,
+.seasonal-cart-page .saved-item p,
+.seasonal-cart-page .empty-note,
+.seasonal-cart-page .summary-row {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-cart-page .cart-item-actions .quantity-btn {
+  border: 1px solid rgba(23, 75, 53, 0.16);
+  background: rgba(23, 75, 53, 0.06);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-cart-page .summary-total {
+  border-color: rgba(23, 75, 53, 0.16);
+}
+
+.seasonal-cart-page .summary-total strong {
+  color: var(--seasonal-burgundy);
+}
+
+.seasonal-cart-page .delivery-note {
+  border-left: 2px solid var(--seasonal-gold);
+  background: rgba(23, 75, 53, 0.045);
+  color: var(--seasonal-muted);
+}
+
+.seasonal-cart-page #promo-code {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(23, 75, 53, 0.18);
+  border-radius: 0.15rem;
+  background: #fffdf8;
+  color: var(--seasonal-ink);
+}
+
+.seasonal-cart-page .edit-item-backdrop {
+  background: rgba(16, 58, 42, 0.62);
+}
+
+.seasonal-cart-page .edit-item-panel {
+  background: var(--seasonal-cream);
+}
+
+body.seasonal-page.checkout-page {
+  --surface: #fff8e8;
+  --surface-strong: #f3eddf;
+  --text-primary: #342319;
+  --text-muted: #786758;
+  --border: rgba(23, 75, 53, 0.14);
+  --accent: #174b35;
+  --accent-soft: rgba(214, 173, 96, 0.16);
+  background: var(--seasonal-paper);
+}
+
+.seasonal-checkout-page .checkout-shell {
+  max-width: 1240px;
+  padding: clamp(1.5rem, 4vw, 3rem) 1.5rem 4rem;
+}
+
+.seasonal-checkout-page .checkout-header {
+  gap: 1.5rem;
+  margin-bottom: 1.7rem;
+}
+
+.seasonal-checkout-page .checkout-title {
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.seasonal-checkout-page .checkout-subtitle {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-checkout-page .progress-steps {
+  border: 1px solid rgba(23, 75, 53, 0.12);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+}
+
+.seasonal-checkout-page .progress-step {
+  border-radius: 0.15rem;
+}
+
+.seasonal-checkout-page .progress-step.completed {
+  background: rgba(23, 75, 53, 0.08);
+}
+
+.seasonal-checkout-page .progress-step.current {
+  background: rgba(214, 173, 96, 0.14);
+  box-shadow: none;
+}
+
+.seasonal-checkout-page .progress-step strong {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-checkout-page .panel {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 14px 40px rgba(45, 37, 25, 0.06);
+}
+
+.seasonal-checkout-page .panel h2 {
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.seasonal-checkout-page .form-field label {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-checkout-page .form-field input,
+.seasonal-checkout-page .form-field textarea,
+.seasonal-checkout-page .form-field select {
+  border-color: rgba(23, 75, 53, 0.18);
+  border-radius: 0.15rem;
+  background: #fffdf8;
+  color: var(--seasonal-ink);
+}
+
+.seasonal-checkout-page .form-field input:focus,
+.seasonal-checkout-page .form-field textarea:focus,
+.seasonal-checkout-page .form-field select:focus {
+  outline-color: rgba(23, 75, 53, 0.28);
+}
+
+.seasonal-checkout-page .radio-card {
+  border-color: rgba(23, 75, 53, 0.15);
+  border-radius: 0.2rem;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.seasonal-checkout-page .radio-card:hover,
+.seasonal-checkout-page .radio-card.checked {
+  border-color: var(--seasonal-forest);
+}
+
+.seasonal-checkout-page .radio-card.checked {
+  background: rgba(23, 75, 53, 0.045);
+  box-shadow: 0 10px 24px rgba(23, 75, 53, 0.08);
+}
+
+.seasonal-checkout-page .radio-card strong {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-checkout-page .radio-card small,
+.seasonal-checkout-page .summary-meta {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-checkout-page .notice {
+  border-color: rgba(214, 173, 96, 0.44);
+  border-radius: 0.15rem;
+  background: rgba(214, 173, 96, 0.1);
+  color: var(--seasonal-ink);
+}
+
+.seasonal-checkout-page .payment-details-card {
+  border-color: rgba(23, 75, 53, 0.12);
+  border-radius: 0.2rem;
+  background: #f3eddf;
+}
+
+.seasonal-checkout-page .payment-details-title,
+.seasonal-checkout-page .payment-detail-value {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-checkout-page .payment-copy-btn {
+  border-color: rgba(23, 75, 53, 0.18);
+  border-radius: 0.15rem;
+  color: var(--seasonal-forest);
+}
+
+.seasonal-checkout-page .btn-primary {
+  border: 1px solid var(--seasonal-forest);
+  border-radius: 0.15rem;
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.seasonal-checkout-page .btn-primary:hover,
+.seasonal-checkout-page .btn-primary:focus-visible {
+  background: var(--home-forest-deep);
+  box-shadow: 0 12px 26px rgba(23, 75, 53, 0.16);
+}
+
+body.seasonal-page.order-success {
+  background: var(--seasonal-paper);
+}
+
+.order-success .success-shell {
+  padding: clamp(2rem, 4vw, 3.2rem) 1.5rem 4rem;
+}
+
+.order-success .success-card,
+.order-success .notification-box {
+  border: 1px solid rgba(23, 75, 53, 0.12);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 14px 40px rgba(45, 37, 25, 0.06);
+}
+
+.order-success .success-badge {
+  border: 1px solid rgba(214, 173, 96, 0.56);
+  background: rgba(23, 75, 53, 0.08);
+}
+
+.order-success .success-badge svg {
+  color: var(--seasonal-forest);
+}
+
+.order-success .success-title {
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+
+.order-success .success-message,
+.order-success .notification-box p,
+.order-success .notification-status {
+  color: var(--seasonal-muted);
+}
+
+.order-success .success-code {
+  border: 1px solid rgba(214, 173, 96, 0.42);
+  border-radius: 0.15rem;
+  background: #f3eddf;
+  color: var(--seasonal-forest);
+}
+
+.order-success .btn-primary,
+.order-success .notification-button {
+  border: 1px solid var(--seasonal-forest);
+  border-radius: 0.15rem;
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+}
+
+.order-success .btn-secondary {
+  border: 1px solid rgba(23, 75, 53, 0.2);
+  border-radius: 0.15rem;
+  background: transparent;
+  color: var(--seasonal-forest);
+}
+
+.seasonal-tracking-page {
+  background: var(--seasonal-paper);
+}
+
+.seasonal-tracking-page .tracking-shell {
+  padding: clamp(2rem, 4vw, 3.5rem) 0 5rem;
+}
+
+.seasonal-tracking-page .tracking-hero-card,
+.seasonal-tracking-page .tracking-search-card,
+.seasonal-tracking-page .tracking-card,
+.seasonal-tracking-page .timeline-card,
+.seasonal-tracking-page .map-card,
+.seasonal-tracking-page .empty-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.25rem;
+  background: var(--seasonal-cream);
+  box-shadow: 0 14px 40px rgba(45, 37, 25, 0.06);
+  backdrop-filter: none;
+}
+
+.seasonal-tracking-page .tracking-hero-card h1,
+.seasonal-tracking-page .tracking-search-card h3,
+.seasonal-tracking-page .tracking-card-header h3,
+.seasonal-tracking-page .tracking-card h3,
+.seasonal-tracking-page .timeline-card h3,
+.seasonal-tracking-page .map-card h3,
+.seasonal-tracking-page .empty-card h3 {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-tracking-page .tracking-hero-card p:last-child,
+.seasonal-tracking-page .tracking-search-card p,
+.seasonal-tracking-page .tracking-card-header p,
+.seasonal-tracking-page .empty-card p {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-tracking-page .tracking-search-card input {
+  border-color: rgba(23, 75, 53, 0.18);
+  border-radius: 0.15rem;
+  background: #fffdf8;
+  color: var(--seasonal-ink);
+}
+
+.seasonal-tracking-page .tracking-search-card input:focus {
+  outline-color: rgba(23, 75, 53, 0.24);
+}
+
+.seasonal-tracking-page .status-badge {
+  background: rgba(214, 173, 96, 0.18);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-tracking-page .meta-block,
+.seasonal-tracking-page .item-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.15rem;
+  background: rgba(23, 75, 53, 0.045);
+}
+
+.seasonal-tracking-page .meta-block small,
+.seasonal-tracking-page .item-card p,
+.seasonal-tracking-page .timeline-content span {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-tracking-page .meta-block strong,
+.seasonal-tracking-page .item-card h4,
+.seasonal-tracking-page .timeline-content strong {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-tracking-page .timeline-list::before {
+  background: rgba(23, 75, 53, 0.16);
+}
+
+.seasonal-tracking-page .timeline-item.completed .timeline-icon {
+  background: var(--seasonal-forest);
+  color: var(--seasonal-cream);
+}
+
+.seasonal-tracking-page .timeline-item.current .timeline-icon {
+  background: var(--seasonal-gold);
+  color: var(--home-forest-deep);
+}
+
+.seasonal-tracking-page .timeline-item.pending .timeline-icon {
+  background: #eee5d5;
+  color: var(--seasonal-muted);
+}
+
+.seasonal-tracking-page .empty-illustration {
+  background: rgba(214, 173, 96, 0.18);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-product-page {
+  padding: clamp(2rem, 5vw, 4rem) 0;
+  background: var(--seasonal-paper);
+}
+
+.seasonal-dynamic-product-page .dynamic-product-grid {
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.seasonal-dynamic-product-page .dynamic-product-image {
+  top: 130px;
+  border: 1px solid rgba(214, 173, 96, 0.5);
+  border-radius: 0.2rem;
+  background: #f3eddf;
+  box-shadow: none;
+}
+
+.seasonal-dynamic-product-page .dynamic-product-info h1,
+.seasonal-dynamic-product-page .dynamic-option-block h3,
+.seasonal-dynamic-product-page .dynamic-detail-card h2 {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-description,
+.seasonal-dynamic-product-page .dynamic-breadcrumb,
+.seasonal-dynamic-product-page .rating-summary span:last-child {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-dynamic-product-page .dynamic-breadcrumb a:hover {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-category {
+  border: 1px solid rgba(214, 173, 96, 0.5);
+  border-radius: 999px;
+  background: rgba(214, 173, 96, 0.12);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .rating-stars {
+  color: var(--seasonal-gold);
+}
+
+.seasonal-dynamic-product-page .rating-summary strong {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .availability-pill {
+  background: rgba(23, 75, 53, 0.08);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .availability-pill::before {
+  background: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-price-box {
+  border: 1px solid rgba(214, 173, 96, 0.46);
+  border-radius: 0.2rem;
+  background: var(--seasonal-cream);
+  box-shadow: none;
+}
+
+.seasonal-dynamic-product-page .dynamic-price-label,
+.seasonal-dynamic-product-page #product-price-caption,
+.seasonal-dynamic-product-page .dynamic-size-card small,
+.seasonal-dynamic-product-page .dynamic-extra-price {
+  color: var(--seasonal-muted);
+}
+
+.seasonal-dynamic-product-page #product-total,
+.seasonal-dynamic-product-page .dynamic-size-card strong,
+.seasonal-dynamic-product-page .dynamic-extra-name {
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-size-card,
+.seasonal-dynamic-product-page .dynamic-extra-card {
+  border-color: rgba(23, 75, 53, 0.16);
+  border-radius: 0.15rem;
+  background: var(--seasonal-cream);
+}
+
+.seasonal-dynamic-product-page .dynamic-size-card:hover,
+.seasonal-dynamic-product-page .dynamic-size-card.is-selected,
+.seasonal-dynamic-product-page .dynamic-extra-card:hover,
+.seasonal-dynamic-product-page .dynamic-extra-card.is-selected {
+  border-color: var(--seasonal-forest);
+  background: rgba(23, 75, 53, 0.05);
+  box-shadow: none;
+}
+
+.seasonal-dynamic-product-page .dynamic-extra-card input {
+  accent-color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-quantity {
+  border-color: rgba(23, 75, 53, 0.18);
+  border-radius: 0.15rem;
+}
+
+.seasonal-dynamic-product-page .dynamic-quantity button {
+  background: rgba(23, 75, 53, 0.06);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page .dynamic-quantity input {
+  color: var(--seasonal-ink);
+}
+
+.seasonal-dynamic-product-page .dynamic-detail-card {
+  border: 1px solid rgba(23, 75, 53, 0.1);
+  border-radius: 0.2rem;
+  background: var(--seasonal-cream);
+}
+
+.seasonal-dynamic-product-page .dynamic-ingredients span {
+  border-color: rgba(23, 75, 53, 0.14);
+  border-radius: 999px;
+  background: rgba(23, 75, 53, 0.05);
+  color: var(--seasonal-forest);
+}
+
+.seasonal-dynamic-product-page #dynamic-cart-toast {
+  border: 1px solid rgba(214, 173, 96, 0.5);
+  border-radius: 0.2rem;
+  background: #174B35;
+  color: #FFF8E8;
+  box-shadow:
+    0 12px 30px rgba(8, 28, 18, 0.28),
+    0 0 24px rgba(214, 173, 96, 0.2);
+}
+
+/* Christmas 2026 homepage visual enhancements */
+.home-page .hero-tree-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.home-page .hero-tree-stage::before {
+  position: absolute;
+  right: 4%;
+  bottom: 13%;
+  left: 4%;
+  height: 66%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(226, 190, 112, 0.2), transparent 68%);
+  content: "";
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.home-page .hero-tree {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 12px 20px rgba(4, 25, 16, 0.28));
+}
+
+.home-page .best-sellers {
+  padding-top: clamp(7rem, 9vw, 8.5rem);
+}
+
+.home-page .best-sellers::before {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: clamp(54px, 8vw, 108px);
+  background: url("../images/backgrounds/christmas-garland.svg") center top / 100% 100% no-repeat;
+  content: "";
+  filter: drop-shadow(0 3px 8px rgba(214, 173, 96, 0.24));
+  pointer-events: none;
+}
+
+.home-page .best-sellers > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .home-product-image::before {
+  position: absolute;
+  z-index: 1;
+  top: 0.8rem;
+  right: 0.8rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid rgba(214, 173, 96, 0.8);
+  border-radius: 50%;
+  background: rgba(255, 248, 232, 0.94);
+  color: var(--home-burgundy);
+  content: "✦";
+  font-size: 0.9rem;
+  box-shadow: 0 2px 12px rgba(45, 28, 17, 0.16);
+}
+
+.home-page .editorial-garland {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: clamp(64px, 8vw, 100px);
+  object-fit: fill;
+  filter: drop-shadow(0 4px 10px rgba(214, 173, 96, 0.22));
+}
+
+.home-page .editorial-gift-art {
+  display: block;
+  width: min(100%, 260px);
+  height: 148px;
+  margin: -0.35rem 0 0.9rem;
+  object-fit: contain;
+  object-position: left center;
+  filter: drop-shadow(0 12px 18px rgba(4, 25, 16, 0.24));
+}
+
+.home-page .hero-visual {
+  isolation: isolate;
+}
+
+.home-page .hero-visual::before {
+  position: absolute;
+  z-index: -1;
+  inset: 5% -5% 8%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 29% 56%, rgba(226, 190, 112, 0.2), transparent 37%),
+    radial-gradient(ellipse at 76% 57%, rgba(255, 232, 182, 0.12), transparent 45%);
+  content: "";
+  filter: blur(15px);
+  pointer-events: none;
+}
+
+.home-page .hero-garland {
+  position: absolute;
+  z-index: 3;
+  top: -1.6rem;
+  left: -9%;
+  width: 118%;
+  height: clamp(86px, 11vw, 138px);
+  object-fit: fill;
+  filter: drop-shadow(0 7px 14px rgba(4, 25, 16, 0.28));
+  pointer-events: none;
+  animation: home-fairy-light-glow 3.8s ease-in-out infinite;
+}
+
+.home-page .hero-tree {
+  transform: scale(1.06);
+  transform-origin: center bottom;
+}
+
+.home-page .collection-wreath {
+  position: absolute;
+  z-index: 0;
+  top: 0.5rem;
+  right: 0.25rem;
+  width: clamp(104px, 13vw, 188px);
+  height: auto;
+  opacity: 0.82;
+  filter: drop-shadow(0 10px 18px rgba(31, 48, 34, 0.16));
+  pointer-events: none;
+}
+
+.home-page .editorial-gift-arrangement {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  max-width: 100%;
+  margin: -0.35rem 0 0.9rem;
+}
+
+.home-page .editorial-gift-arrangement .editorial-gift-art {
+  flex: 1 1 230px;
+  width: min(100%, 260px);
+  min-width: 0;
+  margin: 0;
+}
+
+.home-page .editorial-lantern-art {
+  flex: 0 0 auto;
+  width: clamp(82px, 10vw, 122px);
+  height: 148px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 16px rgba(4, 25, 16, 0.28));
+}
+
+/* Christmas details shared across the customer-facing pages. */
+.home-page .site-header::after,
+.seasonal-page .site-header::after {
+  position: absolute;
+  right: 0;
+  bottom: -19px;
+  left: 0;
+  z-index: 2;
+  height: 25px;
+  background: url("../images/backgrounds/christmas-garland.svg") center top / 100% 100% no-repeat;
+  content: "";
+  filter: drop-shadow(0 3px 5px rgba(23, 55, 39, 0.16));
+  pointer-events: none;
+}
+
+.seasonal-page {
+  background-image: url("../images/backgrounds/christmas-sparkle-pattern.svg");
+  background-repeat: repeat;
+  background-size: 220px;
+}
+
+.seasonal-page .page-hero {
+  background-image:
+    url("../images/backgrounds/christmas-wreath.svg"),
+    radial-gradient(ellipse at 92% 8%, rgba(214, 173, 96, 0.16), transparent 22rem);
+  background-repeat: no-repeat;
+  background-position: right 5% bottom -68px, center;
+  background-size: clamp(120px, 17vw, 210px), auto;
+}
+
+.seasonal-page .section-heading::after {
+  display: block;
+  width: min(100%, 410px);
+  height: 31px;
+  margin: 0.75rem auto 0;
+  background: url("../images/backgrounds/christmas-garland.svg") center / 100% 100% no-repeat;
+  content: "";
+  opacity: 0.76;
+}
+
+.seasonal-page .site-footer {
+  background-image:
+    url("../images/backgrounds/christmas-garland.svg"),
+    linear-gradient(160deg, #174b35, #103a2a);
+  background-repeat: no-repeat;
+  background-position: center top, center;
+  background-size: 100% 32px, auto;
+}
+
+.home-page .home-hero .hero-inner {
+  padding-top: clamp(6rem, 9vw, 8rem);
+}
+
+.home-page .santa-flight {
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  z-index: 1;
+  display: block;
+  width: clamp(250px, 37vw, 490px);
+  height: auto;
+  filter: drop-shadow(0 7px 12px rgba(5, 28, 19, 0.25));
+  pointer-events: none;
+  animation: santa-flight-across 34s linear infinite;
+  animation-delay: -12s;
+}
+
+.home-page .hero-photo-frame {
+  isolation: isolate;
+}
+
+.home-page .hero-photo-frame::before {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: url("../images/backgrounds/parfait-frame-heavenly.svg") center / 100% 100% no-repeat;
+  content: "";
+  pointer-events: none;
+}
+
+.home-page .hero-photo-frame img {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .hero-snow {
+  pointer-events: none;
+}
+
+.home-page .home-product-image,
+.seasonal-menu-page .menu-card-media,
+.seasonal-product-page .product-media,
+.seasonal-product-page .related-grid .menu-card-media,
+.seasonal-gallery-page .holiday-product-stage,
+.seasonal-dynamic-product-page .dynamic-product-image {
+  isolation: isolate;
+}
+
+.home-page .home-product-image::after,
+.seasonal-menu-page .menu-card-media::after,
+.seasonal-product-page .product-media::after,
+.seasonal-product-page .related-grid .menu-card-media::after,
+.seasonal-gallery-page .holiday-product-stage::after,
+.seasonal-dynamic-product-page .dynamic-product-image::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background-image: var(--holiday-stage-art, url("../images/backgrounds/parfait-frame-heavenly.svg"));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  content: "";
+  pointer-events: none;
+}
+
+.home-page .home-product-card:nth-child(5n + 1) .home-product-image,
+.seasonal-menu-page .menu-card:nth-child(5n + 1) .menu-card-media,
+.seasonal-gallery-page .gallery-feature-card:nth-child(5n + 1) .holiday-product-stage {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-heavenly.svg");
+}
+
+.home-page .home-product-card:nth-child(5n + 2) .home-product-image,
+.seasonal-menu-page .menu-card:nth-child(5n + 2) .menu-card-media,
+.seasonal-gallery-page .gallery-feature-card:nth-child(5n + 2) .holiday-product-stage {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-fruity.svg");
+}
+
+.home-page .home-product-card:nth-child(5n + 3) .home-product-image,
+.seasonal-menu-page .menu-card:nth-child(5n + 3) .menu-card-media,
+.seasonal-gallery-page .gallery-feature-card:nth-child(5n + 3) .holiday-product-stage {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-biscuit.svg");
+}
+
+.home-page .home-product-card:nth-child(5n + 4) .home-product-image,
+.seasonal-menu-page .menu-card:nth-child(5n + 4) .menu-card-media,
+.seasonal-gallery-page .gallery-feature-card:nth-child(5n + 4) .holiday-product-stage {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-choco.svg");
+}
+
+.home-page .home-product-card:nth-child(5n + 5) .home-product-image,
+.seasonal-menu-page .menu-card:nth-child(5n + 5) .menu-card-media,
+.seasonal-gallery-page .gallery-feature-card:nth-child(5n + 5) .holiday-product-stage {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-oatmeal.svg");
+}
+
+.seasonal-product-page.product-heavenly .product-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-heavenly.svg");
+}
+
+.seasonal-product-page.product-fruity .product-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-fruity.svg");
+}
+
+.seasonal-product-page.product-biscuit .product-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-biscuit.svg");
+}
+
+.seasonal-product-page.product-choco .product-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-choco.svg");
+}
+
+.seasonal-product-page.product-oatmeal .product-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-oatmeal.svg");
+}
+
+.seasonal-product-page .related-grid .menu-card:nth-child(3n + 1) .menu-card-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-fruity.svg");
+}
+
+.seasonal-product-page .related-grid .menu-card:nth-child(3n + 2) .menu-card-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-choco.svg");
+}
+
+.seasonal-product-page .related-grid .menu-card:nth-child(3n + 3) .menu-card-media {
+  --holiday-stage-art: url("../images/backgrounds/parfait-frame-oatmeal.svg");
+}
+
+.seasonal-menu-page .menu-card-media,
+.seasonal-product-page .related-grid .menu-card-media {
+  position: relative;
+}
+
+.seasonal-menu-page .menu-card-media img,
+.seasonal-product-page .related-grid .menu-card-media img,
+.seasonal-product-page .product-media img,
+.seasonal-dynamic-product-page .dynamic-product-image img,
+.seasonal-gallery-page .holiday-product-stage img {
+  position: relative;
+  z-index: 1;
+}
+
+.seasonal-gallery-page .holiday-product-stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.seasonal-gallery-page .holiday-product-stage img {
+  display: block;
+  width: 100%;
+}
+
+.seasonal-about-page .about-hero-image::after {
+  position: absolute;
+  z-index: 2;
+  top: -1rem;
+  right: -1rem;
+  width: 118px;
+  aspect-ratio: 1;
+  background: url("../images/backgrounds/christmas-wreath.svg") center / contain no-repeat;
+  content: "";
+  pointer-events: none;
+}
+
+.seasonal-contact-page .detail-card,
+.seasonal-cart-page .cart-summary-card,
+.seasonal-checkout-page .panel,
+.seasonal-tracking-page .tracking-hero-card,
+.seasonal-tracking-page .tracking-search-card,
+body.seasonal-page.order-success .success-card {
+  border-top: 2px solid rgba(214, 173, 96, 0.65);
+}
+
+.seasonal-events-page .events-visual::after {
+  background:
+    linear-gradient(140deg, rgba(16, 58, 42, 0.76), rgba(23, 75, 53, 0.16)),
+    url("../images/backgrounds/christmas-tree.svg") left 3% bottom -8px / 86px auto no-repeat,
+    url("../images/backgrounds/christmas-gifts.svg") right 2% bottom -12px / 132px auto no-repeat;
+}
+
+@keyframes santa-flight-across {
+  from {
+    transform: translateX(-105%);
+  }
+  to {
+    transform: translateX(calc(100vw + 105%));
+  }
+}
+
+.hero-event-feature {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  width: min(100%, 560px);
+  margin-top: 1.1rem;
+  padding: 0.6rem;
+  border: 1px solid rgba(214, 173, 96, 0.68);
+  background:
+    linear-gradient(110deg, rgba(255, 248, 232, 0.1), rgba(255, 248, 232, 0.035)),
+    rgba(13, 49, 34, 0.78);
+  box-shadow: 0 14px 36px rgba(4, 25, 16, 0.2);
+  color: var(--home-cream);
+  text-decoration: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-event-feature:hover {
+  border-color: var(--home-champagne);
+  background-color: rgba(27, 77, 54, 0.96);
+  transform: translateY(-2px);
+}
+
+.hero-event-feature:focus-visible {
+  outline: 3px solid var(--home-champagne);
+  outline-offset: 4px;
+}
+
+.hero-event-poster {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 1px solid rgba(214, 173, 96, 0.78);
+  background: var(--home-forest-deep);
+}
+
+.hero-event-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-event-play {
+  position: absolute;
+  right: 0.3rem;
+  bottom: 0.3rem;
+  display: grid;
+  width: 1.7rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 248, 232, 0.92);
+  border-radius: 50%;
+  background: var(--home-champagne);
+  color: var(--home-forest-deep);
+  font-size: 0.65rem;
+  box-shadow: 0 3px 12px rgba(4, 25, 16, 0.32);
+}
+
+.hero-event-copy {
+  display: grid;
+  gap: 0.32rem;
+  min-width: 0;
+}
+
+.hero-event-copy > strong {
+  color: var(--home-cream);
+  font-family: "Playfair Display", serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hero-event-description {
+  color: rgba(255, 248, 232, 0.82);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.hero-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.8rem;
+  align-items: center;
+}
+
+.hero-event-cta {
+  color: var(--home-champagne);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.hero-event-watch {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  color: rgba(255, 248, 232, 0.76);
+  font-size: 0.62rem;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.hero-event-watch > span {
+  color: var(--home-champagne);
+  font-size: 0.55rem;
+}
+
+.event-video-stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 9 / 14;
+  border: 1px solid rgba(214, 173, 96, 0.68);
+  background: var(--home-forest-deep, var(--seasonal-forest-deep));
+  isolation: isolate;
+}
+
+.event-video-stage::before {
+  position: absolute;
+  z-index: 1;
+  top: -0.55rem;
+  left: 0;
+  width: 100%;
+  height: 4.5rem;
+  background: url("../images/backgrounds/christmas-garland.svg") center top / 100% auto no-repeat;
+  content: "";
+  pointer-events: none;
+}
+
+.event-video-stage::after {
+  position: absolute;
+  z-index: 1;
+  top: 4.5rem;
+  right: 1rem;
+  width: 0.65rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%, #fff1c6 0 8%, #a22231 35%, #681522 100%);
+  box-shadow: 0.5rem 1.05rem 0 -0.12rem #d6ad60, -0.3rem 2rem 0 -0.15rem #a22231;
+  content: "";
+  pointer-events: none;
+}
+
+.event-showcase-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--home-forest-deep, var(--seasonal-forest-deep));
+  object-fit: cover;
+  object-position: center;
+  pointer-events: auto;
+}
+
+.event-video-toggle {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 4.2rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 248, 232, 0.9);
+  border-radius: 50%;
+  background: rgba(214, 173, 96, 0.96);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
+  color: var(--home-forest-deep, var(--seasonal-forest-deep));
+  cursor: pointer;
+  font-size: 1.15rem;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.event-video-toggle:hover,
+.event-video-toggle:focus-visible {
+  background: var(--home-cream, var(--seasonal-cream));
+  transform: translate(-50%, -50%);
+}
+
+.event-video-toggle.is-playing {
+  opacity: 0.72;
+}
+
+.event-video-toggle.is-playing:hover,
+.event-video-toggle.is-playing:focus-visible {
+  opacity: 1;
+}
+
+.event-video-status {
+  position: absolute;
+  z-index: 3;
+  right: 0.7rem;
+  bottom: 2.7rem;
+  left: 0.7rem;
+  margin: 0;
+  color: var(--home-cream, var(--seasonal-cream));
+  font-size: 0.78rem;
+  text-align: center;
+  text-shadow: 0 1px 5px #000;
+}
+
+.event-video-caption {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.8rem 0.65rem 0.35rem;
+  color: var(--home-forest, var(--seasonal-forest));
+}
+
+.event-video-caption span {
+  color: var(--home-muted, var(--seasonal-muted));
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.event-video-caption strong {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.events-page {
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  background:
+    radial-gradient(ellipse at 5% 10%, rgba(214, 173, 96, 0.14), transparent 27rem),
+    var(--seasonal-paper);
+}
+
+.events-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.62fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.events-intro-copy {
+  max-width: 720px;
+}
+
+.events-intro-copy h1 {
+  margin: 0.4rem 0 1rem;
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.events-intro-copy > p:not(.eyebrow) {
+  max-width: 640px;
+  margin: 0 0 1.5rem;
+  color: var(--seasonal-muted);
+  font-size: 1.05rem;
+}
+
+.events-intro-note {
+  position: relative;
+  padding: 2rem 1.8rem;
+  border: 1px solid rgba(214, 173, 96, 0.72);
+  background: var(--seasonal-cream);
+  box-shadow: 0 16px 38px rgba(45, 37, 25, 0.08);
+}
+
+.events-intro-note p {
+  margin: 0;
+  color: var(--seasonal-forest);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.3rem, 2.3vw, 1.8rem);
+  line-height: 1.4;
+}
+
+.events-intro-ornament {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: var(--seasonal-burgundy);
+  font-size: 1.4rem;
+}
+
+.events-showcase {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3.8rem, 7vw, 6rem) 0;
+  background:
+    radial-gradient(ellipse at 95% 0%, rgba(214, 173, 96, 0.1), transparent 28rem),
+    var(--seasonal-cream);
+}
+
+.events-showcase-heading {
+  max-width: 730px;
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+}
+
+.events-showcase-heading h2 {
+  color: var(--seasonal-forest);
+}
+
+.events-showcase-heading h2 em {
+  color: var(--seasonal-burgundy);
+}
+
+.events-showcase-heading > p:last-child {
+  color: var(--seasonal-muted);
+}
+
+.events-video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(1.2rem, 2.5vw, 2rem);
+  align-items: start;
+}
+
+.events-video-grid .event-video-card {
+  position: relative;
+  margin: 0;
+  padding: 0.62rem;
+  border: 1px solid rgba(214, 173, 96, 0.78);
+  background: #fffdf7;
+  box-shadow: 0 18px 42px rgba(16, 58, 42, 0.12);
+}
+
+.events-video-grid .event-video-stage {
+  aspect-ratio: 9 / 14;
+}
+
+.events-video-grid .event-video-caption {
+  padding: 0.9rem 0.55rem 0.45rem;
+}
+
+.events-page + .events-showcase .event-video-stage::before {
+  height: 5rem;
+}
+
+.events-enquiry {
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+  background: var(--seasonal-paper);
+}
+
+.events-enquiry-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: 2rem;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(1.6rem, 4vw, 3rem);
+  border: 1px solid rgba(214, 173, 96, 0.78);
+  background:
+    radial-gradient(ellipse at 95% 0%, rgba(214, 173, 96, 0.14), transparent 22rem),
+    var(--seasonal-forest);
+  box-shadow: 0 20px 46px rgba(16, 58, 42, 0.16);
+  color: var(--seasonal-cream);
+  isolation: isolate;
+}
+
+.events-enquiry-card::before {
+  position: absolute;
+  z-index: -1;
+  top: -1.1rem;
+  right: -0.5rem;
+  width: min(28rem, 70%);
+  height: 5rem;
+  background: url("../images/backgrounds/christmas-garland.svg") center top / contain no-repeat;
+  content: "";
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.events-enquiry-card .eyebrow {
+  color: var(--seasonal-gold);
+}
+
+.events-enquiry-card h2 {
+  margin: 0.35rem 0 0.6rem;
+  color: var(--seasonal-cream);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.events-enquiry-card p:last-child {
+  margin: 0;
+  color: rgba(255, 248, 232, 0.82);
+}
+
+.events-enquiry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-video-toggle {
+    transition: none;
+  }
+}
