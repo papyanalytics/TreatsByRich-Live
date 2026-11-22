@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,24 +10,48 @@
       content="Make Christmas sweeter with Treats By Rich: handcrafted parfaits made with fresh fruit, creamy yogurt and beautiful layers."
     />
     <meta name="author" content="Treats By Rich" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <link rel="stylesheet" href="css/animations.css" />
   </head>
+
   <body class="home-page">
     <header class="site-header" id="top">
-      <div class="holiday-announcement" role="note" data-message="Christmas is sweeter with Treats By Rich.">
-        <span class="announcement-star" aria-hidden="true">✦</span>
-        <span>Christmas is sweeter with Treats By Rich.</span>
-        <span class="announcement-detail">Made in Accra, shared with love</span>
-        <span class="announcement-star" aria-hidden="true">✦</span>
+
+      <!-- Christmas Announcement Ticker -->
+      <div class="holiday-announcement" role="note">
+        <div class="announcement-track">
+
+          <div class="announcement-content">
+            <span class="announcement-star" aria-hidden="true">✦</span>
+            <span>Christmas is sweeter with Treats By Rich.</span>
+            <span class="announcement-detail">
+              5% off product subtotals above GH₵200
+            </span>
+            <span class="announcement-star" aria-hidden="true">✦</span>
+          </div>
+
+          <div class="announcement-content" aria-hidden="true">
+            <span class="announcement-star">✦</span>
+            <span>Christmas is sweeter with Treats By Rich.</span>
+            <span class="announcement-detail">
+              5% off product subtotals above GH₵200
+            </span>
+            <span class="announcement-star">✦</span>
+          </div>
+
+        </div>
       </div>
+      <!-- End Christmas Announcement Ticker -->
+
       <div class="container nav-shell">
         <a class="brand" href="index.html" aria-label="Treats By Rich home">
           <img src="images/logo.png" alt="Treats By Rich logo" />
@@ -36,7 +61,13 @@
           </span>
         </a>
 
-        <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -49,22 +80,50 @@
           <a href="gallery.html">Gallery</a>
           <a href="events.html">Events</a>
           <a href="contact.html">Contact</a>
+
           <a class="nav-cart" href="cart.html" aria-label="View cart">
-            <span class="icon icon-cart" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path></svg></span>
+            <span class="icon icon-cart" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="9" cy="20" r="1"></circle>
+                <circle cx="18" cy="20" r="1"></circle>
+                <path d="M2 3h3l3.2 11.2a1 1 0 0 0 .97.8h8.98a1 1 0 0 0 .98-.8L21 7H7"></path>
+              </svg>
+            </span>
             <em class="cart-count">0</em>
           </a>
-          <a class="button button-primary nav-cta" href="order-tracking.html">Track Order</a>
+
+          <a class="button button-primary nav-cta" href="order-tracking.html">
+            Track Order
+          </a>
         </nav>
       </div>
     </header>
 
     <main id="home">
+
+      <!-- HERO SECTION -->
       <section class="hero home-hero" aria-labelledby="hero-title">
-        <video class="hero-video" autoplay muted loop playsinline poster="images/backgrounds/hero-bg.png">
+        <video
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster="images/backgrounds/hero-bg.png"
+        >
           <source src="images/hero-video.mp4" type="video/mp4" />
         </video>
+
         <div class="hero-overlay"></div>
         <div class="hero-snow" aria-hidden="true"></div>
+
         <img
           class="santa-flight"
           src="images/backgrounds/christmas-santa-sleigh.svg"
@@ -72,20 +131,39 @@
           aria-hidden="true"
           fetchpriority="high"
         />
+
         <div class="hero-inner container">
           <div class="hero-content reveal">
             <p class="eyebrow">A Christmas celebration, crafted in Accra</p>
-            <h1 id="hero-title">Celebrate the Magic of <em>Christmas</em> with Treats By Rich</h1>
+
+            <h1 id="hero-title">
+              Celebrate the Magic of <em>Christmas</em> with Treats By Rich
+            </h1>
+
             <p class="hero-subtitle">Love at First Scoop</p>
+
             <p class="hero-copy">
-              Make every celebration sweeter with our deliciously crafted parfaits. Share the joy, spread the love
-              and make this Christmas unforgettable.
+              Make every celebration sweeter with our deliciously crafted
+              parfaits. Share the joy, spread the love and make this Christmas
+              unforgettable.
             </p>
+
             <div class="hero-actions">
-              <a class="button button-primary" href="menu.html">Shop Christmas Collection <span aria-hidden="true">↗</span></a>
-              <a class="button button-ghost" href="checkout.html">Order now</a>
+              <a class="button button-primary" href="menu.html">
+                Shop Christmas Collection
+                <span aria-hidden="true">↗</span>
+              </a>
+
+              <a class="button button-ghost" href="checkout.html">
+                Order now
+              </a>
             </div>
-            <p class="hero-note"><span aria-hidden="true">✦</span> Handcrafted in Accra, made to be shared</p>
+
+            <p class="hero-note">
+              <span aria-hidden="true">✦</span>
+              Handcrafted in Accra, made to be shared
+            </p>
+
             <a
               class="hero-event-feature"
               href="events.html"
@@ -100,21 +178,40 @@
                 />
                 <span class="hero-event-play" aria-hidden="true">▶</span>
               </span>
+
               <span class="hero-event-copy">
                 <strong>Planning a Special Celebration?</strong>
+
                 <span class="hero-event-description">
-                  Let Treats By Rich make your event sweeter. From intimate gatherings to special celebrations,
-                  explore our event work and discover how to book us.
+                  Let Treats By Rich make your event sweeter. From intimate
+                  gatherings to special celebrations, explore our event work
+                  and discover how to book us.
                 </span>
+
                 <span class="hero-event-actions">
-                  <span class="hero-event-cta">Explore Our Event Services <span aria-hidden="true">↗</span></span>
-                  <span class="hero-event-watch"><span aria-hidden="true">▶</span> Watch Our Event Highlights</span>
+                  <span class="hero-event-cta">
+                    Explore Our Event Services
+                    <span aria-hidden="true">↗</span>
+                  </span>
+
+                  <span class="hero-event-watch">
+                    <span aria-hidden="true">▶</span>
+                    Watch Our Event Highlights
+                  </span>
                 </span>
               </span>
             </a>
           </div>
+
           <div class="hero-visual reveal reveal-zoom">
-            <img class="hero-garland" src="images/backgrounds/christmas-garland.svg" alt="" aria-hidden="true" decoding="async" />
+            <img
+              class="hero-garland"
+              src="images/backgrounds/christmas-garland.svg"
+              alt=""
+              aria-hidden="true"
+              decoding="async"
+            />
+
             <div class="hero-tree-stage" aria-hidden="true">
               <img
                 class="hero-tree"
@@ -124,6 +221,7 @@
                 fetchpriority="high"
               />
             </div>
+
             <div class="hero-photo-frame">
               <img
                 src="images/menu/heavenly-combo.png"
@@ -131,47 +229,79 @@
                 fetchpriority="high"
               />
             </div>
+
             <div class="hero-photo-caption">
               <span>Made for the moment</span>
               <span aria-hidden="true">—</span>
               <span>Heavenly Combo</span>
             </div>
+
             <span class="hero-ornament ornament-one" aria-hidden="true"></span>
             <span class="hero-ornament ornament-two" aria-hidden="true"></span>
             <span class="hero-star hero-star-one" aria-hidden="true">✦</span>
             <span class="hero-star hero-star-two" aria-hidden="true">✧</span>
-            <svg class="hero-evergreen" viewBox="0 0 220 230" fill="none" aria-hidden="true">
-              <path d="M22 215C72 164 83 92 194 16" stroke="currentColor" stroke-width="2" />
-              <path d="M62 176 34 154m43 2-6-35m37 22 20-31m-58 6-30-10m72-14-2-34m29 19 29-19m-76 6-27-23m48 2-4-31m30 30 27-9m-89 66-34 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
+            <svg
+              class="hero-evergreen"
+              viewBox="0 0 220 230"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M22 215C72 164 83 92 194 16"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M62 176 34 154m43 2-6-35m37 22 20-31m-58 6-30-10m72-14-2-34m29 19 29-19m-76 6-27-23m48 2-4-31m30 30 27-9m-89 66-34 2"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
               <circle cx="149" cy="83" r="7" fill="#D6AD60" />
               <circle cx="91" cy="133" r="5" fill="#8B1E2D" />
             </svg>
           </div>
         </div>
-        <a class="scroll-indicator" href="#menu" aria-label="Scroll to featured menu">
+
+        <a
+          class="scroll-indicator"
+          href="#menu"
+          aria-label="Scroll to featured menu"
+        >
           <span></span>
           <small>Discover</small>
         </a>
       </section>
 
+      <!-- BRAND INTRODUCTION -->
       <section class="section brand-intro" id="brand-intro">
         <div class="container brand-intro-grid">
           <div class="brand-intro-copy reveal">
             <p class="eyebrow">The Treats By Rich feeling</p>
             <h2>Small moments deserve <em>something special.</em></h2>
           </div>
+
           <div class="brand-intro-detail reveal">
             <span class="intro-rule" aria-hidden="true"></span>
+
             <p>
-              We make every parfait with care, layering fresh fruit, creamy yogurt and the textures you love.
-              This season, bring a little more warmth to the table with a treat worth slowing down for.
+              We make every parfait with care, layering fresh fruit, creamy
+              yogurt and the textures you love. This season, bring a little
+              more warmth to the table with a treat worth slowing down for.
             </p>
-            <a class="text-link" href="about.html">A little about us <span aria-hidden="true">↗</span></a>
+
+            <a class="text-link" href="about.html">
+              A little about us
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
+
         <span class="brand-intro-star" aria-hidden="true">✦</span>
       </section>
 
+      <!-- BEST SELLERS -->
       <section class="section best-sellers" id="menu">
         <div class="container">
           <div class="section-heading home-section-heading reveal">
@@ -180,94 +310,186 @@
             <p>Find your new favourite, made fresh and layered with care.</p>
           </div>
 
-          <img class="collection-wreath" src="images/backgrounds/christmas-wreath.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img
+            class="collection-wreath"
+            src="images/backgrounds/christmas-wreath.svg"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
+
           <div class="product-grid home-product-grid">
+
             <article class="product-card home-product-card reveal">
-              <a class="home-product-image" href="products/heavenly-combo.html" aria-label="View Heavenly Combo">
-                <img src="images/menu/heavenly-combo.png" alt="Heavenly Combo parfait with fruit, granola and mixed nuts" loading="lazy" />
+              <a
+                class="home-product-image"
+                href="products/heavenly-combo.html"
+                aria-label="View Heavenly Combo"
+              >
+                <img
+                  src="images/menu/heavenly-combo.png"
+                  alt="Heavenly Combo parfait with fruit, granola and mixed nuts"
+                  loading="lazy"
+                />
                 <span class="product-image-index">01</span>
               </a>
+
               <div class="card-body">
                 <p class="product-kicker">Signature parfait</p>
                 <h3>Heavenly Combo</h3>
-                <p>A premium blend of creamy yogurt, crunchy granola, fresh fruits and carefully selected mixed nuts. Every scoop delivers freshness, texture and satisfaction.</p>
+                <p>
+                  A premium blend of creamy yogurt, crunchy granola, fresh
+                  fruits and carefully selected mixed nuts. Every scoop
+                  delivers freshness, texture and satisfaction.
+                </p>
+
                 <div class="card-meta">
                   <span>Starting at GH₵80</span>
-                  <a href="products/heavenly-combo.html">Discover <span aria-hidden="true">↗</span></a>
+                  <a href="products/heavenly-combo.html">
+                    Discover <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </article>
 
             <article class="product-card home-product-card reveal">
-              <a class="home-product-image" href="products/fruity-fresh.html" aria-label="View Fruity Fresh">
-                <img src="images/menu/fruity-fresh.png" alt="Fruity Fresh parfait with fresh berries and kiwi" loading="lazy" />
+              <a
+                class="home-product-image"
+                href="products/fruity-fresh.html"
+                aria-label="View Fruity Fresh"
+              >
+                <img
+                  src="images/menu/fruity-fresh.png"
+                  alt="Fruity Fresh parfait with fresh berries and kiwi"
+                  loading="lazy"
+                />
                 <span class="product-image-index">02</span>
               </a>
+
               <div class="card-body">
                 <p class="product-kicker">Fresh favourite</p>
                 <h3>Fruity Fresh</h3>
-                <p>Packed with nature's sweetest fruits layered in creamy yogurt for a refreshing and healthy treat perfect for every time of the day.</p>
+                <p>
+                  Packed with nature's sweetest fruits layered in creamy yogurt
+                  for a refreshing and healthy treat perfect for every time of
+                  the day.
+                </p>
+
                 <div class="card-meta">
                   <span>Starting at GH₵80</span>
-                  <a href="products/fruity-fresh.html">Discover <span aria-hidden="true">↗</span></a>
+                  <a href="products/fruity-fresh.html">
+                    Discover <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </article>
 
             <article class="product-card home-product-card reveal">
-              <a class="home-product-image" href="products/biscuit-bliss.html" aria-label="View Biscuit Bliss">
-                <img src="images/menu/biscuit-bliss.png" alt="Biscuit Bliss parfait with crunchy biscuit pieces" loading="lazy" />
+              <a
+                class="home-product-image"
+                href="products/biscuit-bliss.html"
+                aria-label="View Biscuit Bliss"
+              >
+                <img
+                  src="images/menu/biscuit-bliss.png"
+                  alt="Biscuit Bliss parfait with crunchy biscuit pieces"
+                  loading="lazy"
+                />
                 <span class="product-image-index">03</span>
               </a>
+
               <div class="card-body">
                 <p class="product-kicker">Crunchy classic</p>
                 <h3>Biscuit Bliss</h3>
-                <p>Creamy yogurt layered with crunchy biscuit crumbs creating the perfect balance between comfort and sweetness.</p>
+                <p>
+                  Creamy yogurt layered with crunchy biscuit crumbs creating
+                  the perfect balance between comfort and sweetness.
+                </p>
+
                 <div class="card-meta">
                   <span>Starting at GH₵80</span>
-                  <a href="products/biscuit-bliss.html">Discover <span aria-hidden="true">↗</span></a>
+                  <a href="products/biscuit-bliss.html">
+                    Discover <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </article>
 
             <article class="product-card home-product-card reveal">
-              <a class="home-product-image" href="products/choco-craze.html" aria-label="View Choco Craze">
-                <img src="images/menu/choco-craze.png" alt="Choco Craze parfait with dark chocolate pieces" loading="lazy" />
+              <a
+                class="home-product-image"
+                href="products/choco-craze.html"
+                aria-label="View Choco Craze"
+              >
+                <img
+                  src="images/menu/choco-craze.png"
+                  alt="Choco Craze parfait with dark chocolate pieces"
+                  loading="lazy"
+                />
                 <span class="product-image-index">04</span>
               </a>
+
               <div class="card-body">
                 <p class="product-kicker">Chocolate indulgence</p>
                 <h3>Choco Craze</h3>
-                <p>Fresh fruit parfait finished with premium dark chocolate chunks and smooth chocolate drizzle for chocolate lovers.</p>
+                <p>
+                  Fresh fruit parfait finished with premium dark chocolate
+                  chunks and smooth chocolate drizzle for chocolate lovers.
+                </p>
+
                 <div class="card-meta">
                   <span>Starting at GH₵80</span>
-                  <a href="products/choco-craze.html">Discover <span aria-hidden="true">↗</span></a>
+                  <a href="products/choco-craze.html">
+                    Discover <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </article>
 
             <article class="product-card home-product-card reveal">
-              <a class="home-product-image" href="products/oatmeal-parfait.html" aria-label="View Oatmeal Parfait">
-                <img src="images/menu/oatmeal-parfait.png" alt="Oatmeal Parfait with oats and creamy yogurt" loading="lazy" />
+              <a
+                class="home-product-image"
+                href="products/oatmeal-parfait.html"
+                aria-label="View Oatmeal Parfait"
+              >
+                <img
+                  src="images/menu/oatmeal-parfait.png"
+                  alt="Oatmeal Parfait with oats and creamy yogurt"
+                  loading="lazy"
+                />
                 <span class="product-image-index">05</span>
               </a>
+
               <div class="card-body">
                 <p class="product-kicker">Healthy balance</p>
                 <h3>Oatmeal Parfait</h3>
-                <p>A wholesome combination of oats, creamy yogurt and fresh fruits crafted for a healthy lifestyle.</p>
+                <p>
+                  A wholesome combination of oats, creamy yogurt and fresh
+                  fruits crafted for a healthy lifestyle.
+                </p>
+
                 <div class="card-meta">
                   <span>Starting at GH₵80</span>
-                  <a href="products/oatmeal-parfait.html">Discover <span aria-hidden="true">↗</span></a>
+                  <a href="products/oatmeal-parfait.html">
+                    Discover <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </article>
+
           </div>
+
           <div class="menu-more reveal">
-            <a class="button button-ghost-dark" href="menu.html">Explore the full menu <span aria-hidden="true">↗</span></a>
+            <a class="button button-ghost-dark" href="menu.html">
+              Explore the full menu
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
       </section>
 
+      <!-- CHRISTMAS EDITORIAL -->
       <section class="holiday-editorial" aria-labelledby="holiday-editorial-title">
         <div class="holiday-editorial-art" aria-hidden="true">
           <img
@@ -276,19 +498,27 @@
             alt=""
             decoding="async"
           />
+
           <span class="editorial-star editorial-star-one">✦</span>
           <span class="editorial-star editorial-star-two">✧</span>
           <span class="editorial-bauble"></span>
           <span class="editorial-ribbon"></span>
         </div>
+
         <div class="container holiday-editorial-grid">
           <div class="editorial-copy reveal">
             <p class="eyebrow">A season for sharing</p>
-            <h2 id="holiday-editorial-title">Share a little <em>Christmas magic.</em></h2>
+
+            <h2 id="holiday-editorial-title">
+              Share a little <em>Christmas magic.</em>
+            </h2>
+
             <p>
-              Whether you're gathering around the table or surprising someone special, our freshly layered parfaits
-              bring a touch of festive delight to every celebration.
+              Whether you're gathering around the table or surprising someone
+              special, our freshly layered parfaits bring a touch of festive
+              delight to every celebration.
             </p>
+
             <div class="editorial-gift-arrangement" aria-hidden="true">
               <img
                 class="editorial-gift-art"
@@ -297,6 +527,7 @@
                 loading="lazy"
                 decoding="async"
               />
+
               <img
                 class="editorial-lantern-art"
                 src="images/backgrounds/christmas-lantern.svg"
@@ -305,151 +536,296 @@
                 decoding="async"
               />
             </div>
-            <a class="button button-light" href="events.html">Celebrate with us <span aria-hidden="true">↗</span></a>
+
+            <a class="button button-light" href="events.html">
+              Celebrate with us
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
+
           <figure class="editorial-photo reveal reveal-zoom">
-            <img src="images/gallery/gallery3.png" alt="A beautifully layered Treats By Rich parfait ready to share" loading="lazy" />
+            <img
+              src="images/gallery/gallery3.png"
+              alt="A beautifully layered Treats By Rich parfait ready to share"
+              loading="lazy"
+            />
             <figcaption>Gather close. Take another spoonful.</figcaption>
           </figure>
         </div>
       </section>
 
+      <!-- SHARING STORY -->
       <section class="section sharing-story">
         <div class="container sharing-story-grid">
           <figure class="sharing-photo reveal">
-            <img src="images/gallery/gallery1.png" alt="Fresh fruit and creamy layers in a Treats By Rich parfait" loading="lazy" />
+            <img
+              src="images/gallery/gallery1.png"
+              alt="Fresh fruit and creamy layers in a Treats By Rich parfait"
+              loading="lazy"
+            />
             <span class="sharing-photo-note">Love at First Scoop</span>
           </figure>
+
           <div class="sharing-copy reveal">
             <p class="eyebrow">Made with care, shared with love</p>
+
             <h2>Good things taste even better <em>together.</em></h2>
+
             <p>
-              At Treats By Rich, every layer is an invitation to pause, connect and enjoy the people around you.
-              Bring a little sweetness to your celebrations, and let the moment linger.
+              At Treats By Rich, every layer is an invitation to pause, connect
+              and enjoy the people around you. Bring a little sweetness to your
+              celebrations, and let the moment linger.
             </p>
-            <a class="text-link" href="about.html">Get to know our story <span aria-hidden="true">↗</span></a>
+
+            <a class="text-link" href="about.html">
+              Get to know our story
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
       </section>
 
+      <!-- WHY CHOOSE US -->
       <section class="section why-choose" id="about">
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow">Why choose us</p>
             <h2>Luxury rooted in freshness and care</h2>
             <p>
-              Every parfait is handcrafted to balance indulgence, nutrition and a refined presentation.
+              Every parfait is handcrafted to balance indulgence, nutrition
+              and a refined presentation.
             </p>
           </div>
 
           <div class="feature-grid">
+
             <article class="feature-card reveal">
-              <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"></path><circle cx="12" cy="13" r="8"></circle><path d="M7 9h10"></path><path d="M6 13h12"></path></svg></div>
+              <div class="feature-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2v4"></path>
+                  <circle cx="12" cy="13" r="8"></circle>
+                  <path d="M7 9h10"></path>
+                  <path d="M6 13h12"></path>
+                </svg>
+              </div>
               <h3>Premium Ingredients</h3>
-              <p>Only the finest fruits, natural yogurt and handcrafted toppings make the cut.</p>
+              <p>
+                Only the finest fruits, natural yogurt and handcrafted
+                toppings make the cut.
+              </p>
             </article>
+
             <article class="feature-card reveal">
-              <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5c2.2 0 4 1.8 4 4 0 3.3-4 10-4 10S8 12.3 8 9c0-2.2 1.8-4 4-4Z"></path><path d="M9 4c.7-1 1.8-2 3-2s2.3 1 3 2"></path></svg></div>
+              <div class="feature-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 5c2.2 0 4 1.8 4 4 0 3.3-4 10-4 10S8 12.3 8 9c0-2.2 1.8-4 4-4Z"></path>
+                  <path d="M9 4c.7-1 1.8-2 3-2s2.3 1 3 2"></path>
+                </svg>
+              </div>
               <h3>Fresh Fruits</h3>
-              <p>Seasonal produce brings brightness, color and a naturally rich flavor profile.</p>
+              <p>
+                Seasonal produce brings brightness, color and a naturally rich
+                flavor profile.
+              </p>
             </article>
+
             <article class="feature-card reveal">
-              <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18c7 0 12-5 12-12 3 1 5 3 5 6 0 6-6 12-13 12-2 0-3.2-.3-4-1"></path><path d="M4 22c2-6 6-9 12-12"></path></svg></div>
+              <div class="feature-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 18c7 0 12-5 12-12 3 1 5 3 5 6 0 6-6 12-13 12-2 0-3.2-.3-4-1"></path>
+                  <path d="M4 22c2-6 6-9 12-12"></path>
+                </svg>
+              </div>
               <h3>Healthy Choices</h3>
-              <p>Balanced, wholesome recipes that feel indulgent without compromising quality.</p>
+              <p>
+                Balanced, wholesome recipes that feel indulgent without
+                compromising quality.
+              </p>
             </article>
+
             <article class="feature-card reveal">
-              <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 6.6a4.8 4.8 0 0 0-6.8 0L12 8.6l-2-2a4.8 4.8 0 1 0-6.8 6.8l2 2L12 22l6.8-6.6 2-2a4.8 4.8 0 0 0 0-6.8Z"></path></svg></div>
+              <div class="feature-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20.8 6.6a4.8 4.8 0 0 0-6.8 0L12 8.6l-2-2a4.8 4.8 0 1 0-6.8 6.8l2 2L12 22l6.8-6.6 2-2a4.8 4.8 0 0 0 0-6.8Z"></path>
+                </svg>
+              </div>
               <h3>Made With Love</h3>
-              <p>Each cup is assembled with intention, precision and a warm hospitality mindset.</p>
+              <p>
+                Each cup is assembled with intention, precision and a warm
+                hospitality mindset.
+              </p>
             </article>
+
             <article class="feature-card reveal">
-              <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18c0 5-4 9-9 9s-9-4-9-9Z"></path><path d="M6 10c0-2.8 2.7-5 6-5s6 2.2 6 5"></path></svg></div>
+              <div class="feature-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 10h18c0 5-4 9-9 9s-9-4-9-9Z"></path>
+                  <path d="M6 10c0-2.8 2.7-5 6-5s6 2.2 6 5"></path>
+                </svg>
+              </div>
               <h3>Natural Yogurt</h3>
-              <p>Silky, creamy yogurt layers that bring softness and a pure finish to every bite.</p>
+              <p>
+                Silky, creamy yogurt layers that bring softness and a pure
+                finish to every bite.
+              </p>
             </article>
+
           </div>
         </div>
       </section>
 
+      <!-- CUSTOMER REVIEWS -->
       <section class="section customer-love-section" id="customer-love">
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow">Customer love</p>
             <h2>Loved By Our Customers</h2>
             <p>
-              Don't just take our word for it — hear it from the people who have tasted the Treats By Rich experience.
+              Don't just take our word for it — hear it from the people who
+              have tasted the Treats By Rich experience.
             </p>
           </div>
 
           <div class="customer-review-grid">
+
             <article class="review-card reveal">
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
-                <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
+                <span aria-hidden="true">★★★★★</span>
+                <small aria-hidden="true">5.0</small>
               </div>
               <p>
-                “It was actually my second time trying a parfait, whereas my first was very terrible but still went ahead to try again because I was curious to taste the hype! And oh it was absolutely perfect!!! My first purchase I didn’t like oat and chocolate, neither did I like fruit... Later on I tried the oatmeal and it has been my favourite up till now.”
+                “It was actually my second time trying a parfait, whereas my
+                first was very terrible but still went ahead to try again
+                because I was curious to taste the hype! And oh it was
+                absolutely perfect!!! My first purchase I didn’t like oat and
+                chocolate, neither did I like fruit... Later on I tried the
+                oatmeal and it has been my favourite up till now.”
               </p>
               <strong>Esther</strong>
             </article>
 
             <article class="review-card reveal" hidden>
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
-                <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
+                <span aria-hidden="true">★★★★★</span>
+                <small aria-hidden="true">5.0</small>
               </div>
               <p>
-                “Funny enough what made me return almost every time was her character. I would finish all my money back to back because this lady @Treats By Rich is such a humble, sweet person. Her hands are so blessed, her parfait is really delicious and filling. I’ve not tasted none like it, so that’s another reason I returned.”
+                “Funny enough what made me return almost every time was her
+                character. I would finish all my money back to back because
+                this lady @Treats By Rich is such a humble, sweet person. Her
+                hands are so blessed, her parfait is really delicious and
+                filling. I’ve not tasted none like it, so that’s another
+                reason I returned.”
               </p>
               <strong>My Lady Jessy</strong>
             </article>
 
             <article class="review-card reveal">
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
-                <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
+                <span aria-hidden="true">★★★★★</span>
+                <small aria-hidden="true">5.0</small>
               </div>
               <p>
-                “She doesn’t play with us at all...she gives ya value ankasa. And in as much as she’s doing business, she’s not just in for the money — she’ll be like ‘take a break darling, you’re spending too much.’ Who coulda?”
+                “She doesn’t play with us at all...she gives ya value ankasa.
+                And in as much as she’s doing business, she’s not just in for
+                the money — she’ll be like ‘take a break darling, you’re
+                spending too much.’ Who coulda?”
               </p>
               <strong>Dhavi</strong>
             </article>
 
             <article class="review-card reveal" hidden>
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
-                <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
+                <span aria-hidden="true">★★★★★</span>
+                <small aria-hidden="true">5.0</small>
               </div>
               <p>
-                “Whooosh 🤩🤩🤩 It was worth the hype....wasn’t it? 😌 Let’s talk about that — she’s just a sweetheart.”
+                “Whooosh 🤩🤩🤩 It was worth the hype....wasn’t it? 😌 Let’s
+                talk about that — she’s just a sweetheart.”
               </p>
               <strong>Nhaa~Sweet</strong>
             </article>
 
             <article class="review-card reveal">
               <div class="rating-row" role="img" aria-label="Rated 5 out of 5 stars">
-                <span aria-hidden="true">★★★★★</span><small aria-hidden="true">5.0</small>
+                <span aria-hidden="true">★★★★★</span>
+                <small aria-hidden="true">5.0</small>
               </div>
               <p>“This will be my third time ordering.”</p>
               <strong>Sena Akabuo</strong>
             </article>
+
           </div>
 
-          <ul class="dm-strip reveal" aria-label="Real conversation snippets from customers" hidden>
+          <ul
+            class="dm-strip reveal"
+            aria-label="Real conversation snippets from customers"
+            hidden
+          >
             <li class="dm-chip">
-              <span>“Honestly....we literally text like we’ve known each other before 😂”</span>
+              <span>
+                “Honestly....we literally text like we’ve known each other
+                before 😂”
+              </span>
               <strong>— Esther</strong>
             </li>
+
             <li class="dm-chip">
               <span>“Oh yes. You’re making me crave 😩”</span>
               <strong>— Dhavi</strong>
             </li>
+
             <li class="dm-chip">
-              <span>“Please would like to order for the 500ml fruity fresh - no banana”</span>
+              <span>
+                “Please would like to order for the 500ml fruity fresh - no
+                banana”
+              </span>
               <strong>— Sena Akabuo</strong>
             </li>
           </ul>
 
           <div class="video-reviews">
-            <h3 class="video-reviews-title reveal">Hear It Straight From Our Customers</h3>
+            <h3 class="video-reviews-title reveal">
+              Hear It Straight From Our Customers
+            </h3>
+
             <div class="video-review-grid">
+
               <figure class="video-review-card reveal">
                 <video
                   controls
@@ -460,7 +836,10 @@
                   aria-label="Video review from Esther, Treats By Rich customer"
                   onerror="this.closest('figure').style.display='none'"
                 >
-                  <source src="videos/reviews/esther-review.mp4" type="video/mp4" />
+                  <source
+                    src="videos/reviews/esther-review.mp4"
+                    type="video/mp4"
+                  />
                   Your browser does not support the video tag.
                 </video>
               </figure>
@@ -475,7 +854,10 @@
                   aria-label="Video review from Dhavi, Treats By Rich customer"
                   onerror="this.closest('figure').style.display='none'"
                 >
-                  <source src="videos/reviews/dhavi-review.mp4" type="video/mp4" />
+                  <source
+                    src="videos/reviews/dhavi-review.mp4"
+                    type="video/mp4"
+                  />
                   Your browser does not support the video tag.
                 </video>
               </figure>
@@ -489,7 +871,10 @@
                   aria-label="Video review from Nhaa~Sweet, Treats By Rich customer"
                   onerror="this.closest('figure').style.display='none'"
                 >
-                  <source src="videos/reviews/nhaa-sweet-review.mp4" type="video/mp4" />
+                  <source
+                    src="videos/reviews/nhaa-sweet-review.mp4"
+                    type="video/mp4"
+                  />
                   Your browser does not support the video tag.
                 </video>
               </figure>
@@ -503,113 +888,232 @@
                   aria-label="Video review from Sena Akabuo, Treats By Rich customer"
                   onerror="this.closest('figure').style.display='none'"
                 >
-                  <source src="videos/reviews/sena-akabuo-review.mp4" type="video/mp4" />
+                  <source
+                    src="videos/reviews/sena-akabuo-review.mp4"
+                    type="video/mp4"
+                  />
                   Your browser does not support the video tag.
                 </video>
               </figure>
+
             </div>
           </div>
         </div>
       </section>
 
+      <!-- REVIEW SUBMISSION FORM -->
       <section class="section review-form-section" id="share-review">
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow">Share your experience</p>
             <h2>Leave A Review</h2>
             <p>
-              Tried a Treats By Rich parfait? Tell us about it — your feedback helps us keep every scoop premium.
+              Tried a Treats By Rich parfait? Tell us about it — your feedback
+              helps us keep every scoop premium.
             </p>
           </div>
 
           <form class="review-form reveal" id="review-form" novalidate>
             <div class="review-form-field">
               <label for="review-name">Your name</label>
-              <input id="review-name" name="reviewName" type="text" placeholder="e.g. Ama Serwaa" required minlength="2" />
+              <input
+                id="review-name"
+                name="reviewName"
+                type="text"
+                placeholder="e.g. Ama Serwaa"
+                required
+                minlength="2"
+              />
               <small class="field-error" data-error-for="review-name"></small>
             </div>
 
-              <div class="review-form-field">
-                <label for="review-order">What did you order? <span>(optional)</span></label>
-                <input id="review-order" name="reviewOrder" type="text" placeholder="e.g. Heavenly Combo, 500ml" />
-              </div>
+            <div class="review-form-field">
+              <label for="review-order">
+                What did you order? <span>(optional)</span>
+              </label>
+              <input
+                id="review-order"
+                name="reviewOrder"
+                type="text"
+                placeholder="e.g. Heavenly Combo, 500ml"
+              />
+            </div>
 
             <div class="review-form-field">
               <label for="review-rating">Your rating</label>
-              <div class="star-rating-input" id="review-rating" role="radiogroup" aria-label="Star rating">
-                <input type="radio" name="reviewRating" id="review-star-5" value="5" />
+
+              <div
+                class="star-rating-input"
+                id="review-rating"
+                role="radiogroup"
+                aria-label="Star rating"
+              >
+                <input
+                  type="radio"
+                  name="reviewRating"
+                  id="review-star-5"
+                  value="5"
+                />
                 <label for="review-star-5" aria-label="5 stars">★</label>
-                <input type="radio" name="reviewRating" id="review-star-4" value="4" />
+
+                <input
+                  type="radio"
+                  name="reviewRating"
+                  id="review-star-4"
+                  value="4"
+                />
                 <label for="review-star-4" aria-label="4 stars">★</label>
-                <input type="radio" name="reviewRating" id="review-star-3" value="3" />
+
+                <input
+                  type="radio"
+                  name="reviewRating"
+                  id="review-star-3"
+                  value="3"
+                />
                 <label for="review-star-3" aria-label="3 stars">★</label>
-                <input type="radio" name="reviewRating" id="review-star-2" value="2" />
+
+                <input
+                  type="radio"
+                  name="reviewRating"
+                  id="review-star-2"
+                  value="2"
+                />
                 <label for="review-star-2" aria-label="2 stars">★</label>
-                <input type="radio" name="reviewRating" id="review-star-1" value="1" />
+
+                <input
+                  type="radio"
+                  name="reviewRating"
+                  id="review-star-1"
+                  value="1"
+                />
                 <label for="review-star-1" aria-label="1 star">★</label>
               </div>
+
               <small class="field-error" data-error-for="review-rating"></small>
             </div>
 
             <div class="review-form-field">
               <label for="review-message">Your review</label>
-              <textarea id="review-message" name="reviewMessage" rows="4" placeholder="Tell us what you loved about your parfait" required minlength="10"></textarea>
+              <textarea
+                id="review-message"
+                name="reviewMessage"
+                rows="4"
+                placeholder="Tell us what you loved about your parfait"
+                required
+                minlength="10"
+              ></textarea>
               <small class="field-error" data-error-for="review-message"></small>
             </div>
 
-              <button class="button button-primary" type="submit">Send My Review</button>
+            <button class="button button-primary" type="submit">
+              Send My Review
+            </button>
 
             <p class="review-form-note">
-                Your review will be reviewed before being featured on our website.
+              Your review will be reviewed before being featured on our
+              website.
             </p>
 
-            <div class="review-confirmation" id="review-confirmation" role="status" aria-live="polite" hidden>
+            <div
+              class="review-confirmation"
+              id="review-confirmation"
+              role="status"
+              aria-live="polite"
+              hidden
+            >
               <strong>Thank you for sharing your experience!</strong>
-                <p>Your review is ready to send to Treats By Rich on WhatsApp.</p>
+              <p>
+                Your review is ready to send to Treats By Rich on WhatsApp.
+              </p>
             </div>
           </form>
         </div>
       </section>
 
+      <!-- INSTAGRAM GALLERY -->
       <section class="section instagram-section" id="gallery">
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow">Instagram gallery</p>
             <h2>Seen in the most elegant spaces</h2>
-            <p>Follow the story of our layers, textures and beautifully served parfaits.</p>
+            <p>
+              Follow the story of our layers, textures and beautifully served
+              parfaits.
+            </p>
           </div>
 
           <div class="gallery-grid">
-            <a class="gallery-card reveal" href="gallery.html" aria-label="View gallery collection">
-              <img src="images/gallery/gallery1.png" alt="Luxury parfait presentation" loading="lazy" />
+            <a
+              class="gallery-card reveal"
+              href="gallery.html"
+              aria-label="View gallery collection"
+            >
+              <img
+                src="images/gallery/gallery1.png"
+                alt="Luxury parfait presentation"
+                loading="lazy"
+              />
             </a>
-            <a class="gallery-card reveal" href="gallery.html" aria-label="View gallery collection">
-              <img src="images/gallery/gallery2.png" alt="Fresh fruit parfait served elegantly" loading="lazy" />
+
+            <a
+              class="gallery-card reveal"
+              href="gallery.html"
+              aria-label="View gallery collection"
+            >
+              <img
+                src="images/gallery/gallery2.png"
+                alt="Fresh fruit parfait served elegantly"
+                loading="lazy"
+              />
             </a>
-            <a class="gallery-card reveal" href="gallery.html" aria-label="View gallery collection">
-              <img src="images/gallery/gallery3.png" alt="Parfait with golden crunchy toppings" loading="lazy" />
+
+            <a
+              class="gallery-card reveal"
+              href="gallery.html"
+              aria-label="View gallery collection"
+            >
+              <img
+                src="images/gallery/gallery3.png"
+                alt="Parfait with golden crunchy toppings"
+                loading="lazy"
+              />
             </a>
           </div>
         </div>
       </section>
 
+      <!-- CALL TO ACTION -->
       <section class="section cta-section" id="contact">
         <div class="container cta-banner reveal">
           <div>
             <p class="eyebrow">Ready for your next scoop?</p>
             <h2>Order the parfait that fits your mood</h2>
-            <p>From intimate brunches to elegant celebrations, we create memorable dessert moments.</p>
+            <p>
+              From intimate brunches to elegant celebrations, we create
+              memorable dessert moments.
+            </p>
           </div>
+
           <div class="cta-actions">
-            <a class="button button-primary" href="checkout.html">Order Now</a>
-            <a class="button button-ghost-dark" href="https://wa.me/233538517831">WhatsApp</a>
+            <a class="button button-primary" href="checkout.html">
+              Order Now
+            </a>
+            <a
+              class="button button-ghost-dark"
+              href="https://wa.me/233538517831"
+            >
+              WhatsApp
+            </a>
           </div>
         </div>
       </section>
+
     </main>
 
+    <!-- FOOTER -->
     <footer class="site-footer">
       <div class="container footer-grid">
+
         <div class="footer-brand reveal">
           <a class="brand brand-footer" href="index.html">
             <img src="images/logo.png" alt="Treats By Rich logo" />
@@ -618,7 +1122,11 @@
               <small>Love at First Scoop</small>
             </span>
           </a>
-          <p>Luxury Ghanaian parfaits crafted with fresh ingredients, warm hospitality and modern elegance.</p>
+
+          <p>
+            Luxury Ghanaian parfaits crafted with fresh ingredients, warm
+            hospitality and modern elegance.
+          </p>
         </div>
 
         <div class="reveal">
@@ -648,13 +1156,19 @@
             <li>Sunday: 10:00 AM – 5:00 PM</li>
           </ul>
         </div>
+
       </div>
+
       <div class="container footer-bottom">
         <p>© 2026 Treats By Rich. All rights reserved.</p>
       </div>
     </footer>
 
-    <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
+    <button class="back-to-top" type="button" aria-label="Back to top">
+      ↑
+    </button>
+
+    <!-- EXISTING JAVASCRIPT -->
     <script src="js/cart.js"></script>
     <script src="js/app.js"></script>
     <script type="module" src="js/reviews.js"></script>

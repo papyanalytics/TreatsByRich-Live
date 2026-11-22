@@ -496,6 +496,9 @@ import {
               <button
                 class="button button-ghost-dark button-small add-to-cart"
                 type="button"
+                data-product-id="${escapeHtml(
+                  product.id
+                )}"
                 data-product="${safeName}"
                 data-price="${price}"
                 data-image="${escapeHtml(
@@ -787,6 +790,11 @@ import {
 
     try {
       cartAPI.addItem({
+        productId:
+          button.dataset.productId ||
+          button.closest(".menu-card")
+            ?.dataset.firestoreId ||
+          "",
         name: productName,
         image: normalizedImage,
         size: selectedSizeValue,

@@ -1,5 +1,4 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -12,26 +11,20 @@ import {
   updateDoc,
   where
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import {
+  getFunctions,
+  httpsCallable
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-functions.js";
 
-import { db, configOk } from "../config/firebaseConfig.js";
-import { BUSINESS_CONFIG } from "../config/businessConfig.js";
+import { app, db, configOk } from "../config/firebaseConfig.js";
+
+const functions =
+  app
+    ? getFunctions(app)
+    : null;
 
 function toNumber(value) {
   return Number(value || 0);
-}
-
-function generateTrackingToken() {
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    return crypto.randomUUID();
-  }
-
-  const randomPart = Math.random().toString(36).slice(2);
-  const timePart = Date.now().toString(36);
-
-  return `${timePart}-${randomPart}`;
 }
 
 function normalizeOrderDoc(snapshot) {
@@ -222,6 +215,9 @@ function normalizeOrderDoc(snapshot) {
         data.discount
       ),
 
+    promotion:
+      data.promotion || null,
+
     date:
       data.date ||
       createdAt,
@@ -236,33 +232,9 @@ function normalizeOrderDoc(snapshot) {
   };
 }
 
-function generateOrderNumber() {
-  const now = new Date();
-
-  const yyyy =
-    now.getFullYear();
-
-  const mm =
-    String(now.getMonth() + 1)
-      .padStart(2, "0");
-
-  const dd =
-    String(now.getDate())
-      .padStart(2, "0");
-
-  const random =
-    String(
-      Math.floor(
-        Math.random() * 9999
-      )
-    ).padStart(4, "0");
-
-  return `${BUSINESS_CONFIG.orderPrefix}-${yyyy}${mm}${dd}-${random}`;
-}
-
 export function createOrderService() {
   function assertConfigured() {
-    if (!configOk || !db) {
+    if (!configOk || !db || !functions) {
       throw new Error(
         "Firebase is not configured. Add your Firebase keys first."
       );
@@ -272,302 +244,29 @@ export function createOrderService() {
   async function createOrder(payload) {
     assertConfigured();
 
-    const orderNumber =
-      payload.number ||
-      payload.orderNumber ||
-      generateOrderNumber();
-
-    const trackingToken =
-      payload.trackingToken ||
-      generateTrackingToken();
-
-    const nowIso =
-      new Date().toISOString();
-
-    const status =
-      payload.status ||
-      "Pending";
-
-    const normalizedItems =
-      Array.isArray(payload.items)
-        ? payload.items.map(
-            (item, index) => ({
-              productId:
-                item.productId ||
-                item.id ||
-                `item-${index + 1}`,
-
-              productName:
-                item.productName ||
-                item.name ||
-                "Product",
-
-              size:
-                item.size ||
-                "Standard",
-
-              quantity:
-                toNumber(
-                  item.quantity
-                ) || 1,
-
-              extras:
-                Array.isArray(
-                  item.extras
-                )
-                  ? item.extras
-                  : [],
-
-              price:
-                toNumber(
-                  item.price ||
-                  item.unitPrice ||
-                  0
-                ),
-
-              unitPrice:
-                toNumber(
-                  item.unitPrice ||
-                  item.price ||
-                  0
-                ),
-
-              totalPrice:
-                toNumber(
-                  item.totalPrice ||
-                  (
-                    toNumber(
-                      item.unitPrice ||
-                      item.price
-                    ) *
-                    (
-                      toNumber(
-                        item.quantity
-                      ) || 1
-                    )
-                  )
-                )
-            })
-          )
-        : [];
-
-    const statusHistory =
-      Array.isArray(
-        payload.statusHistory
-      ) &&
-      payload.statusHistory.length
-        ? payload.statusHistory
-        : [
-            {
-              status,
-              at: nowIso,
-              note: "Order created"
-            }
-          ];
-
-    const writeModel = {
-      orderNumber,
-
-      trackingToken,
-
-      customerName:
-        payload.customerName ||
-        payload.fullName ||
-        "Guest Customer",
-
-      fullName:
-        payload.fullName ||
-        payload.customerName ||
-        "Guest Customer",
-
-      phone:
-        payload.phone ||
-        payload.phoneNumber ||
-        "",
-
-      phoneNumber:
-        payload.phoneNumber ||
-        payload.phone ||
-        "",
-
-      emailAddress:
-        payload.emailAddress ||
-        "",
-
-      deliveryMethod:
-        payload.deliveryMethod ||
-        payload.deliveryType ||
-        "Delivery",
-
-      streetAddress:
-        payload.streetAddress ||
-        "",
-
-      city:
-        payload.city ||
-        "Accra",
-
-      region:
-        payload.region ||
-        "",
-
-      address:
-        payload.address ||
-        [
-          payload.streetAddress,
-          payload.city,
-          payload.region
-        ]
-          .filter(Boolean)
-          .join(", "),
-
-      landmark:
-        payload.landmark ||
-        "",
-
-      deliveryInstructions:
-        payload.deliveryInstructions ||
-        "",
-
-      paymentMethod:
-        payload.paymentMethod ||
-        payload.payment ||
-        "Cash",
-
-      payment:
-        payload.payment ||
-        payload.paymentMethod ||
-        "Cash",
-
-      paymentStatus:
-        payload.paymentStatus ||
-        "Pending",
-
-      status,
-
-      statusHistory,
-
-      promoCode:
-        payload.promoCode ||
-        "",
-
-      orderNotes:
-        payload.orderNotes ||
-        "",
-
-      whatsappNumber:
-        payload.whatsappNumber ||
-        payload.phone ||
-        payload.phoneNumber ||
-        "",
-
-      gpsLocation:
-        payload.gpsLocation ||
-        "",
-
-      estimatedDeliveryTime:
-        payload.estimatedDeliveryTime ||
-        "",
-
-      items:
-        normalizedItems,
-
-      productIds:
-        Array.isArray(
-          payload.productIds
-        ) &&
-        payload.productIds.length
-          ? payload.productIds
-          : normalizedItems
-              .map(
-                (item) =>
-                  item.productId
-              )
-              .filter(Boolean),
-
-      sizeId:
-        payload.sizeId ||
-        "",
-
-      extraIds:
-        Array.isArray(
-          payload.extraIds
-        )
-          ? payload.extraIds
-          : [],
-
-      quantity:
-        toNumber(
-          payload.quantity
-        ) ||
-        normalizedItems.reduce(
-          (sum, item) =>
-            sum +
-            toNumber(
-              item.quantity
-            ),
-          0
-        ),
-
-      totals: {
-        subtotal:
-          toNumber(
-            payload.totals?.subtotal ||
-            payload.subtotal
-          ),
-
-        deliveryFee:
-          toNumber(
-            payload.totals?.deliveryFee ||
-            payload.deliveryFee
-          ),
-
-        discount:
-          toNumber(
-            payload.totals?.discount ||
-            payload.discount
-          ),
-
-        grandTotal:
-          toNumber(
-            payload.totals?.grandTotal ||
-            payload.grandTotal ||
-            payload.total
-          )
-      },
-
-      date:
-        payload.date ||
-        nowIso,
-
-      customerId:
-        payload.customerId ||
-        null,
-
-      createdAt:
-        serverTimestamp(),
-
-      updatedAt:
-        serverTimestamp()
-    };
-
-    const result =
-      await addDoc(
-        collection(
-          db,
-          "orders"
-        ),
-        writeModel
+    const createCustomerOrder =
+      httpsCallable(
+        functions,
+        "createCustomerOrder"
       );
 
-    return {
-      firestoreId:
-        result.id,
+    const result =
+      await createCustomerOrder({
+        order: payload
+      });
 
-      orderNumber,
+    if (
+      !result.data?.firestoreId ||
+      !result.data?.orderNumber ||
+      !result.data?.trackingToken ||
+      !result.data?.totals
+    ) {
+      throw new Error(
+        "The order service returned an incomplete order confirmation."
+      );
+    }
 
-      trackingToken
-    };
+    return result.data;
   }
 
   function subscribeOrders(

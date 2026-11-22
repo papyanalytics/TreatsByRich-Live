@@ -2128,19 +2128,64 @@ body {
   backdrop-filter: blur(14px);
 }
 
+
 .home-page .holiday-announcement {
   min-height: 36px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  padding: 0.35rem 1rem;
+  overflow: hidden;
   background: var(--home-forest);
   color: #fff8e8;
   font-size: 0.69rem;
   font-weight: 500;
   letter-spacing: 0.09em;
-  text-align: center;
+  white-space: nowrap;
+}
+
+.home-page .announcement-track {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+  animation: holidayAnnouncementScroll 28s linear infinite;
+}
+
+.home-page .announcement-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0.35rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.home-page .announcement-star {
+  color: var(--home-champagne);
+  font-size: 0.8rem;
+}
+
+.home-page .announcement-detail {
+  color: rgba(255, 248, 232, 0.66);
+  letter-spacing: 0.04em;
+}
+
+@keyframes holidayAnnouncementScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.home-page .holiday-announcement:hover .announcement-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .announcement-track {
+    animation: none;
+  }
 }
 
 .home-page .announcement-star {
@@ -2361,6 +2406,31 @@ body {
 
 .home-page .hero-note span {
   color: var(--home-champagne);
+}
+
+.seasonal-page .promotion-note {
+  margin: 0.65rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border-left: 2px solid var(--seasonal-gold);
+  background: rgba(214, 173, 96, 0.12);
+  color: var(--seasonal-forest);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.seasonal-menu-page .menu-promotion-note {
+  display: inline-block;
+  margin: 0.4rem 0 0;
+  padding: 0.55rem 0.8rem;
+  border-left: 2px solid var(--seasonal-gold);
+  background: rgba(214, 173, 96, 0.12);
+  color: var(--seasonal-forest);
+  font-size: 0.82rem;
+}
+
+.seasonal-cart-page .summary-discount strong,
+.seasonal-checkout-page .summary-discount strong {
+  color: var(--seasonal-burgundy);
 }
 
 .home-page .hero-visual {

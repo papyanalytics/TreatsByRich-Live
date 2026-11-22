@@ -1,11 +1,24 @@
+import { randomInt, randomUUID } from "node:crypto";
 import { initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import {
+  FieldValue,
+  getFirestore
+} from "firebase-admin/firestore";
 import { getMessaging } from "firebase-admin/messaging";
 
+import {
+  onCall,
+  HttpsError
+} from "firebase-functions/v2/https";
 import {
   onDocumentCreated,
   onDocumentUpdated
 } from "firebase-functions/v2/firestore";
+import {
+  calculatePromotionTotals,
+  findStaticProduct,
+  priceOrderItem
+} from "./orderPricing.js";
 
 initializeApp();
 
@@ -262,6 +275,9 @@ function buildTrackingData(order) {
         )
     },
 
+    promotion:
+      order.promotion || null,
+
     deliveryMethod:
       order.deliveryMethod || "",
 
@@ -279,6 +295,325 @@ function buildTrackingData(order) {
       null
   };
 }
+
+function getOrderText(value, field, maxLength = 500) {
+  if (value === undefined || value === null) {
+    return "";
+  }
+
+  if (typeof value !== "string") {
+    throw new HttpsError(
+      "invalid-argument",
+      `${field} must be text.`
+    );
+  }
+
+  return value.trim().slice(0, maxLength);
+}
+
+async function resolveOrderProduct(item) {
+  if (!item || typeof item !== "object" || Array.isArray(item)) {
+    throw new HttpsError(
+      "invalid-argument",
+      "Each order item must be a product object."
+    );
+  }
+
+  const productId = getOrderText(
+    item.productId || item.id,
+    "Product ID",
+    128
+  );
+  const productName = getOrderText(
+    item.productName || item.name,
+    "Product name",
+    160
+  );
+
+  const staticProductById =
+    findStaticProduct(productId, "");
+
+  if (staticProductById) {
+    return staticProductById;
+  }
+
+  if (productId) {
+    const productSnapshot =
+      await db.collection("products").doc(productId).get();
+
+    if (productSnapshot.exists) {
+      const product = productSnapshot.data() || {};
+
+      if (product.availability === "unavailable") {
+        throw new HttpsError(
+          "failed-precondition",
+          `${product.name || "This product"} is currently unavailable.`
+        );
+      }
+
+      return {
+        id: productSnapshot.id,
+        name: getOrderText(product.name, "Product name", 160)
+      };
+    }
+
+    const customIdMatch = await db
+      .collection("products")
+      .where("id", "==", productId)
+      .limit(2)
+      .get();
+
+    if (customIdMatch.size === 1) {
+      const match = customIdMatch.docs[0];
+      const product = match.data() || {};
+
+      if (product.availability === "unavailable") {
+        throw new HttpsError(
+          "failed-precondition",
+          `${product.name || "This product"} is currently unavailable.`
+        );
+      }
+
+      return {
+        id: match.id,
+        name: getOrderText(product.name, "Product name", 160)
+      };
+    }
+
+    if (customIdMatch.size > 1) {
+      throw new HttpsError(
+        "invalid-argument",
+        "The selected product could not be matched uniquely."
+      );
+    }
+  }
+
+  const staticProductByName =
+    findStaticProduct("", productName);
+
+  if (staticProductByName) {
+    return staticProductByName;
+  }
+
+  if (!productName) {
+    throw new HttpsError(
+      "invalid-argument",
+      "A valid product is required for every order item."
+    );
+  }
+
+  const matches = await db
+    .collection("products")
+    .where("name", "==", productName)
+    .limit(2)
+    .get();
+
+  if (matches.size !== 1) {
+    throw new HttpsError(
+      "invalid-argument",
+      `The product "${productName}" could not be verified.`
+    );
+  }
+
+  const match = matches.docs[0];
+  const product = match.data() || {};
+
+  if (product.availability === "unavailable") {
+    throw new HttpsError(
+      "failed-precondition",
+      `${product.name || "This product"} is currently unavailable.`
+    );
+  }
+
+  return {
+    id: match.id,
+    name: getOrderText(product.name, "Product name", 160)
+  };
+}
+
+function createServerOrderNumber(now) {
+  const date =
+    `${now.getUTCFullYear()}${String(now.getUTCMonth() + 1).padStart(2, "0")}${String(now.getUTCDate()).padStart(2, "0")}`;
+
+  return `TBR-${date}-${String(randomInt(0, 10000)).padStart(4, "0")}`;
+}
+
+export const createCustomerOrder =
+  onCall(async (request) => {
+    const payload = request.data?.order;
+
+    if (!payload || typeof payload !== "object") {
+      throw new HttpsError(
+        "invalid-argument",
+        "Order details are required."
+      );
+    }
+
+    if (
+      !Array.isArray(payload.items) ||
+      payload.items.length === 0 ||
+      payload.items.length > 50
+    ) {
+      throw new HttpsError(
+        "invalid-argument",
+        "An order must contain between 1 and 50 items."
+      );
+    }
+
+    const items = [];
+    for (const item of payload.items) {
+      const product = await resolveOrderProduct(item);
+
+      try {
+        items.push(priceOrderItem(item, product));
+      } catch (error) {
+        throw new HttpsError(
+          "invalid-argument",
+          error.message
+        );
+      }
+    }
+
+    const subtotal =
+      items.reduce(
+        (sum, item) => sum + item.totalPrice,
+        0
+      );
+    const totals =
+      calculatePromotionTotals(subtotal, 0);
+    const now = new Date();
+    const nowIso = now.toISOString();
+
+    const deliveryMethod =
+      getOrderText(
+        payload.deliveryMethod || payload.deliveryType || "Delivery",
+        "Delivery method",
+        40
+      );
+
+    if (!["Pickup", "Delivery"].includes(deliveryMethod)) {
+      throw new HttpsError(
+        "invalid-argument",
+        "Choose pickup or delivery."
+      );
+    }
+
+    const fullName =
+      getOrderText(
+        payload.fullName || payload.customerName || "Guest Customer",
+        "Customer name",
+        160
+      );
+    const phone =
+      getOrderText(
+        payload.phone || payload.phoneNumber,
+        "Phone number",
+        80
+      );
+    const orderNumber = createServerOrderNumber(now);
+    const trackingToken = randomUUID();
+    const productIds =
+      items.map((item) => item.productId);
+    const orderRef = db.collection("orders").doc();
+    const trackingRef =
+      db.collection("orderTracking").doc(trackingToken);
+
+    const order = {
+      orderNumber,
+      trackingToken,
+      customerName: fullName,
+      fullName,
+      phone,
+      phoneNumber: phone,
+      emailAddress:
+        getOrderText(payload.emailAddress, "Email address", 254),
+      deliveryMethod,
+      streetAddress:
+        getOrderText(payload.streetAddress, "Street address"),
+      city:
+        getOrderText(payload.city, "City", 120),
+      region:
+        getOrderText(payload.region, "Region", 120),
+      address:
+        getOrderText(payload.address, "Address"),
+      landmark:
+        getOrderText(payload.landmark, "Landmark", 240),
+      deliveryInstructions:
+        getOrderText(
+          payload.deliveryInstructions,
+          "Delivery instructions"
+        ),
+      paymentMethod:
+        getOrderText(
+          payload.paymentMethod || payload.payment || "Cash",
+          "Payment method",
+          80
+        ),
+      payment:
+        getOrderText(
+          payload.paymentMethod || payload.payment || "Cash",
+          "Payment method",
+          80
+        ),
+      paymentStatus: "Awaiting manual payment verification",
+      paymentConfirmedByCustomer:
+        payload.paymentConfirmedByCustomer === true,
+      status: "Pending",
+      statusHistory: [
+        {
+          status: "Pending",
+          at: nowIso,
+          note: "Order placed by customer"
+        }
+      ],
+      promoCode: "",
+      promotion: {
+        ...totals.promotion,
+        discount: totals.discount
+      },
+      orderNotes:
+        getOrderText(payload.orderNotes, "Order notes"),
+      whatsappNumber: phone,
+      gpsLocation:
+        getOrderText(payload.gpsLocation, "GPS location", 240),
+      estimatedDeliveryTime: "",
+      items,
+      productIds,
+      sizeId: "",
+      extraIds: [],
+      quantity:
+        items.reduce((sum, item) => sum + item.quantity, 0),
+      totals,
+      subtotal: totals.subtotal,
+      deliveryFee: totals.deliveryFee,
+      discount: totals.discount,
+      grandTotal: totals.grandTotal,
+      total: totals.grandTotal,
+      date: nowIso,
+      customerId: request.auth?.uid || null,
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    };
+
+    const batch = db.batch();
+    batch.create(orderRef, order);
+    batch.create(trackingRef, {
+      ...buildTrackingData(order),
+      orderId: orderRef.id,
+      trackingToken,
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    });
+    await batch.commit();
+
+    return {
+      firestoreId: orderRef.id,
+      orderNumber,
+      trackingToken,
+      totals,
+      promotion: order.promotion
+    };
+  });
 
 
 // ============================================================

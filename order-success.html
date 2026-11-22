@@ -89,6 +89,55 @@
         font-weight: 700;
       }
 
+      .success-receipt {
+        display: grid;
+        gap: 0.7rem;
+        max-width: 540px;
+        margin: 1.5rem auto 0;
+        padding: 1.2rem;
+        border: 1px solid rgba(214, 173, 96, 0.45);
+        border-radius: 18px;
+        background: #fff8e8;
+        color: #174b35;
+        text-align: left;
+      }
+
+      .success-receipt[hidden] {
+        display: none !important;
+      }
+
+      .success-receipt h2 {
+        margin: 0 0 0.2rem;
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+      }
+
+      .success-receipt-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        color: #786758;
+        font-size: 0.92rem;
+      }
+
+      .success-receipt-row strong {
+        color: #174b35;
+        text-align: right;
+      }
+
+      .success-receipt-total {
+        padding-top: 0.7rem;
+        border-top: 1px solid rgba(23, 75, 53, 0.18);
+        font-weight: 700;
+      }
+
+      .success-receipt-note {
+        margin: 0;
+        color: #786758;
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
       .button-group {
         margin-top: 34px;
         display: grid;
@@ -218,6 +267,34 @@
           Order #TBR-00000000-0000
         </div>
 
+        <section
+          class="success-receipt"
+          id="orderReceipt"
+          aria-label="Order amount breakdown"
+          hidden
+        >
+          <h2>Order amount breakdown</h2>
+          <div class="success-receipt-row">
+            <span>Product subtotal</span>
+            <strong id="receiptSubtotal"></strong>
+          </div>
+          <div class="success-receipt-row">
+            <span id="receiptDiscountLabel">Discount</span>
+            <strong id="receiptDiscount"></strong>
+          </div>
+          <div class="success-receipt-row">
+            <span>Delivery fee</span>
+            <strong id="receiptDeliveryFee"></strong>
+          </div>
+          <div class="success-receipt-row success-receipt-total">
+            <span>Amount payable</span>
+            <strong id="receiptGrandTotal"></strong>
+          </div>
+          <p class="success-receipt-note">
+            Delivery is not charged by Treats By Rich; customers arrange and pay their rider.
+          </p>
+        </section>
+
         <!-- Customer push notification section -->
         <div class="notification-box">
           <p>
@@ -290,6 +367,15 @@
 
     <script type="module">
       import {
+        doc,
+        getDoc
+      } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+      import {
+        db
+      } from "./config/firebaseConfig.js";
+
+      import {
         createRealtimeNotificationService
       } from "./services/notificationService.js";
 
@@ -346,6 +432,51 @@
         trackOrderButton.textContent =
           "Track Order";
       }
+
+      async function renderOrderReceipt() {
+        if (!trackingFromUrl || !db) {
+          return;
+        }
+
+        try {
+          const snapshot = await getDoc(
+            doc(db, "orderTracking", trackingFromUrl)
+          );
+
+          if (!snapshot.exists()) {
+            console.warn(
+              "[Treats By Rich] Order receipt totals are not available yet."
+            );
+            return;
+          }
+
+          const order = snapshot.data();
+          const totals = order.totals || {};
+          const formatPrice = (value) =>
+            `GH₵${Number(value || 0).toFixed(2)}`;
+
+          document.getElementById("receiptSubtotal").textContent =
+            formatPrice(totals.subtotal);
+          document.getElementById("receiptDiscountLabel").textContent =
+            order.promotion?.rate
+              ? `${order.promotion.name} (${Number(order.promotion.rate)}%)`
+              : "Discount";
+          document.getElementById("receiptDiscount").textContent =
+            `${Number(totals.discount || 0) > 0 ? "−" : ""}${formatPrice(totals.discount)}`;
+          document.getElementById("receiptDeliveryFee").textContent =
+            formatPrice(totals.deliveryFee);
+          document.getElementById("receiptGrandTotal").textContent =
+            formatPrice(totals.grandTotal);
+          document.getElementById("orderReceipt").hidden = false;
+        } catch (error) {
+          console.warn(
+            "[Treats By Rich] Could not load verified order totals:",
+            error
+          );
+        }
+      }
+
+      renderOrderReceipt();
 
       async function registerCustomerNotifications() {
         if (!orderFromUrl) {
