@@ -87,6 +87,16 @@ const subtotalAmount =
     "subtotalAmount"
   );
 
+const discountAmount =
+  document.getElementById(
+    "discountAmount"
+  );
+
+const deliveryFeeAmount =
+  document.getElementById(
+    "deliveryFeeAmount"
+  );
+
 const grandTotalElement =
   document.getElementById(
     "grandTotal"
@@ -521,6 +531,16 @@ function renderSummary() {
         formatPrice(0);
     }
 
+    if (discountAmount) {
+      discountAmount.textContent =
+        `−${formatPrice(0)}`;
+    }
+
+    if (deliveryFeeAmount) {
+      deliveryFeeAmount.textContent =
+        formatPrice(0);
+    }
+
     if (grandTotalElement) {
       grandTotalElement.textContent =
         formatPrice(0);
@@ -637,6 +657,13 @@ function renderSummary() {
    * IMPORTANT:
    * There is deliberately NO delivery fee.
    */
+  const discount =
+    window.TBRPromotion.calculateChristmasDiscount(
+      subtotal
+    );
+
+  const deliveryFee = 0;
+
   if (subtotalAmount) {
     subtotalAmount.textContent =
       formatPrice(
@@ -644,10 +671,20 @@ function renderSummary() {
       );
   }
 
+  if (discountAmount) {
+    discountAmount.textContent =
+      `−${formatPrice(discount)}`;
+  }
+
+  if (deliveryFeeAmount) {
+    deliveryFeeAmount.textContent =
+      formatPrice(deliveryFee);
+  }
+
   if (grandTotalElement) {
     grandTotalElement.textContent =
       formatPrice(
-        subtotal
+        subtotal - discount + deliveryFee
       );
   }
 
@@ -810,11 +847,17 @@ function buildOrderPayload(
   /*
    * Delivery is NEVER charged.
    */
-  const deliveryFee =
-    0;
+  const deliveryFee = 0;
+
+  const discount =
+    window.TBRPromotion.calculateChristmasDiscount(
+      subtotal
+    );
 
   const grandTotal =
-    subtotal;
+    subtotal -
+    discount +
+    deliveryFee;
 
   const nowIso =
     new Date().toISOString();
@@ -925,18 +968,32 @@ function buildOrderPayload(
     totals: {
       subtotal,
 
-      deliveryFee: 0,
+      deliveryFee,
 
-      discount: 0,
+      discount,
+
+      promotion: {
+        id: "christmas-5-percent-over-200",
+        name: "Christmas discount",
+        rate: 5,
+        threshold: 200
+      },
 
       grandTotal
     },
 
+    promotion: {
+      id: "christmas-5-percent-over-200",
+      name: "Christmas discount",
+      rate: 5,
+      threshold: 200
+    },
+
     subtotal,
 
-    deliveryFee: 0,
+    deliveryFee,
 
-    discount: 0,
+    discount,
 
     grandTotal,
 
@@ -1520,6 +1577,23 @@ async function init() {
   attachOptionBehavior();
 
   renderSummary();
+
+  window.addEventListener(
+    "tbr:cart-updated",
+    renderSummary
+  );
+
+  window.addEventListener(
+    "storage",
+    (event) => {
+      if (
+        event.key ===
+        CHECKOUT_CONFIG.cartStorageKey
+      ) {
+        renderSummary();
+      }
+    }
+  );
 
   console.log(
     "[Treats By Rich] Checkout initialized."

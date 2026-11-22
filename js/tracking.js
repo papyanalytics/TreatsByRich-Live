@@ -1523,13 +1523,15 @@ function renderOrder(order) {
         <div class="summary-row">
 
           <span>
-            Discount
+            ${
+              order.promotion?.rate
+                ? `${escapeHtml(order.promotion.name)} (${Number(order.promotion.rate)}%)`
+                : "Discount"
+            }
           </span>
 
           <strong>
-            ${formatPrice(
-              discount
-            )}
+            ${discount > 0 ? "−" : ""}${formatPrice(discount)}
           </strong>
 
         </div>

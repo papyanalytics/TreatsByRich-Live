@@ -1,91 +1,124 @@
+
 /* =========================================================
    Treats By Rich
    Cart Data Layer + Cart Page
+   Complete corrected version
    ========================================================= */
 
 (function initCart() {
   "use strict";
 
   /*
-   * =========================================================
    * STORAGE
-   * =========================================================
    */
 
   const storageKey =
-    window.APP_CONFIG?.cartStorageKey ||
-    "tbrCart";
+    window.APP_CONFIG?.cartStorageKey || "tbrCart";
 
 
   /*
-   * =========================================================
    * PRODUCT OPTIONS
-   * =========================================================
    */
 
   const SIZE_OPTIONS = [
-    {
-      value: "255ml",
-      price: 80
-    },
-    {
-      value: "355ml",
-      price: 110
-    },
-    {
-      value: "500ml",
-      price: 155
-    },
-    {
-      value: "700ml",
-      price: 299
-    },
-    {
-      value: "750ml",
-      price: 310
-    }
+    { value: "255ml", price: 80 },
+    { value: "355ml", price: 110 },
+    { value: "500ml", price: 155 },
+    { value: "700ml", price: 299 },
+    { value: "750ml", price: 310 }
   ];
 
-
   const EXTRA_OPTIONS = [
-    {
-      name: "Cashew",
-      price: 25
-    },
-    {
-      name: "Almond",
-      price: 25
-    },
-    {
-      name: "Coco Flakes",
-      price: 25
-    },
-    {
-      name: "Crispy Bis",
-      price: 25
-    },
-    {
-      name: "Extra Yogurt",
-      price: 25
-    }
+    { name: "Cashew", price: 25 },
+    { name: "Almond", price: 25 },
+    { name: "Coco Flakes", price: 25 },
+    { name: "Crispy Bis", price: 25 },
+    { name: "Extra Yogurt", price: 25 }
   ];
 
 
   /*
-   * =========================================================
+   * CHRISTMAS PROMOTION
+   *
+   * 5% discount when subtotal is above GH₵200.
+   * Available immediately to cart.js and checkout.js.
+   */
+
+  function calculateChristmasDiscount(subtotal) {
+    const safeSubtotal = Math.max(
+      0,
+      Number(subtotal) || 0
+    );
+
+    const subtotalPesewas = Math.round(
+      safeSubtotal * 100
+    );
+
+    if (subtotalPesewas <= 20000) {
+      return 0;
+    }
+
+    return Math.round(
+      subtotalPesewas * 0.05
+    ) / 100;
+  }
+
+  window.TBRPromotion = Object.assign(
+    {},
+    window.TBRPromotion || {},
+    { calculateChristmasDiscount }
+  );
+
+
+  /*
+   * HELPERS
+   */
+
+  function toSafeNumber(value, fallback = 0) {
+    const number = Number(value);
+
+    return Number.isFinite(number)
+      ? number
+      : fallback;
+  }
+
+  function toSafeQuantity(value) {
+    return Math.max(
+      1,
+      Math.floor(toSafeNumber(value, 1))
+    );
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(
+      /[&<>"']/g,
+      (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char])
+    );
+  }
+
+
+  /*
    * CART STORAGE
-   * =========================================================
    */
 
   function parseCart() {
-    const raw =
-      localStorage.getItem(
-        storageKey
-      );
+    const raw = localStorage.getItem(storageKey);
+
+    if (!raw) {
+      return [];
+    }
 
     try {
-      return raw
-        ? JSON.parse(raw)
+      const parsed = JSON.parse(raw);
+
+      return Array.isArray(parsed)
+        ? parsed
         : [];
     } catch (error) {
       console.warn(
@@ -97,76 +130,63 @@
     }
   }
 
-
   function persistCart(items) {
     localStorage.setItem(
       storageKey,
-      JSON.stringify(items)
+      JSON.stringify(
+        Array.isArray(items) ? items : []
+      )
     );
 
     window.dispatchEvent(
-      new CustomEvent(
-        "tbr:cart-updated"
-      )
+      new CustomEvent("tbr:cart-updated")
     );
   }
 
 
   /*
-   * =========================================================
    * NORMALIZE CART ITEM
-   * =========================================================
    */
 
   function normalizeItem(input) {
-    input =
-      input || {};
+    input = input || {};
 
-    const quantity =
-      Math.max(
-        1,
-        Number(
-          input.quantity || 1
-        )
-      );
+    const quantity = toSafeQuantity(
+      input.quantity ?? 1
+    );
 
+    const unitPrice = toSafeNumber(
+      input.unitPrice ?? input.price ?? 0
+    );
 
-    const unitPrice =
-      Number(
-        input.unitPrice ??
-          input.price ??
-          0
-      );
+    const totalPrice = toSafeNumber(
+      input.totalPrice,
+      unitPrice * quantity
+    );
 
-
-    const totalPrice =
-      Number(
-        input.totalPrice ??
-          unitPrice * quantity
-      );
-
-
-    function toText(
-      value,
-      fallback
-    ) {
-      return value ===
-        undefined ||
-        value === null
+    function toText(value, fallback) {
+      return value === undefined || value === null
         ? fallback
         : String(value);
     }
 
+    const id =
+      input.id !== undefined &&
+      input.id !== null &&
+      String(input.id).trim() !== ""
+        ? String(input.id)
+        : `${
+            input.name || "item"
+          }-${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2, 8)}`;
 
     return {
-      id: toText(
-        input.id,
-        `${
-          input.name ||
-          "item"
-        }-${Date.now()}-${Math.random()
-          .toString(36)
-          .slice(2, 8)}`
+      id,
+
+      productId: toText(
+        input.productId,
+        ""
       ),
 
       name: toText(
@@ -184,121 +204,79 @@
         "255ml"
       ),
 
-      extras:
-        Array.isArray(
-          input.extras
-        )
-          ? input.extras.filter(
-              Boolean
-            )
-          : [],
+      extras: Array.isArray(input.extras)
+        ? input.extras.filter(Boolean)
+        : [],
 
       quantity,
-
       unitPrice,
-
       totalPrice
     };
   }
 
 
   /*
-   * =========================================================
    * PRICE FORMAT
-   * =========================================================
    */
 
   function formatPrice(value) {
-    if (
-      typeof window.formatCurrency ===
-      "function"
-    ) {
-      return window.formatCurrency(
-        value
-      );
+    const amount = toSafeNumber(value);
+
+    if (typeof window.formatCurrency === "function") {
+      return window.formatCurrency(amount);
     }
 
-    return `GH₵${Number(
-      value || 0
-    ).toFixed(2)}`;
+    return `GH₵${amount.toFixed(2)}`;
   }
 
 
   /*
-   * =========================================================
    * PUBLIC CART FUNCTIONS
-   * =========================================================
    */
 
   function getCart() {
     return parseCart();
   }
 
-
   function saveCart(items) {
-    persistCart(
-      (items || []).map(
-        normalizeItem
-      )
-    );
-  }
+    const normalizedItems = (
+      Array.isArray(items) ? items : []
+    ).map(normalizeItem);
 
+    persistCart(normalizedItems);
+  }
 
   function clearCart() {
-    localStorage.removeItem(
-      storageKey
-    );
+    localStorage.removeItem(storageKey);
 
     window.dispatchEvent(
-      new CustomEvent(
-        "tbr:cart-updated"
-      )
+      new CustomEvent("tbr:cart-updated")
     );
   }
-
 
   function getCartCount() {
     return getCart().reduce(
-      (
-        total,
-        item
-      ) =>
-        total +
-        Math.max(
-          1,
-          Number(
-            item.quantity || 1
-          )
-        ),
+      (total, item) =>
+        total + toSafeQuantity(item.quantity),
       0
     );
   }
 
-
   function getCartTotal() {
     return getCart().reduce(
-      (
-        total,
-        item
-      ) => {
-        const itemTotal =
-          Number(
-            item.totalPrice ??
-              Number(
-                item.unitPrice ||
-                  item.price ||
-                  0
-              ) *
-                Number(
-                  item.quantity ||
-                    1
-                )
-          );
+      (total, item) => {
+        const quantity = toSafeQuantity(item.quantity);
 
-        return (
-          total +
-          itemTotal
+        const unitPrice = toSafeNumber(
+          item.unitPrice ?? item.price ?? 0
         );
+
+        const itemTotal = toSafeNumber(
+          item.totalPrice,
+          unitPrice * quantity
+        );
+
+        return total + itemTotal;
       },
       0
     );
@@ -306,251 +284,650 @@
 
 
   /*
-   * =========================================================
    * ADD ITEM
-   * =========================================================
    */
 
   function addItem(item) {
-    const cart =
-      getCart();
+    const cart = getCart();
+    const next = normalizeItem(item);
 
-    const next =
-      normalizeItem(
-        item
-      );
-
-
-    const existingIndex =
-      cart.findIndex(
-        (
-          cartItem
-        ) =>
-          cartItem.name ===
-            next.name &&
-          cartItem.size ===
-            next.size &&
-          JSON.stringify(
-            cartItem.extras ||
-              []
-          ) ===
-            JSON.stringify(
-              next.extras ||
-                []
-            )
-      );
-
-
-    if (
-      existingIndex >= 0
-    ) {
-      const existing =
-        normalizeItem(
-          cart[
-            existingIndex
-          ]
-        );
-
-      existing.quantity +=
-        next.quantity;
-
-      existing.totalPrice =
-        existing.unitPrice *
-        existing.quantity;
-
-      cart[
-        existingIndex
-      ] = existing;
-    } else {
-      cart.push(
-        next
-      );
-    }
-
-
-    saveCart(
-      cart
+    const existingIndex = cart.findIndex(
+      (cartItem) =>
+        cartItem.name === next.name &&
+        cartItem.size === next.size &&
+        JSON.stringify(cartItem.extras || []) ===
+          JSON.stringify(next.extras || [])
     );
 
+    if (existingIndex >= 0) {
+      const existing = normalizeItem(
+        cart[existingIndex]
+      );
+
+      existing.quantity += next.quantity;
+
+      existing.totalPrice =
+        existing.unitPrice * existing.quantity;
+
+      cart[existingIndex] = existing;
+    } else {
+      cart.push(next);
+    }
+
+    saveCart(cart);
 
     console.log(
       "[Treats By Rich] Item added to cart:",
       next
     );
 
+    return getCart();
+  }
+
+
+  /*
+   * REMOVE ITEM
+   */
+
+  function removeItem(itemId) {
+    const id = String(itemId);
+
+    const next = getCart().filter(
+      (item) => String(item.id) !== id
+    );
+
+    saveCart(next);
+
+    return next;
+  }
+
+
+  /*
+   * UPDATE QUANTITY
+   */
+
+  function updateQuantity(itemId, quantity) {
+    const id = String(itemId);
+
+    const nextQuantity = toSafeQuantity(quantity);
+
+    const cart = getCart().map((item) => {
+      if (String(item.id) !== id) {
+        return item;
+      }
+
+      const normalized = normalizeItem(item);
+
+      normalized.quantity = nextQuantity;
+
+      normalized.totalPrice =
+        normalized.unitPrice * nextQuantity;
+
+      return normalized;
+    });
+
+    saveCart(cart);
 
     return cart;
   }
 
 
   /*
-   * =========================================================
-   * REMOVE ITEM
-   * =========================================================
+   * UPDATE ITEM
    */
 
-  function removeItem(
-    itemId
-  ) {
-    const next =
-      getCart().filter(
-        (item) =>
-          item.id !==
-          itemId
-      );
+  function updateItem(itemId, changes) {
+    const id = String(itemId);
 
-    saveCart(
-      next
-    );
-  }
+    const cart = getCart().map((item) => {
+      if (String(item.id) !== id) {
+        return item;
+      }
 
-
-  /*
-   * =========================================================
-   * UPDATE QUANTITY
-   * =========================================================
-   */
-
-  function updateQuantity(
-    itemId,
-    quantity
-  ) {
-    const nextQuantity =
-      Math.max(
-        1,
-        Number(
-          quantity || 1
+      return normalizeItem(
+        Object.assign(
+          {},
+          item,
+          changes,
+          { id: item.id }
         )
       );
+    });
 
+    saveCart(cart);
 
-    const cart =
-      getCart().map(
-        (item) => {
-          if (
-            item.id !==
-            itemId
-          ) {
-            return item;
-          }
-
-
-          const normalized =
-            normalizeItem(
-              item
-            );
-
-
-          normalized.quantity =
-            nextQuantity;
-
-
-          normalized.totalPrice =
-            normalized.unitPrice *
-            nextQuantity;
-
-
-          return normalized;
-        }
-      );
-
-
-    saveCart(
-      cart
-    );
+    return getCart();
   }
 
 
   /*
-   * =========================================================
-   * UPDATE ITEM
-   * =========================================================
+   * EDIT MODAL REFERENCES
    */
 
-  function updateItem(
-    itemId,
-    changes
-  ) {
-    const cart =
-      getCart().map(
-        (item) => {
-          if (
-            item.id !==
-            itemId
-          ) {
-            return item;
-          }
+  let editingItemId = null;
+  let editFocusReturnTarget = null;
 
+  function getEditModalRefs() {
+    return {
+      modal: document.getElementById(
+        "edit-item-modal"
+      ),
 
-          return normalizeItem(
-            Object.assign(
-              {},
-              item,
-              changes,
-              {
-                id: item.id
-              }
-            )
-          );
-        }
-      );
+      sizeGroup: document.querySelector(
+        '[data-role="edit-size-options"]'
+      ),
 
+      extrasGroup: document.querySelector(
+        '[data-role="edit-extra-options"]'
+      ),
 
-    saveCart(
-      cart
-    );
+      quantityInput: document.getElementById(
+        "edit-quantity"
+      ),
 
-
-    return cart;
+      totalPriceNode: document.getElementById(
+        "edit-total-price"
+      )
+    };
   }
 
 
   /*
-   * =========================================================
-   * RENDER CART
-   * =========================================================
+   * RECALCULATE EDIT PRICE
    */
 
-  function renderCartPage() {
-    const cartContainer =
-      document.getElementById(
-        "cart-items"
+  function recalcEditPrice() {
+    const {
+      sizeGroup,
+      extrasGroup,
+      quantityInput,
+      totalPriceNode
+    } = getEditModalRefs();
+
+    if (!sizeGroup || !totalPriceNode) {
+      return;
+    }
+
+    const selectedSize = sizeGroup.querySelector(
+      'input[name="edit-size"]:checked'
+    );
+
+    const sizePrice = selectedSize
+      ? toSafeNumber(selectedSize.dataset.price)
+      : 0;
+
+    const extrasTotal = Array.from(
+      extrasGroup
+        ? extrasGroup.querySelectorAll(
+            'input[type="checkbox"]'
+          )
+        : []
+    )
+      .filter((checkbox) => checkbox.checked)
+      .reduce(
+        (total, checkbox) =>
+          total + toSafeNumber(checkbox.dataset.price),
+        0
       );
 
-    const savedItemsContainer =
-      document.getElementById(
-        "saved-items"
+    const quantity = toSafeQuantity(
+      quantityInput?.value ?? 1
+    );
+
+    const total =
+      (sizePrice + extrasTotal) * quantity;
+
+    totalPriceNode.textContent = formatPrice(total);
+  }
+
+
+  /*
+   * OPEN EDIT MODAL
+   */
+
+  function openEditModal(itemId, triggerElement) {
+    const id = String(itemId);
+
+    const item = getCart().find(
+      (entry) => String(entry.id) === id
+    );
+
+    const {
+      modal,
+      sizeGroup,
+      extrasGroup,
+      quantityInput
+    } = getEditModalRefs();
+
+    if (
+      !item ||
+      !modal ||
+      !sizeGroup ||
+      !extrasGroup ||
+      !quantityInput
+    ) {
+      console.warn(
+        "[Treats By Rich] Edit modal or cart item could not be found."
       );
 
-    const emptyState =
-      document.querySelector(
-        ".cart-empty-state"
-      );
+      return;
+    }
 
-    const subtotalNode =
-      document.querySelector(
-        '[data-summary="subtotal"]'
-      );
+    editingItemId = id;
 
-    const totalNode =
-      document.querySelector(
-        '[data-summary="estimated-total"]'
-      );
-
-    const checkoutButton =
-      document.querySelector(
-        '[data-action="checkout"]'
-      );
-
-    const continueShoppingButton =
-      document.querySelector(
-        '[data-action="continue-shopping"]'
-      );
+    editFocusReturnTarget = triggerElement || null;
 
 
     /*
-     * Stop if this page does not
-     * contain the cart elements.
+     * SIZE OPTIONS
+     */
+
+    sizeGroup.innerHTML = SIZE_OPTIONS.map(
+      (option) => {
+        const selected = option.value === item.size;
+
+        return `
+          <label class="option-card${
+            selected ? " is-selected" : ""
+          }">
+
+            <input
+              type="radio"
+              name="edit-size"
+              value="${escapeHtml(option.value)}"
+              data-price="${option.price}"
+              ${selected ? "checked" : ""}
+            />
+
+            <span class="option-title">
+              ${escapeHtml(option.value)}
+            </span>
+
+            <small>
+              ${formatPrice(option.price)}
+            </small>
+
+          </label>
+        `;
+      }
+    ).join("");
+
+
+    /*
+     * EXTRA OPTIONS
+     */
+
+    extrasGroup.innerHTML = EXTRA_OPTIONS.map(
+      (extra) => {
+        const checked = item.extras.includes(
+          extra.name
+        );
+
+        return `
+          <label class="checkbox-card">
+
+            <input
+              type="checkbox"
+              data-extra="${escapeHtml(extra.name)}"
+              data-price="${extra.price}"
+              ${checked ? "checked" : ""}
+            />
+
+            <span>
+              ${escapeHtml(extra.name)}
+            </span>
+
+            <small>
+              +${formatPrice(extra.price)}
+            </small>
+
+          </label>
+        `;
+      }
+    ).join("");
+
+
+    /*
+     * QUANTITY
+     */
+
+    quantityInput.value = String(
+      toSafeQuantity(item.quantity)
+    );
+
+    recalcEditPrice();
+
+
+    /*
+     * OPEN MODAL
+     */
+
+    modal.classList.add("open");
+
+    modal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.classList.add("modal-open");
+
+    modal.querySelector(".icon-button")?.focus();
+  }
+
+
+  /*
+   * CLOSE EDIT MODAL
+   */
+
+  function closeEditModal() {
+    const { modal } = getEditModalRefs();
+
+    if (!modal) {
+      return;
+    }
+
+    modal.classList.remove("open");
+
+    modal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.classList.remove("modal-open");
+
+    editingItemId = null;
+
+    if (
+      editFocusReturnTarget &&
+      typeof editFocusReturnTarget.focus === "function"
+    ) {
+      editFocusReturnTarget.focus();
+    }
+
+    editFocusReturnTarget = null;
+  }
+
+
+  /*
+   * SAVE EDIT
+   */
+
+  function saveEditModal() {
+    if (!editingItemId) {
+      return;
+    }
+
+    const {
+      sizeGroup,
+      extrasGroup,
+      quantityInput
+    } = getEditModalRefs();
+
+    const selectedSize = sizeGroup?.querySelector(
+      'input[name="edit-size"]:checked'
+    );
+
+    if (!selectedSize) {
+      console.warn(
+        "[Treats By Rich] Please select a product size."
+      );
+
+      return;
+    }
+
+    const size = selectedSize.value;
+
+    const sizePrice = toSafeNumber(
+      selectedSize.dataset.price
+    );
+
+    const selectedExtras = Array.from(
+      extrasGroup
+        ? extrasGroup.querySelectorAll(
+            'input[type="checkbox"]'
+          )
+        : []
+    ).filter((checkbox) => checkbox.checked);
+
+    const extras = selectedExtras.map(
+      (checkbox) => checkbox.dataset.extra
+    );
+
+    const extrasTotal = selectedExtras.reduce(
+      (total, checkbox) =>
+        total + toSafeNumber(checkbox.dataset.price),
+      0
+    );
+
+    const quantity = toSafeQuantity(
+      quantityInput?.value ?? 1
+    );
+
+    const unitPrice = sizePrice + extrasTotal;
+
+    updateItem(editingItemId, {
+      size,
+      extras,
+      quantity,
+      unitPrice,
+      totalPrice: unitPrice * quantity
+    });
+
+    closeEditModal();
+
+    renderCartPage();
+
+    updateGlobalCartCount();
+  }
+
+
+  /*
+   * INITIALIZE EDIT MODAL EVENTS
+   */
+
+  function initEditModal() {
+    const {
+      modal,
+      quantityInput
+    } = getEditModalRefs();
+
+    if (
+      !modal ||
+      modal.dataset.eventsBound === "true"
+    ) {
+      return;
+    }
+
+    modal.dataset.eventsBound = "true";
+
+
+    /*
+     * CLOSE BUTTONS AND BACKDROP
+     */
+
+    modal.addEventListener("click", (event) => {
+      const closeButton = event.target.closest(
+        '[data-action="close-edit"]'
+      );
+
+      if (
+        closeButton &&
+        modal.contains(closeButton)
+      ) {
+        event.preventDefault();
+
+        closeEditModal();
+
+        return;
+      }
+
+      if (event.target === modal) {
+        closeEditModal();
+      }
+    });
+
+
+    /*
+     * SAVE
+     */
+
+    modal
+      .querySelector('[data-action="save-edit"]')
+      ?.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        saveEditModal();
+      });
+
+
+    /*
+     * DECREASE QUANTITY
+     */
+
+    modal
+      .querySelector('[data-action="edit-decrease"]')
+      ?.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        if (!quantityInput) {
+          return;
+        }
+
+        quantityInput.value = String(
+          Math.max(
+            1,
+            toSafeQuantity(quantityInput.value) - 1
+          )
+        );
+
+        recalcEditPrice();
+      });
+
+
+    /*
+     * INCREASE QUANTITY
+     */
+
+    modal
+      .querySelector('[data-action="edit-increase"]')
+      ?.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        if (!quantityInput) {
+          return;
+        }
+
+        quantityInput.value = String(
+          toSafeQuantity(quantityInput.value) + 1
+        );
+
+        recalcEditPrice();
+      });
+
+
+    /*
+     * SIZE AND EXTRAS EVENTS
+     */
+
+    modal.addEventListener("change", (event) => {
+      if (
+        event.target.matches(
+          'input[name="edit-size"]'
+        )
+      ) {
+        modal
+          .querySelectorAll(".option-card")
+          .forEach((card) => {
+            const input = card.querySelector("input");
+
+            card.classList.toggle(
+              "is-selected",
+              Boolean(input?.checked)
+            );
+          });
+
+        recalcEditPrice();
+      }
+
+      if (
+        event.target.matches(
+          '[data-role="edit-extra-options"] input[type="checkbox"]'
+        )
+      ) {
+        recalcEditPrice();
+      }
+    });
+
+
+    /*
+     * MANUAL QUANTITY INPUT
+     */
+
+    quantityInput?.addEventListener(
+      "input",
+      recalcEditPrice
+    );
+
+
+    /*
+     * ESC CLOSES MODAL
+     */
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        modal.classList.contains("open")
+      ) {
+        closeEditModal();
+      }
+    });
+  }
+
+
+  /*
+   * RENDER CART PAGE
+   */
+
+  function renderCartPage() {
+    const cartContainer = document.getElementById(
+      "cart-items"
+    );
+
+    const savedItemsContainer = document.getElementById(
+      "saved-items"
+    );
+
+    const emptyState = document.querySelector(
+      ".cart-empty-state"
+    );
+
+    const subtotalNode = document.querySelector(
+      '[data-summary="subtotal"]'
+    );
+
+    const totalNode = document.querySelector(
+      '[data-summary="estimated-total"]'
+    );
+
+    const discountNode = document.querySelector(
+      '[data-summary="discount"]'
+    );
+
+    const deliveryNode = document.querySelector(
+      '[data-summary="delivery"]'
+    );
+
+    const checkoutButton = document.querySelector(
+      '[data-action="checkout"]'
+    );
+
+    const continueShoppingButton = document.querySelector(
+      '[data-action="continue-shopping"]'
+    );
+
+
+    /*
+     * STOP IF THIS IS NOT THE CART PAGE
      */
 
     if (
@@ -561,1251 +938,395 @@
       return;
     }
 
+    const cart = getCart();
 
-    const cart =
-      getCart();
-
-
-    /*
-     * Clear old rendered items.
-     */
-
-    cartContainer.innerHTML =
-      "";
+    cartContainer.innerHTML = "";
 
 
     /*
-     * Saved items placeholder.
+     * SAVED ITEMS PLACEHOLDER
      */
 
-    if (
-      savedItemsContainer
-    ) {
+    if (savedItemsContainer) {
       savedItemsContainer.innerHTML =
         '<p class="empty-note">Saved items feature coming soon.</p>';
     }
 
 
     /*
-     * =======================================================
      * EMPTY CART
-     * =======================================================
      */
 
-    if (
-      !cart.length
-    ) {
-      if (
-        emptyState
-      ) {
-        emptyState.classList.remove(
-          "is-hidden"
+    if (cart.length === 0) {
+      emptyState?.classList.remove("is-hidden");
+
+      if (checkoutButton) {
+        checkoutButton.disabled = true;
+
+        checkoutButton.setAttribute(
+          "aria-disabled",
+          "true"
         );
       }
+    } else {
+      emptyState?.classList.add("is-hidden");
 
+      if (checkoutButton) {
+        checkoutButton.disabled = false;
 
-      if (
-        checkoutButton
-      ) {
-        checkoutButton.disabled =
-          true;
+        checkoutButton.removeAttribute(
+          "aria-disabled"
+        );
       }
 
 
       /*
-       * Continue Shopping should
-       * still work when the cart
-       * is empty.
+       * CART ITEMS
        */
 
-      if (
-        continueShoppingButton
-      ) {
-        continueShoppingButton.disabled =
-          false;
-      }
-    }
+      cart.forEach((rawItem) => {
+        const item = normalizeItem(rawItem);
 
+        const row = document.createElement("article");
 
-    /*
-     * =======================================================
-     * CART WITH ITEMS
-     * =======================================================
-     */
+        row.className = "cart-item";
 
-    else {
-      if (
-        emptyState
-      ) {
-        emptyState.classList.add(
-          "is-hidden"
-        );
-      }
+        row.innerHTML = `
+          <img
+            src="${escapeHtml(item.image)}"
+            alt="${escapeHtml(item.name)}"
+          />
 
+          <div class="cart-item-body">
 
-      if (
-        checkoutButton
-      ) {
-        checkoutButton.disabled =
-          false;
-      }
+            <div class="cart-item-header">
 
+              <div>
+                <h3>
+                  ${escapeHtml(item.name)}
+                </h3>
 
-      cart.forEach(
-        (item) => {
-          const row =
-            document.createElement(
-              "article"
-            );
-
-
-          row.className =
-            "cart-item";
-
-
-          row.innerHTML = `
-            <img
-              src="${escapeHtml(
-                item.image
-              )}"
-              alt="${escapeHtml(
-                item.name
-              )}"
-            />
-
-            <div class="cart-item-body">
-
-              <div class="cart-item-header">
-
-                <div>
-                  <h3>
-                    ${escapeHtml(
-                      item.name
-                    )}
-                  </h3>
-
-                  <p>
-                    ${escapeHtml(
-                      item.size
-                    )}
-                  </p>
-                </div>
-
-                <div class="cart-item-actions">
-
-                  <button
-                    class="text-button"
-                    type="button"
-                    data-action="edit"
-                    data-id="${escapeHtml(
-                      item.id
-                    )}"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    class="text-button"
-                    type="button"
-                    data-action="remove"
-                    data-id="${escapeHtml(
-                      item.id
-                    )}"
-                  >
-                    Remove
-                  </button>
-
-                </div>
-
+                <p>
+                  ${escapeHtml(item.size)}
+                </p>
               </div>
 
+              <div class="cart-item-actions">
 
-              ${
-                item.extras &&
-                item.extras.length
-                  ? `
-                    <p class="cart-item-extras">
-                      + ${item.extras
-                        .map(
-                          escapeHtml
-                        )
-                        .join(
-                          ", "
-                        )}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              <div class="cart-item-footer">
-
-                <div
-                  class="cart-quantity-controls"
-                  role="group"
-                  aria-label="Change quantity"
+                <button
+                  class="text-button"
+                  type="button"
+                  data-action="edit"
+                  data-id="${escapeHtml(item.id)}"
                 >
+                  Edit
+                </button>
 
-                  <button
-                    class="quantity-btn"
-                    type="button"
-                    data-action="decrease"
-                    data-id="${escapeHtml(
-                      item.id
-                    )}"
-                    aria-label="Decrease quantity"
-                  >
-                    −
-                  </button>
-
-                  <span class="quantity-pill">
-                    ${item.quantity}
-                  </span>
-
-                  <button
-                    class="quantity-btn"
-                    type="button"
-                    data-action="increase"
-                    data-id="${escapeHtml(
-                      item.id
-                    )}"
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-
-                </div>
-
-
-                <div class="cart-price-block">
-
-                  <small>
-                    ${formatPrice(
-                      item.unitPrice
-                    )} each
-                  </small>
-
-                  <strong>
-                    ${formatPrice(
-                      item.totalPrice
-                    )}
-                  </strong>
-
-                </div>
+                <button
+                  class="text-button"
+                  type="button"
+                  data-action="remove"
+                  data-id="${escapeHtml(item.id)}"
+                >
+                  Remove
+                </button>
 
               </div>
 
             </div>
-          `;
 
+            ${
+              item.extras.length
+                ? `
+                  <p class="cart-item-extras">
+                    + ${item.extras.map(escapeHtml).join(", ")}
+                  </p>
+                `
+                : ""
+            }
 
-          cartContainer.appendChild(
-            row
-          );
-        }
-      );
+            <div class="cart-item-footer">
+
+              <div
+                class="cart-quantity-controls"
+                role="group"
+                aria-label="Change quantity"
+              >
+
+                <button
+                  class="quantity-btn"
+                  type="button"
+                  data-action="decrease"
+                  data-id="${escapeHtml(item.id)}"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+
+                <span class="quantity-pill">
+                  ${item.quantity}
+                </span>
+
+                <button
+                  class="quantity-btn"
+                  type="button"
+                  data-action="increase"
+                  data-id="${escapeHtml(item.id)}"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+
+              </div>
+
+              <div class="cart-price-block">
+
+                <small>
+                  ${formatPrice(item.unitPrice)} each
+                </small>
+
+                <strong>
+                  ${formatPrice(item.totalPrice)}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+        cartContainer.appendChild(row);
+      });
     }
 
 
     /*
-     * =======================================================
      * TOTALS
-     * =======================================================
      *
-     * Treats By Rich does NOT charge
-     * a delivery fee.
-     *
-     * Customers arrange and pay
-     * their own rider.
+     * Customers arrange and pay their own rider.
+     * Treats By Rich does not charge a delivery fee.
      */
 
-    const subtotal =
-      getCartTotal();
+    const subtotal = getCartTotal();
 
+    const discount =
+      calculateChristmasDiscount(subtotal);
 
-    subtotalNode.textContent =
-      formatPrice(
-        subtotal
-      );
+    const deliveryFee = 0;
 
+    const estimatedTotal = Math.max(
+      0,
+      subtotal - discount + deliveryFee
+    );
+
+    subtotalNode.textContent = formatPrice(subtotal);
+
+    if (discountNode) {
+      discountNode.textContent =
+        `−${formatPrice(discount)}`;
+    }
+
+    if (deliveryNode) {
+      deliveryNode.textContent =
+        formatPrice(deliveryFee);
+    }
 
     totalNode.textContent =
-      formatPrice(
-        subtotal
-      );
+      formatPrice(estimatedTotal);
 
 
     /*
-     * =======================================================
-     * REMOVE BUTTONS
-     * =======================================================
-     */
-
-    cartContainer
-      .querySelectorAll(
-        '[data-action="remove"]'
-      )
-      .forEach(
-        (button) => {
-          button.addEventListener(
-            "click",
-            () => {
-              removeItem(
-                button.dataset.id
-              );
-
-              renderCartPage();
-
-              updateGlobalCartCount();
-            }
-          );
-        }
-      );
-
-
-    /*
-     * =======================================================
-     * EDIT BUTTONS
-     * =======================================================
-     */
-
-    cartContainer
-      .querySelectorAll(
-        '[data-action="edit"]'
-      )
-      .forEach(
-        (button) => {
-          button.addEventListener(
-            "click",
-            () => {
-              openEditModal(
-                button.dataset.id,
-                button
-              );
-            }
-          );
-        }
-      );
-
-
-    /*
-     * =======================================================
-     * DECREASE QUANTITY
-     * =======================================================
-     */
-
-    cartContainer
-      .querySelectorAll(
-        '[data-action="decrease"]'
-      )
-      .forEach(
-        (button) => {
-          button.addEventListener(
-            "click",
-            () => {
-              const item =
-                getCart().find(
-                  (
-                    entry
-                  ) =>
-                    entry.id ===
-                    button.dataset.id
-                );
-
-
-              if (!item) {
-                return;
-              }
-
-
-              updateQuantity(
-                button.dataset.id,
-                Math.max(
-                  1,
-                  item.quantity -
-                    1
-                )
-              );
-
-
-              renderCartPage();
-
-              updateGlobalCartCount();
-            }
-          );
-        }
-      );
-
-
-    /*
-     * =======================================================
-     * INCREASE QUANTITY
-     * =======================================================
-     */
-
-    cartContainer
-      .querySelectorAll(
-        '[data-action="increase"]'
-      )
-      .forEach(
-        (button) => {
-          button.addEventListener(
-            "click",
-            () => {
-              const item =
-                getCart().find(
-                  (
-                    entry
-                  ) =>
-                    entry.id ===
-                    button.dataset.id
-                );
-
-
-              if (!item) {
-                return;
-              }
-
-
-              updateQuantity(
-                button.dataset.id,
-                item.quantity +
-                  1
-              );
-
-
-              renderCartPage();
-
-              updateGlobalCartCount();
-            }
-          );
-        }
-      );
-
-
-    /*
-     * =======================================================
-     * CHECKOUT
-     * =======================================================
-     */
-
-    if (
-      checkoutButton
-    ) {
-      checkoutButton.onclick =
-        () => {
-          const currentCart =
-            getCart();
-
-
-          if (
-            !currentCart.length
-          ) {
-            return;
-          }
-
-
-          window.location.href =
-            "checkout.html";
-        };
-    }
-
-
-    /*
-     * =======================================================
      * CONTINUE SHOPPING
-     * =======================================================
-     *
-     * IMPORTANT:
-     * This does NOT clear the cart.
-     *
-     * The customer returns to Menu
-     * with everything still in the cart.
      */
 
-    if (
-      continueShoppingButton
-    ) {
-      continueShoppingButton.onclick =
-        () => {
-          window.location.href =
-            "menu.html";
-        };
+    if (continueShoppingButton) {
+      continueShoppingButton.disabled = false;
     }
   }
 
 
   /*
-   * =========================================================
-   * ESCAPE HTML
-   * =========================================================
+   * CART BUTTON EVENTS
+   *
+   * Event delegation keeps buttons working after
+   * cart rows are re-rendered.
    */
 
-  function escapeHtml(
-    value
-  ) {
-    return String(
-      value ?? ""
-    ).replace(
-      /[&<>"']/g,
-      (char) => ({
-        "&":
-          "&amp;",
-        "<":
-          "&lt;",
-        ">":
-          "&gt;",
-        '"':
-          "&quot;",
-        "'":
-          "&#39;"
-      }[char])
+  function handleCartClick(event) {
+    const button = event.target.closest(
+      "[data-action]"
     );
-  }
 
+    if (!button) {
+      return;
+    }
 
-  /*
-   * =========================================================
-   * EDIT MODAL
-   * =========================================================
-   */
+    const action = button.dataset.action;
 
-  let editingItemId =
-    null;
-
-  let editFocusReturnTarget =
-    null;
-
-
-  function getEditModalRefs() {
-    return {
-      modal:
-        document.getElementById(
-          "edit-item-modal"
-        ),
-
-      sizeGroup:
-        document.querySelector(
-          '[data-role="edit-size-options"]'
-        ),
-
-      extrasGroup:
-        document.querySelector(
-          '[data-role="edit-extra-options"]'
-        ),
-
-      quantityInput:
-        document.getElementById(
-          "edit-quantity"
-        ),
-
-      totalPriceNode:
-        document.getElementById(
-          "edit-total-price"
-        )
-    };
-  }
-
-
-  /*
-   * =========================================================
-   * EDIT PRICE
-   * =========================================================
-   */
-
-  function recalcEditPrice() {
-    const {
-      sizeGroup,
-      extrasGroup,
-      quantityInput,
-      totalPriceNode
-    } =
-      getEditModalRefs();
-
+    const itemId = button.dataset.id;
 
     if (
-      !sizeGroup ||
-      !totalPriceNode
+      ![
+        "edit",
+        "remove",
+        "decrease",
+        "increase"
+      ].includes(action)
     ) {
       return;
     }
 
-
-    const selectedSize =
-      sizeGroup.querySelector(
-        'input[name="edit-size"]:checked'
-      );
-
-
-    const sizePrice =
-      selectedSize
-        ? Number(
-            selectedSize.dataset
-              .price || 0
-          )
-        : 0;
-
-
-    const extrasTotal =
-      Array.from(
-        extrasGroup
-          ? extrasGroup.querySelectorAll(
-              'input[type="checkbox"]'
-            )
-          : []
-      )
-        .filter(
-          (
-            checkbox
-          ) =>
-            checkbox.checked
-        )
-        .reduce(
-          (
-            total,
-            checkbox
-          ) =>
-            total +
-            Number(
-              checkbox.dataset
-                .price ||
-                0
-            ),
-          0
-        );
-
-
-    const quantity =
-      Math.max(
-        1,
-        Number(
-          quantityInput?.value ||
-            1
-        )
-      );
-
-
-    const total =
-      (sizePrice +
-        extrasTotal) *
-      quantity;
-
-
-    totalPriceNode.textContent =
-      formatPrice(
-        total
-      );
-  }
-
-
-  /*
-   * =========================================================
-   * OPEN EDIT MODAL
-   * =========================================================
-   */
-
-  function openEditModal(
-    itemId,
-    triggerElement
-  ) {
-    const item =
-      getCart().find(
-        (
-          entry
-        ) =>
-          entry.id ===
-          itemId
-      );
-
-
-    const {
-      modal,
-      sizeGroup,
-      extrasGroup,
-      quantityInput
-    } =
-      getEditModalRefs();
-
+    const cartContainer = document.getElementById(
+      "cart-items"
+    );
 
     if (
-      !item ||
-      !modal ||
-      !sizeGroup ||
-      !extrasGroup ||
-      !quantityInput
+      !cartContainer ||
+      !cartContainer.contains(button)
     ) {
       return;
     }
 
-
-    editingItemId =
-      itemId;
-
-
-    editFocusReturnTarget =
-      triggerElement ||
-      null;
+    event.preventDefault();
 
 
     /*
-     * SIZE OPTIONS
+     * REMOVE
      */
 
-    sizeGroup.innerHTML =
-      SIZE_OPTIONS.map(
-        (option) => {
-          const selected =
-            option.value ===
-            item.size;
-
-
-          return `
-            <label
-              class="option-card${
-                selected
-                  ? " is-selected"
-                  : ""
-              }"
-            >
-
-              <input
-                type="radio"
-                name="edit-size"
-                value="${escapeHtml(
-                  option.value
-                )}"
-                data-price="${option.price}"
-                ${
-                  selected
-                    ? "checked"
-                    : ""
-                }
-              />
-
-              <span class="option-title">
-                ${escapeHtml(
-                  option.value
-                )}
-              </span>
-
-              <small>
-                ${formatPrice(
-                  option.price
-                )}
-              </small>
-
-            </label>
-          `;
-        }
-      ).join("");
-
-
-    /*
-     * EXTRA OPTIONS
-     */
-
-    extrasGroup.innerHTML =
-      EXTRA_OPTIONS.map(
-        (extra) => {
-          const checked =
-            item.extras.includes(
-              extra.name
-            );
-
-
-          return `
-            <label class="checkbox-card">
-
-              <input
-                type="checkbox"
-                data-extra="${escapeHtml(
-                  extra.name
-                )}"
-                data-price="${extra.price}"
-                ${
-                  checked
-                    ? "checked"
-                    : ""
-                }
-              />
-
-              <span>
-                ${escapeHtml(
-                  extra.name
-                )}
-              </span>
-
-              <small>
-                +${formatPrice(
-                  extra.price
-                )}
-              </small>
-
-            </label>
-          `;
-        }
-      ).join("");
-
-
-    /*
-     * QUANTITY
-     */
-
-    quantityInput.value =
-      String(
-        item.quantity
-      );
-
-
-    /*
-     * SIZE EVENTS
-     */
-
-    sizeGroup
-      .querySelectorAll(
-        'input[name="edit-size"]'
-      )
-      .forEach(
-        (input) => {
-          input.addEventListener(
-            "change",
-            () => {
-              sizeGroup
-                .querySelectorAll(
-                  ".option-card"
-                )
-                .forEach(
-                  (
-                    card
-                  ) => {
-                    card.classList.toggle(
-                      "is-selected",
-                      card
-                        .querySelector(
-                          "input"
-                        )
-                        ?.checked
-                    );
-                  }
-                );
-
-
-              recalcEditPrice();
-            }
-          );
-        }
-      );
-
-
-    /*
-     * EXTRA EVENTS
-     */
-
-    extrasGroup
-      .querySelectorAll(
-        'input[type="checkbox"]'
-      )
-      .forEach(
-        (
-          checkbox
-        ) => {
-          checkbox.addEventListener(
-            "change",
-            recalcEditPrice
-          );
-        }
-      );
-
-
-    recalcEditPrice();
-
-
-    /*
-     * OPEN MODAL
-     */
-
-    modal.classList.add(
-      "open"
-    );
-
-
-    modal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-
-    document.body.classList.add(
-      "modal-open"
-    );
-
-
-    modal
-      .querySelector(
-        ".icon-button"
-      )
-      ?.focus();
-  }
-
-
-  /*
-   * =========================================================
-   * CLOSE EDIT MODAL
-   * =========================================================
-   */
-
-  function closeEditModal() {
-    const {
-      modal
-    } =
-      getEditModalRefs();
-
-
-    if (!modal) {
-      return;
-    }
-
-
-    modal.classList.remove(
-      "open"
-    );
-
-
-    modal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-
-    document.body.classList.remove(
-      "modal-open"
-    );
-
-
-    editingItemId =
-      null;
-
-
-    if (
-      editFocusReturnTarget &&
-      typeof editFocusReturnTarget.focus ===
-        "function"
-    ) {
-      editFocusReturnTarget.focus();
-    }
-
-
-    editFocusReturnTarget =
-      null;
-  }
-
-
-  /*
-   * =========================================================
-   * SAVE EDIT
-   * =========================================================
-   */
-
-  function saveEditModal() {
-    if (
-      !editingItemId
-    ) {
-      return;
-    }
-
-
-    const {
-      sizeGroup,
-      extrasGroup,
-      quantityInput
-    } =
-      getEditModalRefs();
-
-
-    const selectedSize =
-      sizeGroup?.querySelector(
-        'input[name="edit-size"]:checked'
-      );
-
-
-    const size =
-      selectedSize
-        ? selectedSize.value
-        : "255ml";
-
-
-    const sizePrice =
-      selectedSize
-        ? Number(
-            selectedSize.dataset
-              .price ||
-              0
-          )
-        : 0;
-
-
-    const selectedExtras =
-      Array.from(
-        extrasGroup
-          ? extrasGroup.querySelectorAll(
-              'input[type="checkbox"]'
-            )
-          : []
-      ).filter(
-        (
-          checkbox
-        ) =>
-          checkbox.checked
-      );
-
-
-    const extras =
-      selectedExtras.map(
-        (
-          checkbox
-        ) =>
-          checkbox.dataset
-            .extra
-      );
-
-
-    const extrasTotal =
-      selectedExtras.reduce(
-        (
-          total,
-          checkbox
-        ) =>
-          total +
-          Number(
-            checkbox.dataset
-              .price ||
-              0
-          ),
-        0
-      );
-
-
-    const quantity =
-      Math.max(
-        1,
-        Number(
-          quantityInput?.value ||
-            1
-        )
-      );
-
-
-    const unitPrice =
-      sizePrice +
-      extrasTotal;
-
-
-    updateItem(
-      editingItemId,
-      {
-        size,
-        extras,
-        quantity,
-        unitPrice,
-        totalPrice:
-          unitPrice *
-          quantity
+    if (action === "remove") {
+      if (itemId === undefined) {
+        return;
       }
-    );
 
+      removeItem(itemId);
 
-    closeEditModal();
+      updateGlobalCartCount();
 
-
-    renderCartPage();
-
-
-    updateGlobalCartCount();
-  }
-
-
-  /*
-   * =========================================================
-   * EDIT MODAL EVENTS
-   * =========================================================
-   */
-
-  function initEditModal() {
-    const {
-      modal,
-      quantityInput
-    } =
-      getEditModalRefs();
-
-
-    if (!modal) {
       return;
     }
 
 
     /*
-     * Close buttons
+     * EDIT
      */
 
-    modal
-      .querySelectorAll(
-        '[data-action="close-edit"]'
-      )
-      .forEach(
-        (button) => {
-          button.addEventListener(
-            "click",
-            closeEditModal
-          );
-        }
-      );
-
-
-    /*
-     * Save
-     */
-
-    modal
-      .querySelector(
-        '[data-action="save-edit"]'
-      )
-      ?.addEventListener(
-        "click",
-        saveEditModal
-      );
-
-
-    /*
-     * Decrease
-     */
-
-    modal
-      .querySelector(
-        '[data-action="edit-decrease"]'
-      )
-      ?.addEventListener(
-        "click",
-        () => {
-          if (
-            !quantityInput
-          ) {
-            return;
-          }
-
-
-          quantityInput.value =
-            String(
-              Math.max(
-                1,
-                Number(
-                  quantityInput.value ||
-                    1
-                ) - 1
-              )
-            );
-
-
-          recalcEditPrice();
-        }
-      );
-
-
-    /*
-     * Increase
-     */
-
-    modal
-      .querySelector(
-        '[data-action="edit-increase"]'
-      )
-      ?.addEventListener(
-        "click",
-        () => {
-          if (
-            !quantityInput
-          ) {
-            return;
-          }
-
-
-          quantityInput.value =
-            String(
-              Math.max(
-                1,
-                Number(
-                  quantityInput.value ||
-                    1
-                ) + 1
-              )
-            );
-
-
-          recalcEditPrice();
-        }
-      );
-
-
-    /*
-     * Manual quantity input
-     */
-
-    quantityInput?.addEventListener(
-      "input",
-      recalcEditPrice
-    );
-
-
-    /*
-     * ESC closes modal
-     */
-
-    document.addEventListener(
-      "keydown",
-      (event) => {
-        if (
-          event.key ===
-            "Escape" &&
-          modal.classList.contains(
-            "open"
-          )
-        ) {
-          closeEditModal();
-        }
+    if (action === "edit") {
+      if (itemId === undefined) {
+        return;
       }
+
+      openEditModal(itemId, button);
+
+      return;
+    }
+
+
+    /*
+     * FIND ITEM FOR QUANTITY UPDATE
+     */
+
+    const item = getCart().find(
+      (entry) =>
+        String(entry.id) === String(itemId)
     );
+
+    if (!item) {
+      return;
+    }
+
+
+    /*
+     * DECREASE
+     */
+
+    if (action === "decrease") {
+      updateQuantity(
+        itemId,
+        Math.max(
+          1,
+          toSafeQuantity(item.quantity) - 1
+        )
+      );
+
+      updateGlobalCartCount();
+
+      return;
+    }
+
+
+    /*
+     * INCREASE
+     */
+
+    if (action === "increase") {
+      updateQuantity(
+        itemId,
+        toSafeQuantity(item.quantity) + 1
+      );
+
+      updateGlobalCartCount();
+    }
   }
 
 
   /*
-   * =========================================================
+   * CHECKOUT + CONTINUE SHOPPING
+   */
+
+  function handlePageActionClick(event) {
+    const checkoutButton = event.target.closest(
+      '[data-action="checkout"]'
+    );
+
+    if (checkoutButton) {
+      event.preventDefault();
+
+      const currentCart = getCart();
+
+      if (
+        !currentCart.length ||
+        checkoutButton.disabled
+      ) {
+        return;
+      }
+
+      window.location.assign("checkout.html");
+
+      return;
+    }
+
+
+    const continueButton = event.target.closest(
+      '[data-action="continue-shopping"]'
+    );
+
+    if (continueButton) {
+      event.preventDefault();
+
+      window.location.assign("menu.html");
+    }
+  }
+
+
+  /*
    * GLOBAL CART COUNT
-   * =========================================================
    */
 
   function updateGlobalCartCount() {
-    const count =
-      getCartCount();
-
+    const count = getCartCount();
 
     document
-      .querySelectorAll(
-        ".cart-count"
-      )
-      .forEach(
-        (element) => {
-          element.textContent =
-            String(
-              count
-            );
-        }
-      );
+      .querySelectorAll(".cart-count")
+      .forEach((element) => {
+        element.textContent = String(count);
+      });
   }
 
 
   /*
-   * =========================================================
    * CART UPDATE LISTENER
-   * =========================================================
    */
 
   window.addEventListener(
@@ -1813,17 +1334,8 @@
     () => {
       updateGlobalCartCount();
 
-
-      /*
-       * If we're currently
-       * on the cart page,
-       * refresh the cart.
-       */
-
       if (
-        document.getElementById(
-          "cart-items"
-        )
+        document.getElementById("cart-items")
       ) {
         renderCartPage();
       }
@@ -1832,29 +1344,20 @@
 
 
   /*
-   * =========================================================
    * PUBLIC API
-   * =========================================================
    */
 
-  window.getCart =
-    getCart;
+  window.getCart = getCart;
 
-  window.saveCart =
-    saveCart;
+  window.saveCart = saveCart;
 
-  window.clearCart =
-    clearCart;
+  window.clearCart = clearCart;
 
-  window.addToCart =
-    addItem;
+  window.addToCart = addItem;
 
-  window.getCartTotal =
-    getCartTotal;
+  window.getCartTotal = getCartTotal;
 
-  window.formatCartPrice =
-    formatPrice;
-
+  window.formatCartPrice = formatPrice;
 
   window.TBRCartAPI = {
     getCart,
@@ -1870,13 +1373,40 @@
 
 
   /*
-   * =========================================================
    * INITIALIZE
-   * =========================================================
    */
 
   function initCartPage() {
     initEditModal();
+
+    const cartContainer = document.getElementById(
+      "cart-items"
+    );
+
+    if (
+      cartContainer &&
+      cartContainer.dataset.eventsBound !== "true"
+    ) {
+      cartContainer.dataset.eventsBound = "true";
+
+      cartContainer.addEventListener(
+        "click",
+        handleCartClick
+      );
+    }
+
+    if (
+      document.documentElement.dataset.cartPageActionsBound !==
+      "true"
+    ) {
+      document.documentElement.dataset.cartPageActionsBound =
+        "true";
+
+      document.addEventListener(
+        "click",
+        handlePageActionClick
+      );
+    }
 
     renderCartPage();
 
@@ -1884,13 +1414,11 @@
   }
 
 
-  if (
-    document.readyState ===
-    "loading"
-  ) {
+  if (document.readyState === "loading") {
     document.addEventListener(
       "DOMContentLoaded",
-      initCartPage
+      initCartPage,
+      { once: true }
     );
   } else {
     initCartPage();

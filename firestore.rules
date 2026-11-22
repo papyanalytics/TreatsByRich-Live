@@ -41,7 +41,8 @@ service cloud.firestore {
      * ORDERS
      * =========================================================
      *
-     * Guest customers can CREATE orders.
+     * Guest customers create orders through the Cloud Function,
+     * which resolves current product pricing and promotion totals.
      *
      * Customers cannot read, update, delete, or list orders.
      *
@@ -49,9 +50,9 @@ service cloud.firestore {
      */
 
     match /orders/{orderId} {
-  allow create: if true;
-  allow read, update, delete: if isAdmin();
-}
+      allow create: if isAdmin();
+      allow read, update, delete: if isAdmin();
+    }
 
     /*
      * =========================================================

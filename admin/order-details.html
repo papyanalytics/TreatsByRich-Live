@@ -178,8 +178,9 @@
                         </table>
                       </div>
                       <div class="detail-row" style="margin-top: 0.8rem;"><span>Subtotal</span><span>&mdash;</span></div>
+                      <div class="detail-row"><span>Discount</span><span>&mdash;</span></div>
                       <div class="detail-row"><span>Delivery Fee</span><span>&mdash;</span></div>
-                      <div class="detail-row"><span>Total</span><span>&mdash;</span></div>
+                      <div class="detail-row"><span>Amount payable</span><span>&mdash;</span></div>
                     </div>
                   </div>
 
@@ -302,8 +303,13 @@
 
         const totalsRows = template.querySelectorAll('.detail-block[style="grid-column: 1 / -1;"] .detail-row');
         totalsRows[0].querySelector("span:last-child").textContent = formatPrice(order.subtotal);
-        totalsRows[1].querySelector("span:last-child").textContent = formatPrice(order.deliveryFee);
-        totalsRows[2].querySelector("span:last-child").textContent = formatPrice(order.grandTotal);
+        const promotionLabel = order.promotion?.rate
+          ? `${order.promotion.name} (${order.promotion.rate}%)`
+          : "Discount";
+        totalsRows[1].querySelector("span:first-child").textContent = promotionLabel;
+        totalsRows[1].querySelector("span:last-child").textContent = `−${formatPrice(order.discount)}`;
+        totalsRows[2].querySelector("span:last-child").textContent = formatPrice(order.deliveryFee);
+        totalsRows[3].querySelector("span:last-child").textContent = formatPrice(order.grandTotal);
 
         document.getElementById("orderStatusSelect").value = order.status;
         document.getElementById("paymentStatusSelect").value = order.paymentStatus;
