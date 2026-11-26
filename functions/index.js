@@ -439,8 +439,10 @@ function createServerOrderNumber(now) {
 }
 
 export const createCustomerOrder =
-  onCall(async (request) => {
-    const payload = request.data?.order;
+  onCall(
+    { region: "europe-west1" },
+    async (request) => {
+      const payload = request.data?.order;
 
     if (!payload || typeof payload !== "object") {
       throw new HttpsError(

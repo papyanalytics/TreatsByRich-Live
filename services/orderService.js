@@ -20,7 +20,7 @@ import { app, db, configOk } from "../config/firebaseConfig.js";
 
 const functions =
   app
-    ? getFunctions(app)
+    ? getFunctions(app, "europe-west1")
     : null;
 
 function toNumber(value) {
